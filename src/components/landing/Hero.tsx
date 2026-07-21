@@ -23,27 +23,30 @@ export function Hero({
 }: HeroProps) {
   return (
     <section className="relative bg-[var(--color-secondary)] overflow-hidden">
-      {/* Torn-paper clip paths for the hero photo below: jagged bottom edge on
-          mobile (photo stacks above the copy), jagged left edge on desktop
-          (photo sits beside the copy) — objectBoundingBox so they scale with
-          whatever size the photo column ends up at any breakpoint. */}
-      <svg width="0" height="0" className="absolute" aria-hidden="true">
-        <defs>
-          <clipPath id="hero-torn-bottom" clipPathUnits="objectBoundingBox">
-            <path d="M0,0 L1,0 L1,0.96 L0.95,0.93 L0.905,0.985 L0.86,0.935 L0.81,0.99 L0.76,0.935 L0.71,0.985 L0.66,0.93 L0.61,0.985 L0.56,0.935 L0.51,0.985 L0.46,0.93 L0.41,0.985 L0.36,0.93 L0.31,0.985 L0.26,0.935 L0.21,0.985 L0.16,0.93 L0.11,0.985 L0.06,0.93 L0,0.975 Z" />
-          </clipPath>
-          <clipPath id="hero-torn-left" clipPathUnits="objectBoundingBox">
-            <path d="M0.045,0 L1,0 L1,1 L0.03,1 L0.075,0.94 L0.015,0.885 L0.07,0.83 L0.02,0.77 L0.08,0.715 L0.025,0.66 L0.075,0.605 L0.015,0.55 L0.07,0.495 L0.025,0.44 L0.08,0.385 L0.02,0.33 L0.075,0.275 L0.015,0.22 L0.07,0.165 L0.025,0.11 L0.06,0.055 Z" />
-          </clipPath>
-        </defs>
-      </svg>
+      {/* Soft glassmorphic merge where the photo meets the copy column: the
+          photo itself fades out via a mask-image gradient (bottom edge on
+          mobile, left edge on desktop) instead of a hard seam, and a
+          backdrop-blur panel sits over that fade zone so the transition
+          reads as frosted glass rather than a cut edge — echoes the navbar's
+          glass treatment instead of clashing with it. */}
       <style>{`
-        .hero-photo-clip {
-          clip-path: url(#hero-torn-bottom);
-          filter: drop-shadow(0 18px 28px rgba(212, 175, 55, 0.35));
+        .hero-photo-fade {
+          mask-image: linear-gradient(to bottom, black 78%, transparent 100%);
+          -webkit-mask-image: linear-gradient(to bottom, black 78%, transparent 100%);
+        }
+        .hero-glass-fade {
+          mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
+          -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
         }
         @media (min-width: 768px) {
-          .hero-photo-clip { clip-path: url(#hero-torn-left); }
+          .hero-photo-fade {
+            mask-image: linear-gradient(to right, transparent 0%, black 30%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%);
+          }
+          .hero-glass-fade {
+            mask-image: linear-gradient(to right, black 0%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, black 0%, transparent 100%);
+          }
         }
       `}</style>
 
@@ -74,11 +77,11 @@ export function Hero({
           </div>
         </div>
 
-        {/* Portrait media, torn-paper edge where it meets the copy column —
-            bleeds slightly over the copy column instead of a hard 50/50 split
-            so it reads as one composed scene rather than two stacked panels. */}
-        <div className="relative min-h-[360px] md:min-h-[85vh] order-1 md:order-2 md:-ml-10 lg:-ml-16 z-10">
-          <div className="hero-photo-clip absolute inset-0 w-full h-full">
+        {/* Portrait media — fades into the copy column through a soft mask
+            + frosted-glass overlay instead of a hard 50/50 split or a cut
+            edge, so it reads as one continuous, softly blended scene. */}
+        <div className="relative min-h-[360px] md:min-h-[85vh] order-1 md:order-2 z-10">
+          <div className="hero-photo-fade absolute inset-0 w-full h-full">
             {mediaType === 'video' && videoUrl ? (
               <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover">
                 <source src={videoUrl} type="video/mp4" />
@@ -90,6 +93,11 @@ export function Hero({
               />
             )}
           </div>
+          {/* Frosted glass over the fade zone — masked with its own gradient
+              so the blur itself tapers off smoothly instead of stopping at
+              a hard rectangle edge (that hard edge is what made an earlier
+              version of this look like a smudge instead of a soft blend). */}
+          <div className="hero-glass-fade absolute inset-x-0 bottom-0 h-2/5 md:inset-y-0 md:left-0 md:right-auto md:bottom-auto md:h-full md:w-1/2 backdrop-blur-lg bg-[var(--color-secondary)]/15 pointer-events-none" />
         </div>
       </div>
     </section>
