@@ -7,6 +7,7 @@ export async function GET() {
     // Return only public fields
     return NextResponse.json({
       companyName: settings?.companyName,
+      logoUrl: settings?.logoUrl,
       currencySymbol: settings?.currencySymbol || "£",
       primaryColor: settings?.primaryColor,
       secondaryColor: settings?.secondaryColor,
@@ -21,6 +22,7 @@ export async function GET() {
       contactPhone: settings?.contactPhone,
       address: settings?.address,
       enableOTP: settings?.enableOTP || false,
+      enableEmailLink: settings?.enableEmailLink || false,
       requireDeposit: settings?.requireDeposit || false,
       bankDetails: settings?.bankDetails,
       bankAccountName: settings?.bankAccountName,

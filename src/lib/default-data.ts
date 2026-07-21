@@ -10,7 +10,7 @@ import bcrypt from "bcryptjs";
 export const defaultSettings = {
   id: 1,
   companyName: "Bougie Hair & Beauty",
-  logoUrl: "",
+  logoUrl: "/logo.png",
   primaryColor: "#E6127E",
   secondaryColor: "#F9DCE8",
   accentColor: "#3E1D10",
@@ -54,6 +54,11 @@ export const defaultSettings = {
   bankAccountName: "",
   bookingPolicy: "A £20 non-refundable deposit is required to secure your appointment. This deposit will be deducted from the total cost of your service.\n\nHair extensions are not included in braid/twist pricing unless stated. Please arrive with hair freshly washed and blow-dried.\n\nPrices may vary depending on hair length and thickness.\n\nFor wig, frontal, or closure services: hair or closures must be dropped off at least 5 days before your appointment (10 days if ordering hair from the salon), or a £10 late fee applies.\n\nForeign lash infills require at least 50% of your existing lashes to remain — otherwise the service will be charged as a full set.\n\nBy booking an appointment with us, you acknowledge and agree to this policy.",
   enableOTP: true,
+  // Firebase email-link (passwordless) sign-in — a second portal login
+  // option alongside phone+OTP, using the same Firebase-verified identity
+  // path (see src/lib/auth.ts). Independent toggle from enableOTP since a
+  // salon may want one, both, or neither.
+  enableEmailLink: true,
   updatedAt: new Date(0).toISOString(),
 };
 
@@ -227,6 +232,7 @@ export const defaultClients = [
     id: "default-client-id",
     userId: "default-client-user-id",
     phone: "+44 7700 900000",
+    email: "",
     notes: "",
   },
 ];
@@ -249,4 +255,5 @@ export const defaultStore = {
   appointments: [],
   formulations: [],
   portfolio: [],
+  pushSubscriptions: [],
 };

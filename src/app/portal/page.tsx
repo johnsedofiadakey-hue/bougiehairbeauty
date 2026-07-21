@@ -7,10 +7,11 @@ import Link from "next/link";
 import {
   RecaptchaVerifier,
   signInWithPhoneNumber,
+  sendSignInLinkToEmail,
   ConfirmationResult,
 } from "firebase/auth";
 import { Button } from "@/components/ui/button";
-import { Phone, Lock, ArrowRight, ShieldCheck, ArrowLeft } from "lucide-react";
+import { Phone, Lock, Mail, ArrowRight, ShieldCheck, ArrowLeft, MailCheck } from "lucide-react";
 import { normalizeUKPhone, stripUKPrefix } from "@/lib/utils";
 import { auth } from "@/lib/firebase";
 
@@ -29,7 +30,8 @@ export default function ClientPortalAuth() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
-  const [step, setStep] = useState<"phone" | "password" | "otp">("phone");
+  const [email, setEmail] = useState("");
+  const [step, setStep] = useState<"phone" | "password" | "otp" | "email" | "email-sent">("phone");
   const [settings, setSettings] = useState<any>(null);
   const [settingsLoaded, setSettingsLoaded] = useState(false);
   const [error, setError] = useState("");
@@ -132,6 +134,26 @@ export default function ClientPortalAuth() {
     }
   };
 
+  const handleEmailLinkSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      await sendSignInLinkToEmail(auth, email.trim(), {
+        url: `${window.location.origin}/portal/verify`,
+        handleCodeInApp: true,
+      });
+      // Cached so /portal/verify can complete sign-in on this same device
+      // without asking the client to re-type their email.
+      window.localStorage.setItem("emailForSignIn", email.trim());
+      setStep("email-sent");
+    } catch (err: any) {
+      setError(firebaseErrorMessage(err));
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -177,7 +199,11 @@ export default function ClientPortalAuth() {
 
         <form
           onSubmit={
-            step === "phone" ? handlePhoneSubmit : step === "otp" ? handleOtpSubmit : handlePasswordSubmit
+            step === "phone" ? handlePhoneSubmit
+            : step === "otp" ? handleOtpSubmit
+            : step === "email" ? handleEmailLinkSubmit
+            : step === "email-sent" ? (e: React.FormEvent) => e.preventDefault()
+            : handlePasswordSubmit
           }
           className="space-y-6"
         >
@@ -216,6 +242,67 @@ export default function ClientPortalAuth() {
               <Button type="submit" className="w-full h-16 text-lg rounded-2xl gap-2 shadow-xl shadow-brand-primary/20" disabled={loading || !settingsLoaded}>
                 {!settingsLoaded ? "Loading..." : loading ? "Sending code..." : <>Continue <ArrowRight className="w-5 h-5" /></>}
               </Button>
+              {settings?.enableEmailLink && (
+                <button
+                  type="button"
+                  onClick={() => { if (!loading) { setError(""); setStep("email"); } }}
+                  className="w-full py-2 text-xs font-bold uppercase text-zinc-400 hover:text-brand-primary transition-colors flex items-center justify-center gap-2"
+                  disabled={loading}
+                >
+                  <Mail className="w-3 h-3" /> Use email instead
+                </button>
+              )}
+            </div>
+          )}
+
+          {step === "email" && (
+            <div className="space-y-4 animate-in fade-in slide-in-from-right-4">
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase text-zinc-400 tracking-widest">Email Address</label>
+                <div className="relative">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-300" />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full pl-12 pr-4 py-4 rounded-2xl border focus:ring-2 focus:ring-brand-primary outline-none transition-all"
+                    placeholder="you@example.com"
+                    required
+                    disabled={loading}
+                  />
+                </div>
+                <p className="text-[11px] text-zinc-400">We'll email you a one-click link — no code to type.</p>
+              </div>
+              <Button type="submit" className="w-full h-16 text-lg rounded-2xl gap-2 shadow-xl shadow-brand-primary/20" disabled={loading}>
+                {loading ? "Sending link..." : <>Send Me a Link <ArrowRight className="w-5 h-5" /></>}
+              </Button>
+              <button
+                type="button"
+                onClick={() => { if (!loading) { setError(""); setStep("phone"); } }}
+                className="w-full py-2 text-xs font-bold uppercase text-zinc-400 hover:text-brand-primary transition-colors flex items-center justify-center gap-2"
+                disabled={loading}
+              >
+                <ArrowLeft className="w-3 h-3" /> Use phone number instead
+              </button>
+            </div>
+          )}
+
+          {step === "email-sent" && (
+            <div className="space-y-4 text-center animate-in fade-in slide-in-from-right-4">
+              <div className="w-16 h-16 bg-brand-secondary/50 rounded-2xl mx-auto flex items-center justify-center text-brand-primary">
+                <MailCheck className="w-8 h-8" />
+              </div>
+              <p className="text-sm text-zinc-600">
+                Check your inbox at <span className="font-bold">{email}</span> — tap the link we sent to finish signing in.
+              </p>
+              <button
+                type="button"
+                onClick={() => { if (!loading) { setError(""); setStep("email"); } }}
+                className="w-full py-2 text-xs font-bold uppercase text-zinc-400 hover:text-brand-primary transition-colors flex items-center justify-center gap-2"
+                disabled={loading}
+              >
+                <ArrowLeft className="w-3 h-3" /> Wrong email? Try again
+              </button>
             </div>
           )}
 

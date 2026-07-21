@@ -11,6 +11,7 @@ export type Store = {
   appointments: any[];
   formulations: any[];
   portfolio: any[];
+  pushSubscriptions: any[];
 };
 
 const STORE_FILE = "app-state/store.json";
@@ -25,6 +26,15 @@ export function findClientByPhone(store: Store, phoneInput: string) {
     const cleanC = c.phone.replace(/[\s\-\+\(\)]/g, "");
     return cleanC.endsWith(cleanInput) || cleanInput.endsWith(cleanC);
   });
+}
+
+// Unlike phone, email has no formatting variance worth normalizing beyond
+// case — Firebase email-link sign-in already lowercases/trims before this
+// is ever called.
+export function findClientByEmail(store: Store, emailInput: string) {
+  const clean = emailInput.trim().toLowerCase();
+  if (!clean) return undefined;
+  return store.clients.find((c) => (c.email || "").trim().toLowerCase() === clean);
 }
 
 function cloneDefaultStore(): Store {
@@ -47,6 +57,7 @@ function mergeWithDefaults(data: Partial<Store> | null | undefined): Store {
     appointments: Array.isArray(data.appointments) ? data.appointments : base.appointments,
     formulations: Array.isArray(data.formulations) ? data.formulations : base.formulations,
     portfolio: Array.isArray(data.portfolio) ? data.portfolio : base.portfolio,
+    pushSubscriptions: Array.isArray(data.pushSubscriptions) ? data.pushSubscriptions : base.pushSubscriptions,
   };
 }
 

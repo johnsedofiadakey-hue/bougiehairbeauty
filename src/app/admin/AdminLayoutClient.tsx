@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { LayoutDashboard, Scissors, Package, Settings, Users, Calendar, ArrowLeft, Image as ImageIcon, Beaker, Command, LogOut, Menu, X } from "lucide-react";
 import { AdminCommandPalette } from "@/components/admin/AdminCommandPalette";
+import { AdminNotifications } from "@/components/admin/AdminNotifications";
 import { signOut } from "next-auth/react";
 
 export default function AdminLayoutClient({
@@ -119,6 +120,7 @@ export default function AdminLayoutClient({
             </div>
           </div>
           <div className="flex items-center gap-4 flex-shrink-0">
+            <AdminNotifications />
             <button
               onClick={() => router.push('/admin/appointments?new=true')}
               className="px-3 md:px-4 py-2 bg-brand-primary text-white rounded-lg text-xs md:text-sm hover:scale-105 transition-transform shadow-lg shadow-brand-primary/20 font-bold whitespace-nowrap"

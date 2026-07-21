@@ -40,6 +40,7 @@ const EDITABLE_SETTINGS_FIELDS = [
   "currencySymbol",
   "stripePublishableKey",
   "enableOTP",
+  "enableEmailLink",
   "requireDeposit",
   "bankDetails",
   "bankAccountName",

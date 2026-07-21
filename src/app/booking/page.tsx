@@ -24,7 +24,7 @@ export default function BookingPage() {
   const [isLoadingSlots, setIsLoadingSlots] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [clientData, setClientData] = useState({ name: "", phone: "" });
+  const [clientData, setClientData] = useState({ name: "", phone: "", email: "" });
   const [currency, setCurrency] = useState("£");
   const [requireDeposit, setRequireDeposit] = useState(false);
   const [bankDetails, setBankDetails] = useState("");
@@ -115,6 +115,7 @@ export default function BookingPage() {
         startTime: `${format(selectedDate, 'yyyy-MM-dd')}T${selectedTime}:00`,
         name: clientData.name,
         phone: normalizedPhone,
+        email: clientData.email.trim(),
         staffId: "solo-staff-id"
       })
     });
@@ -369,6 +370,17 @@ export default function BookingPage() {
                       placeholder="07770 375859 or 7770375859"
                     />
                   </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Email (optional)</label>
+                  <input
+                    type="email"
+                    value={clientData.email}
+                    onChange={(e) => setClientData({...clientData, email: e.target.value})}
+                    className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                    placeholder="you@example.com"
+                  />
+                  <p className="text-xs text-zinc-400">Get your booking details and a reminder by email, plus one-click access to your portal.</p>
                 </div>
                 {!needsPolicyStep && (
                   <div className="flex items-center gap-3 p-4 bg-emerald-50 rounded-xl text-emerald-800 text-sm">

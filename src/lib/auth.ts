@@ -1,7 +1,7 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { readStore, findClientByPhone } from "@/lib/data-store";
+import { readStore, findClientByPhone, findClientByEmail } from "@/lib/data-store";
 import admin from "@/lib/firebase-admin";
 
 // Seed/legacy accounts may still have a plaintext password if the store was
@@ -27,7 +27,10 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         const store = await readStore();
 
-        // 1. Firebase-verified phone OTP login (Client Portal)
+        // 1. Firebase-verified login (Client Portal) — either phone OTP or
+        // email-link sign-in. Both land here with the same shape: a
+        // Firebase ID token whose claims we trust because Firebase already
+        // verified possession of the phone/email before issuing it.
         if (credentials?.firebaseIdToken) {
           let decoded;
           try {
@@ -38,14 +41,13 @@ export const authOptions: NextAuthOptions = {
           }
 
           const phoneNumber = decoded.phone_number;
-          if (!phoneNumber) {
-            console.log("[AUTH] Firebase token missing phone_number claim");
-            return null;
-          }
+          const email = decoded.email;
 
-          const client = findClientByPhone(store, phoneNumber);
+          let client = phoneNumber ? findClientByPhone(store, phoneNumber) : undefined;
+          if (!client && email) client = findClientByEmail(store, email);
+
           if (!client) {
-            console.log("[AUTH] Client phone not found (Firebase-verified):", phoneNumber);
+            console.log("[AUTH] Client not found for Firebase-verified identity:", phoneNumber || email);
             return null;
           }
 

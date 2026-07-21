@@ -1,9 +1,18 @@
 import { NextResponse } from 'next/server';
-import { addMinutes } from 'date-fns';
+import { addMinutes, differenceInMinutes } from 'date-fns';
 import bcrypt from 'bcryptjs';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { createId, readStore, updateStore, findClientByPhone } from '@/lib/data-store';
+import { sendBrevoEmail, buildBookingConfirmationEmail, formatAppointmentWhen } from '@/lib/email';
+import { generatePortalMagicLink } from '@/lib/magic-link';
+import { notifyAdminsOfNewBooking } from '@/lib/admin-notify';
+
+// A reminder 60 minutes before the appointment is only useful if the
+// booking itself was made with more than 60 minutes of runway — otherwise
+// there's no meaningful "reminder" to send, so it's skipped up front rather
+// than silently never firing later (and never burning a Brevo send on it).
+const REMINDER_LEAD_MINUTES = 60;
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -31,10 +40,11 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { name, phone, staffId, serviceIds, startTime } = await request.json();
+    const { name, phone, email, staffId, serviceIds, startTime } = await request.json();
     if (!name || !phone || !Array.isArray(serviceIds) || !startTime) {
       return NextResponse.json({ error: 'Missing required booking fields' }, { status: 400 });
     }
+    const cleanEmail = typeof email === "string" ? email.trim() : "";
 
     const result = await updateStore((store) => {
       const selectedServices = store.services.filter((service) => serviceIds.includes(service.id));
@@ -59,16 +69,16 @@ export async function POST(request: Request) {
 
       if (conflict) return { error: 'This time slot is already booked. Please try another time.', status: 409 };
 
-      // Clients are identified by phone (not email) — booking never asks for
-      // an email address, since the business only needs a phone number to
-      // reach customers and customers only ever log in via phone + OTP.
+      // Clients are still identified by phone (the one required field) —
+      // email is optional, used only for confirmation/reminder emails and
+      // as a second portal login path (see src/lib/auth.ts).
       let client = findClientByPhone(store, phone);
       let user = client ? store.users.find((item) => item.id === client.userId) : undefined;
 
       if (!user) {
         user = {
           id: createId("user"),
-          email: "",
+          email: cleanEmail,
           name,
           // Guests don't set a password at booking time; generate a random
           // one (hashed, like any other credential) so the account still
@@ -85,13 +95,19 @@ export async function POST(request: Request) {
           id: createId("client"),
           userId: user.id,
           phone,
+          email: cleanEmail,
           notes: "",
         };
         store.clients.push(client);
       } else {
         client.phone = phone;
+        // Only overwrite when a new email is actually supplied — an empty
+        // field on a repeat booking shouldn't erase one given previously.
+        if (cleanEmail) client.email = cleanEmail;
       }
+      if (cleanEmail && !user.email) user.email = cleanEmail;
 
+      const now = new Date();
       const appointment = {
         id: createId("apt"),
         clientId: client.id,
@@ -103,8 +119,14 @@ export async function POST(request: Request) {
         status: 'PENDING',
         isPaid: false,
         paymentRef: null,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        reminderSent: false,
+        // No point scheduling a "60 minutes before" reminder when the
+        // booking itself was made with less than 60 minutes of runway —
+        // skip it up front instead of leaving it to the cron route to
+        // notice on every poll for an appointment that's already too close.
+        reminderSkipped: differenceInMinutes(start, now) <= REMINDER_LEAD_MINUTES,
+        createdAt: now.toISOString(),
+        updatedAt: now.toISOString(),
       };
       store.appointments.push(appointment);
 
@@ -113,6 +135,38 @@ export async function POST(request: Request) {
 
     if ('error' in result) {
       return NextResponse.json({ error: result.error }, { status: Number(result.status) || 500 });
+    }
+
+    // Best-effort side effects, but awaited rather than fire-and-forget —
+    // App Hosting's Cloud Run backend can throttle CPU once a response is
+    // sent, so work kicked off after `return` isn't guaranteed to finish.
+    // Each is isolated in its own try/catch so a failed email or push never
+    // fails a booking that already succeeded.
+    const settings = (await readStore()).settings;
+    const serviceNames = result.services.map((s: any) => s.name);
+    const whenLabel = formatAppointmentWhen(result.startTime);
+
+    if (cleanEmail) {
+      try {
+        const portalLink = await generatePortalMagicLink(cleanEmail);
+        const { subject, html } = buildBookingConfirmationEmail({
+          settings,
+          clientName: name,
+          serviceNames,
+          startTimeIso: result.startTime,
+          totalPrice: result.totalPrice,
+          portalLink,
+        });
+        await sendBrevoEmail({ to: { email: cleanEmail, name }, subject, htmlContent: html });
+      } catch (err) {
+        console.error("[BOOKING_CONFIRMATION_EMAIL_ERROR]", err);
+      }
+    }
+
+    try {
+      await notifyAdminsOfNewBooking({ clientName: name, serviceNames, whenLabel });
+    } catch (err) {
+      console.error("[ADMIN_PUSH_NOTIFY_ERROR]", err);
     }
 
     return NextResponse.json(result);

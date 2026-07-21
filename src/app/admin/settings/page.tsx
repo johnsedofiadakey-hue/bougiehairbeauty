@@ -37,6 +37,7 @@ export default function SettingsPage() {
     address: "",
     currencySymbol: "£",
     enableOTP: true,
+    enableEmailLink: true,
     requireDeposit: false,
     bankDetails: "",
     bankAccountName: "",
@@ -492,6 +493,18 @@ export default function SettingsPage() {
                       className={`w-12 h-6 rounded-full transition-colors relative ${settings.enableOTP ? 'bg-brand-primary' : 'bg-zinc-300'}`}
                     >
                       <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${settings.enableOTP ? 'right-1' : 'left-1'}`} />
+                    </button>
+                  </div>
+                  <div className="flex items-center justify-between p-4 bg-zinc-50 rounded-2xl border border-dashed border-zinc-200">
+                    <div>
+                      <p className="text-sm font-bold">Enable Email Link Sign-In</p>
+                      <p className="text-xs text-zinc-500">Lets clients access their portal via a one-click emailed link instead of SMS — same Firebase-verified login, no password or code to type. Requires Brevo to be configured.</p>
+                    </div>
+                    <button
+                      onClick={() => setSettings({...settings, enableEmailLink: !settings.enableEmailLink})}
+                      className={`w-12 h-6 rounded-full transition-colors relative ${settings.enableEmailLink ? 'bg-brand-primary' : 'bg-zinc-300'}`}
+                    >
+                      <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${settings.enableEmailLink ? 'right-1' : 'left-1'}`} />
                     </button>
                   </div>
                   <div className="flex items-center justify-between p-4 bg-zinc-50 rounded-2xl border border-dashed border-zinc-200">

@@ -4,6 +4,13 @@ import { Storage } from '@google-cloud/storage';
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.applicationDefault(),
+    // Without this, the Admin SDK infers the project from the ambient
+    // gcloud/ADC context — which in local dev can be whatever project the
+    // developer's `gcloud` CLI happens to be pointed at, silently routing
+    // admin.auth() calls (email-link generation, phone-token verification)
+    // to the wrong Firebase project. Pin it explicitly so local dev and
+    // production always target this app's actual project.
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
   });
 }
 
