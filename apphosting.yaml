@@ -26,9 +26,14 @@ env:
     value: "796179216116"
   - variable: NEXT_PUBLIC_FIREBASE_APP_ID
     value: "1:796179216116:web:dc40a02293ed54ee9dd0a1"
-  - variable: STRIPE_SECRET_KEY
-    secret: STRIPE_SECRET_KEY
-    availability:
-      - RUNTIME
-  - variable: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-    value: "REPLACE_WITH_NEW_STRIPE_PUBLISHABLE_KEY"
+  # Stripe deliberately omitted for now — no Stripe account yet. The checkout
+  # route (src/app/api/payments/stripe/checkout/route.ts) already falls back
+  # to a simulated success when STRIPE_SECRET_KEY is unset, and App Hosting's
+  # build validates every declared secret exists, so leaving these in with no
+  # real secret would fail the build. Re-add once the Stripe account exists:
+  # - variable: STRIPE_SECRET_KEY
+  #   secret: STRIPE_SECRET_KEY
+  #   availability:
+  #     - RUNTIME
+  # - variable: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  #   value: "REPLACE_WITH_NEW_STRIPE_PUBLISHABLE_KEY"
