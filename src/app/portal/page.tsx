@@ -187,7 +187,7 @@ export default function ClientPortalAuth() {
       <div id="recaptcha-container" />
       <div className="max-w-md w-full bg-white rounded-[40px] p-8 sm:p-10 shadow-2xl relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-2 bg-brand-accent" />
-        <Link href="/" className="absolute top-8 left-8 flex items-center gap-2 text-zinc-400 hover:text-brand-primary transition-colors text-xs font-bold uppercase tracking-widest group">
+        <Link href="/" aria-label="Back to website" className="absolute top-6 left-6 sm:top-8 sm:left-8 flex items-center gap-2 text-zinc-400 hover:text-brand-primary transition-colors text-xs font-bold uppercase tracking-widest group bg-zinc-100 sm:bg-transparent rounded-full w-10 h-10 sm:w-auto sm:h-auto justify-center">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           <span className="hidden sm:inline">Back to Website</span>
         </Link>

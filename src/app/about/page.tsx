@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Navbar } from "@/components/landing/Navbar";
+import { TopBar } from "@/components/landing/TopBar";
 import { Footer } from "@/components/landing/Footer";
 import { WhatsAppFloat } from "@/components/landing/WhatsAppFloat";
 import { MobileNav } from "@/components/landing/MobileNav";
@@ -30,12 +31,13 @@ export default async function AboutPage() {
   const paragraphs = body.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
 
   return (
-    <main className="min-h-screen pb-20 md:pb-0 bg-white">
+    <main className="min-h-screen pb-20 lg:pb-0 bg-white">
       <MobileNav />
       <WhatsAppFloat />
+      <TopBar settings={serializedSettings} />
       <Navbar settings={serializedSettings} />
 
-      <section className="pt-40 pb-20 px-6 bg-[var(--color-secondary)]">
+      <section className="pt-20 pb-20 px-6 bg-[var(--color-secondary)]">
         <div className="max-w-4xl mx-auto text-center">
           <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-primary mb-4 block">Our Story</span>
           <h1 className="text-5xl md:text-6xl font-serif text-brand-primary mb-6 leading-tight">{heading}</h1>

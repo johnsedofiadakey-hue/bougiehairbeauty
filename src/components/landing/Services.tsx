@@ -2,9 +2,12 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import { useReveal } from "@/hooks/useReveal";
 import { ServiceCategoryIcon } from "@/components/landing/ServiceCategoryIcon";
+import { DEPARTMENTS } from "@/lib/departments";
+
+// The homepage teaser shows the five departments, not all 23 raw
+// categories — the full breakdown is still one click away on /booking.
 
 export function Services({ settings }: { settings?: any }) {
   const revealRef = useReveal();
@@ -21,45 +24,41 @@ export function Services({ settings }: { settings?: any }) {
       .catch(() => setServices([]));
   }, []);
 
-  const categories = Array.from(new Set(services.map((s) => s.category || "Other")));
-  const categoryCards = categories.map((category) => {
-    const items = services.filter((s) => (s.category || "Other") === category);
+  const departmentCards = DEPARTMENTS.map(({ name, match }) => {
+    const items = services.filter((s) => match.test(s.category || ""));
     return {
-      category,
+      name,
+      matchLabel: name,
       count: items.length,
-      cheapest: Math.min(...items.map((s) => s.price)),
+      cheapest: items.length ? Math.min(...items.map((s) => s.price)) : null,
     };
-  });
+  }).filter((d) => d.count > 0);
 
   return (
     <section ref={revealRef} className="py-24 bg-[var(--color-secondary)] reveal" id="services">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-serif text-[#1A1A1A] mb-4">Our Services</h2>
-          <div className="w-20 h-1 bg-brand-accent mx-auto mb-6 rounded-full" />
-          <p className="text-lg text-zinc-600 max-w-2xl mx-auto">
-            Each service is a journey of transformation, blending technical excellence with artistic vision.
-          </p>
+          <p className="text-xs font-bold uppercase tracking-[0.3em] text-brand-primary mb-3">Our Services</p>
+          <h2 className="text-4xl md:text-5xl font-serif text-[#1A1A1A]">We Offer Best Services For You</h2>
         </div>
 
-        {categoryCards.length === 0 ? (
+        {departmentCards.length === 0 ? (
           <p className="text-center text-zinc-400 italic">Our service menu is being updated — check back soon.</p>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {categoryCards.map(({ category, count, cheapest }) => (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-8">
+            {departmentCards.map(({ name, count, cheapest }) => (
               <Link
-                key={category}
-                href={`/booking?category=${encodeURIComponent(category)}`}
-                className="group bg-white rounded-[2rem] p-6 sm:p-8 text-center shadow-sm hover:shadow-2xl transition-all duration-500 ring-1 ring-zinc-100 hover:ring-brand-accent/30 flex flex-col items-center"
+                key={name}
+                href="/booking"
+                className="group flex flex-col items-center text-center"
               >
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-brand-primary/5 flex items-center justify-center text-brand-primary mb-4 sm:mb-6 group-hover:bg-brand-primary/10 transition-colors">
-                  <ServiceCategoryIcon category={category} className="w-8 h-8 sm:w-10 sm:h-10" />
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white flex items-center justify-center text-brand-primary mb-5 shadow-sm ring-1 ring-black/5 group-hover:bg-brand-primary group-hover:text-white group-hover:scale-105 transition-all duration-300">
+                  <ServiceCategoryIcon category={name} className="w-9 h-9 sm:w-10 sm:h-10" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-serif text-brand-primary mb-1">{category}</h3>
-                <p className="text-xs sm:text-sm text-zinc-500 mb-4">{count} treatment{count === 1 ? "" : "s"} • from {currency}{cheapest}</p>
-                <span className="mt-auto text-xs font-bold uppercase tracking-widest text-brand-primary flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                  Book Now <ChevronRight className="w-3 h-3" />
-                </span>
+                <h3 className="text-sm sm:text-base font-bold uppercase tracking-wide text-[#1A1A1A] mb-1">{name}</h3>
+                <p className="text-xs sm:text-sm text-zinc-500">
+                  {count} treatment{count === 1 ? "" : "s"}{cheapest != null ? ` · from ${currency}${cheapest}` : ""}
+                </p>
               </Link>
             ))}
           </div>

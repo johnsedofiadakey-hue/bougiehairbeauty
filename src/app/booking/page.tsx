@@ -9,6 +9,7 @@ import confetti from "canvas-confetti";
 import { Skeleton } from "@/components/ui/skeleton";
 import { normalizeUKPhone, formatSlotLabel, formatServicePrice, formatTotalPrice } from "@/lib/utils";
 import { ServiceCategoryIcon } from "@/components/landing/ServiceCategoryIcon";
+import { DEPARTMENTS, OTHER_DEPARTMENT, getDepartmentForCategory } from "@/lib/departments";
 
 type Step = "service" | "datetime" | "details" | "policy";
 
@@ -18,6 +19,7 @@ export default function BookingPage() {
   const [isLoadingServices, setIsLoadingServices] = useState(true);
   const [selectedServices, setSelectedServices] = useState<any[]>([]);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState(startOfToday());
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [availableSlots, setAvailableSlots] = useState<string[]>([]);
@@ -45,7 +47,9 @@ export default function BookingPage() {
         setIsLoadingServices(false);
         if (Array.isArray(data) && data.length > 0) {
           const match = requestedCategory && data.find((s: any) => s.category === requestedCategory);
-          setExpandedCategory(match ? requestedCategory : data[0].category);
+          const initialCategory = match ? requestedCategory : data[0].category;
+          setExpandedCategory(initialCategory);
+          setSelectedDepartment(getDepartmentForCategory(initialCategory).name);
         }
       });
 
@@ -88,6 +92,16 @@ export default function BookingPage() {
     acc[cat] = services.filter((s) => (s.category || "Other") === cat);
     return acc;
   }, {} as Record<string, any[]>);
+
+  // Grouping 23 raw categories into Bougie's 5 real departments (same
+  // mapping as the homepage teaser) so the picker shows one manageable
+  // tab at a time instead of a single 23-item wall of accordions.
+  const departmentTabs = [...DEPARTMENTS, OTHER_DEPARTMENT]
+    .map((dept) => ({ ...dept, categories: categories.filter((c) => getDepartmentForCategory(c).name === dept.name) }))
+    .filter((dept) => dept.categories.length > 0);
+  const visibleCategories = selectedDepartment
+    ? categories.filter((c) => getDepartmentForCategory(c).name === selectedDepartment)
+    : categories;
 
   const handleNext = async () => {
     if (currentStep === "service") setCurrentStep("datetime");
@@ -223,8 +237,35 @@ export default function BookingPage() {
                   ))}
                 </div>
               ) : (
-                <div className="space-y-3">
-                  {categories.map((category) => {
+                <div className="space-y-5">
+                  {/* Department tabs — pick a department first so the list below
+                      shows a handful of categories at a time, not all 23 at once. */}
+                  <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide">
+                    {departmentTabs.map((dept) => {
+                      const isActive = selectedDepartment === dept.name;
+                      return (
+                        <button
+                          key={dept.name}
+                          type="button"
+                          onClick={() => {
+                            setSelectedDepartment(dept.name);
+                            if (!dept.categories.includes(expandedCategory || "")) {
+                              setExpandedCategory(dept.categories[0] || null);
+                            }
+                          }}
+                          className={`flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold uppercase tracking-wide transition-colors ${
+                            isActive ? "bg-brand-primary text-white" : "bg-zinc-100 text-zinc-500 hover:bg-zinc-200"
+                          }`}
+                        >
+                          <ServiceCategoryIcon category={dept.name} className="w-4 h-4" />
+                          {dept.name}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div className="space-y-3">
+                  {visibleCategories.map((category) => {
                     const items = servicesByCategory[category];
                     const cheapest = Math.min(...items.map((s) => s.price));
                     const selectedInCategory = items.filter((s) => selectedServices.find((sel) => sel.id === s.id)).length;
@@ -283,6 +324,7 @@ export default function BookingPage() {
                       </div>
                     );
                   })}
+                  </div>
                 </div>
               )}
             </div>
@@ -463,14 +505,16 @@ export default function BookingPage() {
             {stepIndex === 0 ? (
               <Link
                 href="/"
-                className="flex items-center gap-2 text-zinc-500 font-medium hover:text-zinc-800 transition-colors flex-shrink-0"
+                aria-label="Back to home"
+                className="flex items-center gap-2 text-zinc-500 font-medium hover:text-zinc-800 transition-colors flex-shrink-0 bg-zinc-100 sm:bg-transparent rounded-full sm:rounded-none w-11 h-11 sm:w-auto sm:h-auto justify-center"
               >
                 <ChevronLeft className="w-5 h-5" /> <span className="hidden sm:inline">Back to Home</span>
               </Link>
             ) : (
               <button
                 onClick={handleBack}
-                className="flex items-center gap-2 text-zinc-500 font-medium hover:text-zinc-800 transition-colors flex-shrink-0"
+                aria-label="Back"
+                className="flex items-center gap-2 text-zinc-500 font-medium hover:text-zinc-800 transition-colors flex-shrink-0 bg-zinc-100 sm:bg-transparent rounded-full sm:rounded-none w-11 h-11 sm:w-auto sm:h-auto justify-center"
               >
                 <ChevronLeft className="w-5 h-5" /> <span className="hidden sm:inline">Back</span>
               </button>

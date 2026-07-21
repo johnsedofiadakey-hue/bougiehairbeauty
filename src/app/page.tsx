@@ -2,6 +2,7 @@ import { Hero } from "@/components/landing/Hero";
 import { Services } from "@/components/landing/Services";
 import { About } from "@/components/landing/About";
 import { Contact } from "@/components/landing/Contact";
+import { TopBar } from "@/components/landing/TopBar";
 import { Navbar } from "@/components/landing/Navbar";
 import { Portfolio } from "@/components/landing/Portfolio";
 import { TrustStrip } from "@/components/landing/TrustStrip";
@@ -37,23 +38,24 @@ export default async function Home() {
   const currentSettings = serializedSettings || defaultSettings;
 
   return (
-    <main className="min-h-screen pb-20 md:pb-0">
+    <main className="min-h-screen pb-20 lg:pb-0">
       <MobileNav />
       <WhatsAppFloat />
+      <TopBar settings={serializedSettings} />
       <Navbar settings={serializedSettings} />
-      
-      <Hero 
-        title={currentSettings.heroTitle} 
-        subtitle={currentSettings.heroSubtitle} 
+
+      <Hero
+        title={currentSettings.heroTitle}
+        subtitle={currentSettings.heroSubtitle}
         backgroundImage={currentSettings.heroImage || defaultSettings.heroImage}
         videoUrl={currentSettings.heroVideoUrl}
         mediaType={currentSettings.heroMediaType}
         whatsappNumber={currentSettings.whatsappNumber}
       />
-      
-      <TrustStrip />
-      <About settings={serializedSettings} />
+
       <Services settings={serializedSettings} />
+      <About settings={serializedSettings} />
+      <TrustStrip />
       <Portfolio />
       <Testimonials />
       <FAQ />

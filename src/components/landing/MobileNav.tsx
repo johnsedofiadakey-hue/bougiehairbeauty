@@ -32,7 +32,7 @@ export function MobileNav() {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-[60] md:hidden bg-white/90 backdrop-blur-2xl border-t border-zinc-100 pb-safe shadow-[0_-8px_30px_rgb(0,0,0,0.04)]">
+    <nav className="fixed bottom-0 left-0 right-0 z-[60] lg:hidden bg-white/90 backdrop-blur-2xl border-t border-zinc-100 pb-safe shadow-[0_-8px_30px_rgb(0,0,0,0.04)]">
       <div className="flex items-center justify-around h-20 px-2">
         {navItems.map((item) => (
           <Link

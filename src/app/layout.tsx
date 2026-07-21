@@ -67,7 +67,9 @@ export default async function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
         <style dangerouslySetInnerHTML={{ __html: `
           :root {
             --color-primary: ${themeSettings.primaryColor};
@@ -75,8 +77,9 @@ export default async function RootLayout({
             --color-accent: ${themeSettings.accentColor};
             --color-text-primary: ${themeSettings.textPrimaryColor || '#18181b'};
             --color-text-secondary: ${themeSettings.textSecondaryColor || '#71717a'};
-            --font-brand: "Inter", sans-serif;
-            --font-body: "Inter", sans-serif;
+            --font-brand: "Playfair Display", "Georgia", serif;
+            --font-serif: "Playfair Display", "Georgia", serif;
+            --font-body: "Poppins", sans-serif;
           }
         `}} />
         {settings?.logoUrl && <link rel="apple-touch-icon" href={settings.logoUrl} />}

@@ -17,6 +17,8 @@ module.exports = {
       },
       fontFamily: {
         brand: ["var(--font-brand)", "sans-serif"],
+        serif: ["var(--font-serif)", "Georgia", "serif"],
+        sans: ["var(--font-body)", "sans-serif"],
       },
     },
   },

@@ -19,7 +19,7 @@ export const defaultSettings = {
   fontFamily: "Inter",
   heroTitle: "Hair, Wigs, Lashes, Spa & Nails — All Under One Roof",
   heroSubtitle: "Braiding, wigs, lash extensions, a Japanese head spa & a full nail bar — book online in minutes.",
-  heroImage: "/beauty_hero_bg.png",
+  heroImage: "/hero_model.jpg",
   heroVideoUrl: "",
   heroMediaType: "image",
   // "Our Story" — the short homepage teaser plus the full elaborated

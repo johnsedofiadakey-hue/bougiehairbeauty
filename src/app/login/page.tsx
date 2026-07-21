@@ -42,7 +42,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-brand-primary flex items-center justify-center p-6">
       <div className="max-w-md w-full bg-white rounded-3xl p-10 shadow-2xl">
         <div className="text-center mb-10 relative">
-          <Link href="/" className="absolute -top-6 -left-6 p-2 text-zinc-400 hover:text-brand-primary transition-colors">
+          <Link href="/" aria-label="Back to website" className="absolute -top-6 -left-6 w-10 h-10 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-400 hover:text-brand-primary transition-colors">
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <div className="w-16 h-16 bg-brand-secondary/50 rounded-2xl mx-auto flex items-center justify-center text-brand-primary mb-4">

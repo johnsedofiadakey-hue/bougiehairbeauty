@@ -3,6 +3,8 @@
 // consistent and on-brand without needing per-item photography — see
 // components/landing/Services.tsx and app/booking/page.tsx.
 
+import { getDepartmentForCategory } from "@/lib/departments";
+
 type IconProps = { className?: string };
 
 function WaxingIcon({ className }: IconProps) {
@@ -107,6 +109,78 @@ function SparkleIcon({ className }: IconProps) {
   );
 }
 
+// Bougie's actual five service departments (Hair/Braids, Wigs & Frontal,
+// Lash Extensions, Spa, Nails) — see docs/bougie-hair-beauty-project-brief.md
+// and settings.aboutBadgeLabel. Kept as hand-drawn line art to match the
+// icons above rather than switching styles partway through the set.
+function BraidIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className}>
+      <path
+        d="M12 3v3.5M9.5 5.2 12 6.5l2.5-1.3M8 8.5 12 6.5l4 2M7 12l5-2 5 2M7.5 15.5 12 13.5l4.5 2M8.5 19 12 17.3 15.5 19"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function WigIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className}>
+      <path
+        d="M5 11c0-4.5 3-7.5 7-7.5s7 3 7 7.5c0 2.5-.5 4-1 6"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M6 11c-1 1.5-1.5 4-1 7M18 11c.5 1.2.7 2.2.7 3.2"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        opacity="0.6"
+      />
+      <path d="M9 10.5c0 3-1 5.5-2.5 7.5M15 10.5c0 3 .8 5 2 6.8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" opacity="0.6" />
+    </svg>
+  );
+}
+
+function SpaIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className}>
+      <path
+        d="M12 21c4-2.5 6-5.4 6-8.6 0-2-1-3.6-2.3-5C14.6 6.1 13 4.3 12 2c-1 2.3-2.6 4.1-3.7 5.4C7 8.8 6 10.4 6 12.4 6 15.6 8 18.5 12 21Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      <path d="M12 21v-7" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" opacity="0.6" />
+    </svg>
+  );
+}
+
+function NailIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className}>
+      <path
+        d="M8 21V13c0-2.2 1.8-4 4-4s4 1.8 4 4v8"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M12 9c-1.8 0-3.2-1.6-3.2-4.2 0-1 .4-2 1-2.8.7 1 1.6 1.6 2.2 1.6.6 0 1.5-.6 2.2-1.6.6.8 1 1.8 1 2.8C15.2 7.4 13.8 9 12 9Z"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 const CATEGORY_ICONS: Record<string, (props: IconProps) => React.JSX.Element> = {
   "Waxing": WaxingIcon,
   "Lashes": LashesIcon,
@@ -117,7 +191,25 @@ const CATEGORY_ICONS: Record<string, (props: IconProps) => React.JSX.Element> = 
   "Skin Tag Removal": SkinTagIcon,
 };
 
+// Bougie's real category names vary within each department (e.g. a dozen
+// distinct "Nails — ..." categories), so exact-match lookup alone leaves
+// almost everything on the generic sparkle fallback. Matched against the
+// same department list used by the homepage teaser and booking flow (see
+// src/lib/departments.ts) so a legacy/renamed category still gets a
+// sensible icon instead of falling straight through to Sparkle, and all
+// three surfaces agree on what counts as which department.
+const DEPARTMENT_ICONS: Record<string, (props: IconProps) => React.JSX.Element> = {
+  "Nails": NailIcon,
+  "Wigs & Frontals": WigIcon,
+  "Lash Extensions": LashesIcon,
+  "Spa": SpaIcon,
+  "Hair & Braids": BraidIcon,
+};
+
 export function ServiceCategoryIcon({ category, className }: { category: string; className?: string }) {
-  const Icon = CATEGORY_ICONS[category] || SparkleIcon;
+  const Icon =
+    CATEGORY_ICONS[category] ||
+    DEPARTMENT_ICONS[getDepartmentForCategory(category).name] ||
+    SparkleIcon;
   return <Icon className={className} />;
 }
