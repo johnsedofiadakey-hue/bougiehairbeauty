@@ -11,7 +11,7 @@ env:
     availability:
       - RUNTIME
   - variable: NEXTAUTH_URL
-    value: "REPLACE_WITH_NEW_HOSTED_APP_URL"
+    value: "https://bougiehairbeauty--bougiehairbeauty.us-central1.hosted.app"
   - variable: FIREBASE_STORAGE_BUCKET
     value: "bougiehairbeauty.firebasestorage.app"
   - variable: NEXT_PUBLIC_FIREBASE_API_KEY
