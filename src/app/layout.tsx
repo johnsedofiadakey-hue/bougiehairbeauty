@@ -57,8 +57,8 @@ export default async function RootLayout({
 
   const themeSettings = settings || {
     primaryColor: '#E6127E',
-    secondaryColor: '#F9DCE8',
-    accentColor: '#3E1D10',
+    secondaryColor: '#FAF3E7',
+    accentColor: '#D4AF37',
     textPrimaryColor: '#3E1D10',
     textSecondaryColor: '#6B5850',
     fontFamily: 'Inter'

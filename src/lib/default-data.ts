@@ -4,22 +4,25 @@ import bcrypt from "bcryptjs";
 // price-list flyers (see docs/bougie-hair-beauty-project-brief.md §2) — no
 // logo file or official hex codes were supplied yet, so this is a starting
 // point pending client sign-off. primaryColor is the hot-pink/magenta script
-// accent from the flyers, used for CTAs; accentColor/textPrimaryColor use the
-// deep espresso brown for headings and icon/border chips; textSecondaryColor
-// is a muted derivative of that brown for lower-emphasis copy.
+// accent from the flyers, used sparingly for CTAs/active states; secondaryColor
+// is the dominant wallpaper (warm ivory, not pink, so pink reads as an accent
+// rather than the whole site's background); accentColor is a warm gold/champagne
+// used for small details, dividers and icon chips; textPrimaryColor keeps the
+// deep espresso brown from the flyers for headings; textSecondaryColor is a
+// muted derivative of that brown for lower-emphasis copy.
 export const defaultSettings = {
   id: 1,
   companyName: "Bougie Hair & Beauty",
   logoUrl: "/logo.png",
   primaryColor: "#E6127E",
-  secondaryColor: "#F9DCE8",
-  accentColor: "#3E1D10",
+  secondaryColor: "#FAF3E7",
+  accentColor: "#D4AF37",
   textPrimaryColor: "#3E1D10",
   textSecondaryColor: "#6B5850",
   fontFamily: "Inter",
   heroTitle: "Hair, Wigs, Lashes, Spa & Nails — All Under One Roof",
   heroSubtitle: "Braiding, wigs, lash extensions, a Japanese head spa & a full nail bar — book online in minutes.",
-  heroImage: "/hero_model.jpg",
+  heroImage: "/hero_model_2.jpg",
   heroVideoUrl: "",
   heroMediaType: "image",
   // "Our Story" — the short homepage teaser plus the full elaborated

@@ -41,8 +41,12 @@ export default async function Home() {
     <main className="min-h-screen pb-20 lg:pb-0">
       <MobileNav />
       <WhatsAppFloat />
-      <TopBar settings={serializedSettings} />
-      <Navbar settings={serializedSettings} />
+      {/* Floating glass header — sits over the hero, not in normal flow, so
+          the pink/photo behind the navbar visibly blurs through it. */}
+      <header className="fixed top-0 inset-x-0 z-50">
+        <TopBar settings={serializedSettings} />
+        <Navbar settings={serializedSettings} />
+      </header>
 
       <Hero
         title={currentSettings.heroTitle}

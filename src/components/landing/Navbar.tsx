@@ -19,8 +19,8 @@ export function Navbar({ settings }: { settings?: any }) {
 
   return (
     <nav
-      className={`sticky top-0 z-50 bg-white transition-shadow duration-300 py-4 ${
-        isScrolled ? "shadow-md" : "border-b border-zinc-100"
+      className={`transition-all duration-300 border-b border-white/40 ${
+        isScrolled ? "py-3 bg-white/90 backdrop-blur-xl shadow-lg" : "py-5 bg-white/60 backdrop-blur-xl"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">

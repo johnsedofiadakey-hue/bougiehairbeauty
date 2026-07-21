@@ -34,10 +34,12 @@ export default async function AboutPage() {
     <main className="min-h-screen pb-20 lg:pb-0 bg-white">
       <MobileNav />
       <WhatsAppFloat />
-      <TopBar settings={serializedSettings} />
-      <Navbar settings={serializedSettings} />
+      <header className="fixed top-0 inset-x-0 z-50">
+        <TopBar settings={serializedSettings} />
+        <Navbar settings={serializedSettings} />
+      </header>
 
-      <section className="pt-20 pb-20 px-6 bg-[var(--color-secondary)]">
+      <section className="pt-36 md:pt-40 pb-20 px-6 bg-[var(--color-secondary)]">
         <div className="max-w-4xl mx-auto text-center">
           <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-primary mb-4 block">Our Story</span>
           <h1 className="text-5xl md:text-6xl font-serif text-brand-primary mb-6 leading-tight">{heading}</h1>

@@ -77,8 +77,8 @@ function emailShell(settings: Settings, opts: { preheader: string; bodyHtml: str
   const logoUrl = settings.logoUrl ? `${getBaseUrl()}${settings.logoUrl}` : "";
   const companyName = escapeHtml(settings.companyName || "Bougie Hair & Beauty");
   const primary = settings.primaryColor || "#E6127E";
-  const accent = settings.accentColor || "#3E1D10";
-  const secondary = settings.secondaryColor || "#F9DCE8";
+  const accent = "#3E1D10"; // espresso brown, kept independent of settings.accentColor (a gold UI-detail color) for text/banner contrast in emails
+  const secondary = settings.secondaryColor || "#FAF3E7";
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -152,7 +152,7 @@ export function buildBookingConfirmationEmail(params: {
 }): { subject: string; html: string } {
   const { settings } = params;
   const currency = settings.currencySymbol || "£";
-  const accent = settings.accentColor || "#3E1D10";
+  const accent = "#3E1D10"; // espresso brown, kept independent of settings.accentColor (a gold UI-detail color) for text/banner contrast in emails
   const primary = settings.primaryColor || "#E6127E";
   const firstName = escapeHtml(params.clientName.split(" ")[0] || params.clientName);
 
@@ -188,7 +188,7 @@ export function buildReminderEmail(params: {
 }): { subject: string; html: string } {
   const { settings } = params;
   const currency = settings.currencySymbol || "£";
-  const accent = settings.accentColor || "#3E1D10";
+  const accent = "#3E1D10"; // espresso brown, kept independent of settings.accentColor (a gold UI-detail color) for text/banner contrast in emails
   const primary = settings.primaryColor || "#E6127E";
   const firstName = escapeHtml(params.clientName.split(" ")[0] || params.clientName);
 
