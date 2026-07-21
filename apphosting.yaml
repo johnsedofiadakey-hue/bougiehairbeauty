@@ -26,6 +26,18 @@ env:
     value: "796179216116"
   - variable: NEXT_PUBLIC_FIREBASE_APP_ID
     value: "1:796179216116:web:dc40a02293ed54ee9dd0a1"
+  - variable: CRON_SECRET
+    secret: CRON_SECRET
+    availability:
+      - RUNTIME
+  - variable: VAPID_PRIVATE_KEY
+    secret: VAPID_PRIVATE_KEY
+    availability:
+      - RUNTIME
+  - variable: NEXT_PUBLIC_VAPID_PUBLIC_KEY
+    value: "BO0jJZxmYOCir_pDRowo5n62MqhmTbBM5mGcGrtv2Ek9vnlmci_fqqMLc1n4qXCZeBEb-pqYdbN28_xFWMxS1n4"
+  - variable: VAPID_SUBJECT
+    value: "mailto:bougiehairuk@gmail.com"
   # Stripe deliberately omitted for now — no Stripe account yet. The checkout
   # route (src/app/api/payments/stripe/checkout/route.ts) already falls back
   # to a simulated success when STRIPE_SECRET_KEY is unset, and App Hosting's
