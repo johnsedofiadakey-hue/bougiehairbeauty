@@ -1,0 +1,40 @@
+{
+  "name": "bougie-hair-beauty",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@google-cloud/storage": "7.19.0",
+    "@types/canvas-confetti": "^1.9.0",
+    "bcryptjs": "^3.0.3",
+    "canvas-confetti": "^1.9.4",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "firebase": "^12.12.1",
+    "firebase-admin": "^13.10.0",
+    "lucide-react": "^0.468.0",
+    "next": "15.5.18",
+    "next-auth": "^4.24.14",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "stripe": "^22.3.2",
+    "tailwind-merge": "^2.6.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.5.0",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.18",
+    "postcss": "^8.5.13",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}

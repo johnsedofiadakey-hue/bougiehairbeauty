@@ -1,0 +1,10 @@
+{
+  "name": "Bougie Hair & Beauty",
+  "short_name": "Bougie",
+  "description": "Hair braiding, wigs, lash extensions, head spa & nail bar — Colchester.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F9DCE8",
+  "theme_color": "#E6127E",
+  "icons": []
+}

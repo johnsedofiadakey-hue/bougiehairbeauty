@@ -1,0 +1,34 @@
+# Firebase App Hosting configuration
+# Documentation: https://firebase.google.com/docs/app-hosting/configure
+
+kind: "apphosting.yaml"
+version: "v1"
+
+# Environment variables and secrets
+env:
+  - variable: NEXTAUTH_SECRET
+    secret: NEXTAUTH_SECRET
+    availability:
+      - RUNTIME
+  - variable: NEXTAUTH_URL
+    value: "REPLACE_WITH_NEW_HOSTED_APP_URL"
+  - variable: FIREBASE_STORAGE_BUCKET
+    value: "REPLACE_WITH_NEW_FIREBASE_STORAGE_BUCKET"
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    value: "REPLACE_WITH_NEW_FIREBASE_API_KEY"
+  - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    value: "REPLACE_WITH_NEW_FIREBASE_AUTH_DOMAIN"
+  - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    value: "REPLACE_WITH_NEW_FIREBASE_PROJECT_ID"
+  - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    value: "REPLACE_WITH_NEW_FIREBASE_STORAGE_BUCKET"
+  - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    value: "REPLACE_WITH_NEW_FIREBASE_MESSAGING_SENDER_ID"
+  - variable: NEXT_PUBLIC_FIREBASE_APP_ID
+    value: "REPLACE_WITH_NEW_FIREBASE_APP_ID"
+  - variable: STRIPE_SECRET_KEY
+    secret: STRIPE_SECRET_KEY
+    availability:
+      - RUNTIME
+  - variable: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+    value: "REPLACE_WITH_NEW_STRIPE_PUBLISHABLE_KEY"

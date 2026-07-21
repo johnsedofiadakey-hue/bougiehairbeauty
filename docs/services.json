@@ -1,0 +1,379 @@
+{
+  "business": {
+    "name": "Bougie Hair & Beauty",
+    "location": "41 Crouch Street, Colchester",
+    "phone": "07770 375859",
+    "email": "bougiehairuk@gmail.com",
+    "social": {
+      "tiktok": "@bougiehairuk",
+      "instagram": "@bougiehair_"
+    },
+    "shop_url": "www.bougiehairuk.com"
+  },
+  "global_policies": [
+    "Appointment only — booking via WhatsApp or DM (to be replaced/supplemented by the new online booking system)",
+    "£20 non-refundable deposit required to secure a booking (confirmed for hair services; confirm scope for lash/spa/nails/wigs with client)",
+    "Prices may vary depending on hair length and thickness",
+    "Hair extensions are not included in braid/twist pricing unless stated — see hair_extensions_addon category",
+    "Hair must be washed and blow-dried before hair appointments"
+  ],
+  "categories": [
+    {
+      "id": "hair_extensions_addon",
+      "name": "Hair Extensions (Add-on Pricing)",
+      "description": "Pricing for hair extension pieces added to any braiding/twist service. Sold per piece, not a standalone service.",
+      "services": [
+        { "name": "3 Pieces", "duration_minutes": null, "price_gbp": 14 },
+        { "name": "4 Pieces", "duration_minutes": null, "price_gbp": 18 },
+        { "name": "5 Pieces", "duration_minutes": null, "price_gbp": 22 },
+        { "name": "6 Pieces", "duration_minutes": null, "price_gbp": 25 }
+      ]
+    },
+    {
+      "id": "braids_box_knotless_twists",
+      "name": "Box Braids · Knotless · Twists",
+      "description": "Full head, without curls. Hair extensions not included (see Hair Extensions Add-on).",
+      "matrix": {
+        "sizes": ["Small", "Medium", "Large", "Jumbo"],
+        "lengths": ["Shoulder Length", "Mid Back Length", "Waist Length", "Butt/Knee Length"]
+      },
+      "services": [
+        { "name": "Small — Shoulder Length", "price_gbp": 85 },
+        { "name": "Small — Mid Back Length", "price_gbp": 95 },
+        { "name": "Small — Waist Length", "price_gbp": 110 },
+        { "name": "Small — Butt/Knee Length", "price_gbp": 125 },
+        { "name": "Medium — Shoulder Length", "price_gbp": 75 },
+        { "name": "Medium — Mid Back Length", "price_gbp": 85 },
+        { "name": "Medium — Waist Length", "price_gbp": 95 },
+        { "name": "Medium — Butt/Knee Length", "price_gbp": 110 },
+        { "name": "Large — Shoulder Length", "price_gbp": 65 },
+        { "name": "Large — Mid Back Length", "price_gbp": 75 },
+        { "name": "Large — Waist Length", "price_gbp": 85 },
+        { "name": "Large — Butt/Knee Length", "price_gbp": 95 },
+        { "name": "Jumbo — Shoulder Length", "price_gbp": 50 },
+        { "name": "Jumbo — Mid Back Length", "price_gbp": 60 },
+        { "name": "Jumbo — Waist Length", "price_gbp": 70 },
+        { "name": "Jumbo — Butt/Knee Length", "price_gbp": 80 }
+      ]
+    },
+    {
+      "id": "braids_boho_goddess",
+      "name": "Boho · Goddess Braids",
+      "description": "Curls included. Human hair curls available at extra cost. NOTE: flyer header also lists 'Fulani · Lemonade' but no pricing table was shown for them here — see cornrows_specialty for Fulani/Lemonade starting prices. Confirm with client whether this is a duplicate listing.",
+      "services": [
+        { "name": "Boho Braids — Medium Length", "price_gbp": 130 },
+        { "name": "Boho Braids — Waist Length", "price_gbp": 150 },
+        { "name": "Boho Braids — Bum Length", "price_gbp": 175 },
+        { "name": "Goddess Braids — Small Length", "price_gbp": 110 },
+        { "name": "Goddess Braids — Medium Length", "price_gbp": 90 },
+        { "name": "Goddess Braids — Large Length", "price_gbp": 75 }
+      ]
+    },
+    {
+      "id": "cornrows_specialty",
+      "name": "Corn Rows & Specialty Styles",
+      "services": [
+        { "name": "Fulani Braids", "price_gbp": 95, "price_type": "starting" },
+        { "name": "Lemonade Braids", "price_gbp": 85, "price_type": "starting" },
+        { "name": "Island Twist", "price_gbp": 90, "price_type": "starting" },
+        { "name": "Natural Cornrows", "price_gbp": 35, "price_type": "starting" },
+        { "name": "Invisible Locs / Crochet Locs", "price_gbp": 85, "price_type": "starting" },
+        { "name": "French Curls", "price_gbp": 100, "price_type": "starting" },
+        { "name": "Kinky Twist (Medium)", "price_gbp": 80, "price_type": "fixed" },
+        { "name": "Mini Twist", "price_gbp": 70, "price_type": "starting" },
+        { "name": "Wig Revamp & Styling", "price_gbp": 45, "price_type": "fixed" }
+      ]
+    },
+    {
+      "id": "extras_addons",
+      "name": "Extras & Add-ons",
+      "description": "Optional add-ons selectable alongside a braid/twist/style booking.",
+      "services": [
+        { "name": "Curls Add-on", "price_gbp": 15 },
+        { "name": "Beads", "price_gbp": 5 },
+        { "name": "Under Wig Cornrows", "price_gbp": 25 },
+        { "name": "Natural Hair Twist", "price_gbp": 35 },
+        { "name": "Blow Dry", "price_gbp": 10 },
+        { "name": "Extra Small Parts", "price_gbp": 15 }
+      ]
+    },
+    {
+      "id": "wigs_frontals",
+      "name": "Wigs & Frontal Services",
+      "description": "Transcribed from client's existing booking-page screenshots. Some durations look like placeholders (1 min / 5 min / 10 min) rather than real appointment lengths — flagged below for client confirmation.",
+      "services": [
+        {
+          "name": "Frontal Ponytail",
+          "duration_minutes": 240,
+          "price_gbp": 80,
+          "notes": "Client provides: 1 bundle for a bun (14–16in), 2 bundles for a ponytail, 14–16in 13x6 HD frontal only. No transparent lace / dense frontals. Hair must be freshly washed and completely product-free."
+        },
+        {
+          "name": "Hair Included Frontal Ponytail",
+          "duration_minutes": 240,
+          "price_gbp": 280,
+          "notes": "Includes ponytail installation, 2x20in bundles (longer lengths available as paid add-on), 14in 13x6 HD frontal only. Hair must be freshly washed and completely product-free."
+        },
+        {
+          "name": "Custom Frontal Unit",
+          "duration_minutes": 180,
+          "price_gbp": 100,
+          "notes": "Includes bleaching, wig construction (bundles + frontal sewn onto dome mesh cap), customisation, installation, styling. Head measurements required. Hair must be sent 5 days before appointment or a £10 fee applies. If purchasing hair from the salon, book slot a minimum of 10 days in advance. (Source listing was titled 'Costum Frontal Unit' — likely a typo for 'Custom'.)"
+        },
+        {
+          "name": "Frontal Replacement With Installation",
+          "duration_minutes": 180,
+          "price_gbp": 85,
+          "notes": "Replacement of frontal/closure unit + installation. Wig/bundle revamp available as a separate add-on."
+        },
+        {
+          "name": "Pre-Made Frontal/Closure (Factory Made)",
+          "duration_minutes": 180,
+          "price_gbp": 65,
+          "notes": "Includes install, bleaching knots, plucking, basic styling."
+        },
+        {
+          "name": "Frontal Replacement Only",
+          "duration_minutes": 10,
+          "price_gbp": 25,
+          "notes": "Frontal replacement only. Wig revamp available as add-on. FLAG: 10-minute duration seems too short for the described work — confirm actual time needed with client."
+        },
+        {
+          "name": "Wig Making (Non-Contact)",
+          "duration_minutes": 1,
+          "price_gbp": 60,
+          "notes": "Fits to exact head size. Lace/V/half wig, bundles or bundles+closure sewn onto dome mesh cap. Head measurements required. Drop off hair 5 days before pick-up. FLAG: 1-minute duration is almost certainly a placeholder/booking-slot artifact from the old system, not the real turnaround time — confirm real duration and whether £60 is a deposit or the full price."
+        },
+        {
+          "name": "Wig Customisation",
+          "duration_minutes": 5,
+          "price_gbp": 45,
+          "notes": "Includes bleaching, plucking, basic styling. Choose a slot 5 days prior to pick-up time. Hair must be sent 5 days before appointment or a £10 fee applies. FLAG: 5-minute duration likely a placeholder — confirm real duration."
+        },
+        {
+          "name": "Closure Sew In",
+          "duration_minutes": 300,
+          "price_gbp": 90,
+          "notes": "Book for any type of closure sew in. Includes cornrows, weaving net, bleaching, plucking, lace installation/hair left out, basic styling. Client provides closure of chosen size + minimum 3 bundles. Closure must be dropped off 5 days before appointment or a £10 fee applies."
+        },
+        {
+          "name": "Custom U/V/Half Wig",
+          "duration_minutes": 120,
+          "price_gbp": 75,
+          "notes": "Construction of a U/V/half wig unit using client head measurements; installation and styling included; wig is reusable. Includes construction, cornrows, blending natural hair into extensions, basic styling. Hair must be dropped off 5 days before appointment. If ordering hair from the salon's collection, book a minimum of 10 days prior."
+        }
+      ]
+    },
+    {
+      "id": "lash",
+      "name": "Lash Extensions",
+      "services": [
+        {
+          "name": "Bougie Set",
+          "duration_minutes": 150,
+          "price_gbp": 50,
+          "notes": "Dramatic mega-volume wispy set, up to 25MM. FLAG: source description refers to this style as 'Roman' — confirm correct service name/description with client."
+        },
+        {
+          "name": "Glam Set",
+          "duration_minutes": 150,
+          "price_gbp": 50,
+          "notes": "Soft, natural everyday look with a subtle doll-eye effect. Not a cat-eye look — switching to cat-eye mid-appointment may change the price."
+        },
+        {
+          "name": "Foreign Infills",
+          "duration_minutes": 90,
+          "price_gbp": 40,
+          "notes": "For infills on lash sets not originally done by Bougie Hair & Beauty. Client must have at least 50% of lashes remaining, otherwise charged as a full set."
+        },
+        {
+          "name": "Luxe Set",
+          "duration_minutes": 150,
+          "price_gbp": 50,
+          "notes": "Cat-eye volume set for an everyday look, up to 20MM. FLAG: source description refers to this style as 'the queen set' — confirm correct service name/description with client."
+        },
+        {
+          "name": "Infills",
+          "duration_minutes": 90,
+          "price_gbp": 30,
+          "notes": "Infills for Bougie Hair & Beauty's own lash work."
+        }
+      ]
+    },
+    {
+      "id": "spa",
+      "name": "Spa",
+      "services": [
+        {
+          "name": "Japanese Head Spa",
+          "duration_minutes": null,
+          "price_gbp": 50,
+          "notes": "FLAG: duration not specified in source material — confirm with client."
+        }
+      ]
+    },
+    {
+      "id": "nails_spring_luxe_pedicure",
+      "name": "Nails — Spring Luxe Pedicure",
+      "services": [
+        { "name": "Spring Luxe Pedicure — BIAB on Natural Nails with French Tips", "duration_minutes": 75, "price_gbp": 70, "notes": "Price does not include removal." },
+        { "name": "Spring Luxe Pedicure — French Tips, 2 Big Toes Acrylic (or BIAB)", "duration_minutes": 60, "price_gbp": 61, "notes": "Price does not include removal." },
+        { "name": "Spring Luxe Pedicure — Gel Colour", "duration_minutes": 50, "price_gbp": 50, "notes": "Price does not include removal or Acrylic/BIAB on toe nails." },
+        { "name": "Spring Luxe Pedicure — Gel Colour, 2 Big Toes Acrylic (or BIAB)", "duration_minutes": 55, "price_gbp": 56, "notes": "Price does not include removal." },
+        { "name": "Spring Luxe Pedicure — No Colour", "duration_minutes": 40, "price_gbp": 40, "notes": "Price does not include removal or Acrylic/BIAB on toe nails." },
+        { "name": "Spring Luxe Pedicure — With French Tips", "duration_minutes": 55, "price_gbp": 55, "notes": "Price does not include removal or Acrylic/BIAB on toe nails." },
+        { "name": "Spring Luxe Pedicure — Fullset Acrylic (or BIAB) with 1 Colour", "duration_minutes": 80, "price_gbp": 70, "notes": "Price does not include removal." },
+        { "name": "Spring Luxe Pedicure — Fullset BIAB/Acrylic French Tips", "duration_minutes": 80, "price_gbp": 75, "notes": "Price does not include removal." },
+        { "name": "Spring Luxe Pedicure — Infill Acrylic (or BIAB) with 1 Colour", "duration_minutes": 75, "price_gbp": 65 },
+        { "name": "Spring Luxe Pedicure — Infill Acrylic (or BIAB) with French Tips", "duration_minutes": 80, "price_gbp": 70 }
+      ]
+    },
+    {
+      "id": "nails_biab_hand",
+      "name": "Nails — BIAB for Hand Nails",
+      "services": [
+        { "name": "BIAB Extension 1 Colour", "duration_minutes": 60, "price_gbp": 39, "notes": "Available for short and medium length only." },
+        { "name": "BIAB Extension French Tips", "duration_minutes": 60, "price_gbp": 44 },
+        { "name": "BIAB Infill 1 Colour", "duration_minutes": 45, "price_gbp": 34 },
+        { "name": "BIAB Infill French Tips", "duration_minutes": 60, "price_gbp": 39 },
+        { "name": "BIAB on Natural Nails 1 Colour", "duration_minutes": 45, "price_gbp": 34 },
+        { "name": "BIAB on Natural Nails with French Tips", "duration_minutes": 45, "price_gbp": 39 }
+      ]
+    },
+    {
+      "id": "nails_biab_toe",
+      "name": "Nails — BIAB for Toe Nails",
+      "services": [
+        { "name": "2 Big Toes BIAB and 1 Gel Colour", "duration_minutes": 30, "price_gbp": 29 },
+        { "name": "2 Big Toes BIAB French Tips", "duration_minutes": 45, "price_gbp": 34 },
+        { "name": "BIAB Overlay Toe Nails 1 Colour", "duration_minutes": 45, "price_gbp": 34 },
+        { "name": "BIAB Overlay with French Tips", "duration_minutes": 45, "price_gbp": 39 },
+        { "name": "Fullset BIAB Toe 1 Colour", "duration_minutes": 45, "price_gbp": 39 },
+        { "name": "Fullset BIAB Toes with French Tips", "duration_minutes": 60, "price_gbp": 44 },
+        { "name": "Infill BIAB 1 Colour", "duration_minutes": 45, "price_gbp": 34 },
+        { "name": "Infill BIAB French Tips", "duration_minutes": 60, "price_gbp": 39 }
+      ]
+    },
+    {
+      "id": "nails_fullset_one_colour",
+      "name": "Nails — Fullset 1 Colour (Short/Medium Length)",
+      "services": [
+        { "name": "Acrylic Fullset 1 Colour", "duration_minutes": 45, "price_gbp": 35, "notes": "For short/medium length." },
+        { "name": "Removal and New Fullset 1 Colour", "duration_minutes": 60, "price_gbp": 40 }
+      ]
+    },
+    {
+      "id": "nails_fullset_french_tips",
+      "name": "Nails — Fullset French Tips (Short/Medium Length)",
+      "services": [
+        { "name": "Fullset French Tips", "duration_minutes": 60, "price_gbp": 40, "notes": "For short/medium length." },
+        { "name": "Fullset French Tips with Removal", "duration_minutes": 60, "price_gbp": 45, "notes": "For short/medium length." }
+      ]
+    },
+    {
+      "id": "nails_fullset_designs",
+      "name": "Nails — Fullset Designs (Medium to XXL Length)",
+      "services": [
+        { "name": "Fullset Designs", "duration_minutes": 75, "price_gbp": 40, "price_type": "starting", "notes": "Price varies by design. Client leaves design/length details in the comment box when booking." },
+        { "name": "Removal and Fullset Designs", "duration_minutes": 90, "price_gbp": 45, "price_type": "starting", "notes": "Price varies by design. Client leaves design/length details in the comment box when booking." }
+      ]
+    },
+    {
+      "id": "nails_infill_one_colour",
+      "name": "Nails — Infill One Colour (Short/Medium Length)",
+      "services": [
+        { "name": "Infill 1 Gel Colour", "duration_minutes": 45, "price_gbp": 30, "notes": "For gel colour infill, not colour powder." },
+        { "name": "Infill Changing Colour Powder", "duration_minutes": 45, "price_gbp": 35 },
+        { "name": "Infill Keep the Same Colour Powder", "duration_minutes": 45, "price_gbp": 30 }
+      ]
+    },
+    {
+      "id": "nails_infill_french_tips",
+      "name": "Nails — Infill with French Tips (Short/Medium Length)",
+      "services": [
+        { "name": "Infill French Changing Colour Powder Base", "duration_minutes": 60, "price_gbp": 40 },
+        { "name": "Infill French Keep Same Colour Powder", "duration_minutes": 60, "price_gbp": 35 }
+      ]
+    },
+    {
+      "id": "nails_shellac_hand",
+      "name": "Nails — Shellac on Hand",
+      "services": [
+        { "name": "Shellac French Tips on Natural Nails", "duration_minutes": 30, "price_gbp": 28 },
+        { "name": "Shellac French Tips with Acrylic (or BIAB) Removal", "duration_minutes": 30, "price_gbp": 33 },
+        { "name": "Shellac French Tips with Old Shellac Removal", "duration_minutes": 30, "price_gbp": 31 },
+        { "name": "Shellac on Natural Nails", "duration_minutes": 30, "price_gbp": 23 },
+        { "name": "Shellac One Colour with Acrylic (or BIAB) Removal", "duration_minutes": 45, "price_gbp": 28 },
+        { "name": "Shellac with Gel Removal", "duration_minutes": 30, "price_gbp": 26 }
+      ]
+    },
+    {
+      "id": "nails_shellac_gel_toes",
+      "name": "Nails — Shellac/Gel on Toes",
+      "services": [
+        { "name": "French Gel on Toes", "duration_minutes": 30, "price_gbp": 28 },
+        { "name": "French Gel on Toes with Acrylic (or BIAB) Removal", "duration_minutes": 30, "price_gbp": 33 },
+        { "name": "French Gel on Toes with Old Gel Removal", "duration_minutes": 30, "price_gbp": 31 },
+        { "name": "Gel One Colour on Toes with Gel Removal", "duration_minutes": 30, "price_gbp": 26 },
+        { "name": "Gel Toes with Acrylic (or BIAB) Removal", "duration_minutes": 30, "price_gbp": 28 },
+        { "name": "New Gel on Toe Nails", "duration_minutes": 30, "price_gbp": 23 }
+      ]
+    },
+    {
+      "id": "nails_acrylic_toes",
+      "name": "Nails — Acrylic on Toes",
+      "services": [
+        { "name": "Fullset on Toes 1 Colour", "duration_minutes": 45, "price_gbp": 39, "notes": "Price does not include removal." },
+        { "name": "Fullset Toe French Tips", "duration_minutes": 45, "price_gbp": 44, "notes": "Price does not include removal." },
+        { "name": "Infill Toe French Tips", "duration_minutes": 45, "price_gbp": 39, "notes": "Price does not include removal." },
+        { "name": "Infill Toe Nails One Colour", "duration_minutes": 45, "price_gbp": 34, "notes": "Price does not include removal." },
+        { "name": "Shellac 1 Colour, 2 Big Toe Acrylic", "duration_minutes": 30, "price_gbp": 29, "notes": "Price does not include removal." },
+        { "name": "Shellac French Tips, Two Big Toes Acrylic", "duration_minutes": 45, "price_gbp": 34, "notes": "Price does not include removal." }
+      ]
+    },
+    {
+      "id": "nails_pedicure_deluxe_spa",
+      "name": "Nails — Pedicure (Deluxe & Spa)",
+      "services": [
+        { "name": "Deluxe Pedicure — Gel Colour", "duration_minutes": 50, "price_gbp": 50, "notes": "Price does not include removal or Acrylic/BIAB on toe nails." },
+        { "name": "Deluxe Pedicure — No Colour", "duration_minutes": 45, "price_gbp": 40, "notes": "Price does not include removal or Acrylic/BIAB on toe nails." },
+        { "name": "Deluxe Pedicure — With French Tips", "duration_minutes": 60, "price_gbp": 55, "notes": "Price does not include removal or Acrylic/BIAB on toe nails." },
+        { "name": "Pedicure — Gel French Tips, 2 Big Toes Acrylic (or BIAB)", "duration_minutes": 60, "price_gbp": 51, "notes": "Price does not include removal." },
+        { "name": "Pedicure — Shellac French Tips", "duration_minutes": 45, "price_gbp": 45, "notes": "Price does not include removal." },
+        { "name": "Pedicure — 2 Big Toes Acrylic, 1 Gel Colour", "duration_minutes": 60, "price_gbp": 46, "notes": "Price does not include removal." },
+        { "name": "Pedicure — Fullset Acrylic (or BIAB) with 1 Colour", "duration_minutes": 75, "price_gbp": 60, "notes": "Price does not include removal." },
+        { "name": "Pedicure — Fullset BIAB/Acrylic French Tips", "duration_minutes": 75, "price_gbp": 65, "notes": "Price does not include removal." },
+        { "name": "Pedicure — Infill Acrylic (or BIAB) with 1 Colour", "duration_minutes": 70, "price_gbp": 55 },
+        { "name": "Pedicure — Infill Acrylic (or BIAB) with French Tips", "duration_minutes": 75, "price_gbp": 60 },
+        { "name": "Spa Pedicure — 1 Gel Colour", "duration_minutes": 45, "price_gbp": 40, "notes": "Price does not include removal." },
+        { "name": "Spa Pedicure — No Colour", "duration_minutes": 30, "price_gbp": 30, "notes": "Price does not include removal." }
+      ]
+    },
+    {
+      "id": "nails_manicure",
+      "name": "Nails — Manicure",
+      "services": [
+        { "name": "Manicure with BIAB 1 Colour", "duration_minutes": 60, "price_gbp": 49, "notes": "BIAB on natural nail, no extension." },
+        { "name": "Manicure with BIAB French Tips", "duration_minutes": 60, "price_gbp": 54, "notes": "On natural nails, no extension." },
+        { "name": "Manicure with Shellac 1 Colour", "duration_minutes": 40, "price_gbp": 38 },
+        { "name": "Manicure with Shellac French Tips", "duration_minutes": 40, "price_gbp": 43 },
+        { "name": "Regular Manicure No Colour", "duration_minutes": 25, "price_gbp": 20 }
+      ]
+    },
+    {
+      "id": "nails_removal_only",
+      "name": "Nails — Removal Only",
+      "services": [
+        { "name": "Acrylic (or BIAB) Removal Only", "duration_minutes": 15, "price_gbp": 12 },
+        { "name": "Gel Removal Only", "duration_minutes": 10, "price_gbp": 10 }
+      ]
+    },
+    {
+      "id": "nails_custom_designs",
+      "name": "Nails — Custom Nails",
+      "services": [
+        { "name": "Fullset (or Infill) with Special Designs", "duration_minutes": 75, "price_gbp": 40, "price_type": "starting", "notes": "Price and timing vary by design/length. Client leaves design, length, and any special requirements in the comment box when booking." }
+      ]
+    }
+  ]
+}
