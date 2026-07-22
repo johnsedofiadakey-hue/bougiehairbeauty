@@ -55,6 +55,7 @@ export default async function Home() {
         videoUrl={currentSettings.heroVideoUrl}
         mediaType={currentSettings.heroMediaType}
         whatsappNumber={currentSettings.whatsappNumber}
+        address={currentSettings.address}
       />
 
       <Services settings={serializedSettings} />

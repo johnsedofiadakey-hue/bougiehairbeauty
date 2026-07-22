@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { useReveal } from "@/hooks/useReveal";
 import Image from "next/image";
-import { ChevronRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { DEPARTMENTS } from "@/lib/departments";
 
 export function About({ settings }: { settings?: any }) {
   const revealRef = useReveal();
@@ -13,39 +13,51 @@ export function About({ settings }: { settings?: any }) {
   const image = settings?.aboutImage || "/service_hair.png";
   const intro = settings?.aboutIntro ||
     "Bougie Hair & Beauty is a full-service salon in the heart of Colchester, built around care, craft, and confidence.";
-  const badgeNumber = settings?.aboutBadgeNumber || "5";
-  const badgeLabel = settings?.aboutBadgeLabel || "Service Departments";
 
   return (
-    <section ref={revealRef} className="relative py-24 bg-black overflow-hidden reveal" id="about">
-      {/* Decorative accent, echoing the reference's floral corner flourish */}
-      <div className="hidden md:block absolute top-1/2 -right-24 -translate-y-1/2 w-96 h-96 rounded-full bg-brand-primary/10 blur-3xl" />
+    <section ref={revealRef} className="relative bg-[#1C140F] overflow-hidden reveal" id="about">
+      <div className="grid md:grid-cols-[1.05fr_0.95fr]">
+        {/* Portrait media — full-bleed, mirrors the Hero's asymmetric photo
+            treatment but on the opposite side, so the page has a rhythm as
+            you scroll instead of every section repeating the same layout. */}
+        <div className="relative min-h-[380px] md:min-h-[720px] order-1">
+          <Image src={image} alt={heading} fill className="object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#1C140F]/40 md:to-[#1C140F]/70" />
+          <div className="hidden md:block absolute inset-y-0 right-0 w-px bg-[#D4AF37]/40" />
+        </div>
 
-      <div className="relative max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-center gap-16">
-          <div className="relative w-full md:w-1/2 aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl flex-shrink-0">
-            <Image
-              src={image}
-              alt={heading}
-              fill
-              className="object-cover"
-            />
-            <div className="absolute bottom-8 right-8 glass p-6 rounded-2xl shadow-xl max-w-[200px] animate-fade-in-up">
-               <div className="text-3xl font-serif text-white mb-1">{badgeNumber}</div>
-               <div className="text-xs font-bold uppercase tracking-widest text-white/70">{badgeLabel}</div>
+        {/* Copy */}
+        <div className="order-2 flex items-center px-6 sm:px-10 lg:pl-14 lg:pr-16 py-16 md:py-24">
+          <div className="max-w-lg mx-auto md:mx-0">
+            <div className="flex items-center gap-3 mb-5">
+              <span className="w-8 h-px bg-[#D4AF37]" />
+              <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#D4AF37]">About Us</p>
             </div>
-          </div>
-          <div className="w-full md:w-1/2">
-            <p className="text-xs font-bold uppercase tracking-[0.3em] text-brand-primary mb-4">About Us</p>
-            <h2 className="text-4xl md:text-5xl font-serif text-white mb-6 leading-tight">{heading}</h2>
+            <h2 className="text-4xl md:text-5xl font-serif text-white mb-8 leading-[1.15] text-balance">
+              {heading}
+            </h2>
             <p className="text-lg text-white/60 leading-relaxed mb-10">
               {intro}
             </p>
-            <Link href="/about">
-              <Button className="h-14 px-8 rounded-full text-base font-bold bg-brand-primary hover:bg-brand-primary/90 gap-2">
-                Learn More
-                <ChevronRight className="w-4 h-4" />
-              </Button>
+
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-10">
+              {DEPARTMENTS.map((dept, i) => (
+                <span key={dept.name} className="flex items-center gap-3">
+                  <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-white/70">
+                    {dept.name}
+                  </span>
+                  {i < DEPARTMENTS.length - 1 && <span className="text-[#D4AF37]">—</span>}
+                </span>
+              ))}
+            </div>
+
+            <Link
+              href="/about"
+              className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-white hover:text-[#D4AF37] transition-colors relative group/link"
+            >
+              Learn More
+              <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+              <span className="absolute -bottom-1 left-0 w-full h-px bg-[#D4AF37] scale-x-0 group-hover/link:scale-x-100 transition-transform origin-left" />
             </Link>
           </div>
         </div>
