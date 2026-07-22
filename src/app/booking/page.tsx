@@ -145,7 +145,7 @@ export default function BookingPage() {
         particleCount: 150,
         spread: 70,
         origin: { y: 0.6 },
-        colors: ['#E8B8B0', '#FFF9F6', '#D4AF37']
+        colors: ['#E6127E', '#FAF3E7', '#D4AF37']
       });
     } else {
       const errorData = await res.json();
@@ -203,7 +203,7 @@ export default function BookingPage() {
                <div className="w-24 h-24 rounded-full bg-emerald-100 flex items-center justify-center mb-6 animate-in zoom-in-50 duration-500 delay-200">
                   <Check className="w-12 h-12 text-emerald-600" />
                </div>
-               <h2 className="text-4xl font-serif text-brand-primary mb-4">Confirmed!</h2>
+               <h2 className="text-4xl font-serif text-[#1A1A1A] mb-4">Confirmed!</h2>
                <p className="text-lg text-zinc-600 mb-8">Your appointment for {selectedServices.length} service{selectedServices.length === 1 ? "" : "s"} has been secured. We'll see you soon!</p>
                <div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm">
                  <Link
@@ -226,7 +226,7 @@ export default function BookingPage() {
           {currentStep === "service" && (
             <div className="space-y-6">
               <div className="text-center">
-                <h2 className="text-2xl sm:text-3xl font-serif text-brand-primary mb-2">Select Services</h2>
+                <h2 className="text-2xl sm:text-3xl font-serif text-[#1A1A1A] mb-2">Select Services</h2>
                 <p className="text-sm sm:text-base text-zinc-500">Tap a category to see options. Choose as many as you like.</p>
               </div>
 
@@ -334,7 +334,7 @@ export default function BookingPage() {
           {currentStep === "datetime" && (
             <div className="space-y-8">
               <div className="text-center">
-                <h2 className="text-2xl sm:text-3xl font-serif text-brand-primary mb-2">Choose Time</h2>
+                <h2 className="text-2xl sm:text-3xl font-serif text-[#1A1A1A] mb-2">Choose Time</h2>
                 <p className="text-sm sm:text-base text-zinc-500">Select a slot for your {totalDuration} min session.</p>
               </div>
 
@@ -381,7 +381,7 @@ export default function BookingPage() {
           {currentStep === "details" && (
             <div className="space-y-8">
               <div className="text-center">
-                <h2 className="text-2xl sm:text-3xl font-serif text-brand-primary mb-2">Your Information</h2>
+                <h2 className="text-2xl sm:text-3xl font-serif text-[#1A1A1A] mb-2">Your Information</h2>
                 <p className="text-sm sm:text-base text-zinc-500">We'll use this to confirm your booking and reach you.</p>
               </div>
               <div className="space-y-4 max-w-md mx-auto">
@@ -438,7 +438,7 @@ export default function BookingPage() {
           {currentStep === "policy" && (
             <div className="space-y-6">
               <div className="text-center">
-                <h2 className="text-2xl sm:text-3xl font-serif text-brand-primary mb-2">Secure Your Slot</h2>
+                <h2 className="text-2xl sm:text-3xl font-serif text-[#1A1A1A] mb-2">Secure Your Slot</h2>
                 <p className="text-sm sm:text-base text-zinc-500">A deposit secures your appointment — please review our policy below.</p>
               </div>
 

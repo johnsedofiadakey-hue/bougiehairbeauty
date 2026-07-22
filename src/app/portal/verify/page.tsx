@@ -69,27 +69,30 @@ export default function VerifyMagicLink() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-brand-primary flex items-center justify-center p-6">
-      <div className="max-w-md w-full bg-white rounded-[40px] p-8 sm:p-10 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-2 bg-brand-accent" />
-        <Link href="/portal" aria-label="Back to portal" className="absolute top-6 left-6 sm:top-8 sm:left-8 flex items-center gap-2 text-zinc-400 hover:text-brand-primary transition-colors text-xs font-bold uppercase tracking-widest group bg-zinc-100 sm:bg-transparent rounded-full w-10 h-10 sm:w-auto sm:h-auto justify-center">
+    <div className="relative min-h-screen bg-[#1C140F] flex items-center justify-center p-6 overflow-hidden">
+      <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-brand-primary/25 blur-3xl" />
+      <div className="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-[#D4AF37]/20 blur-3xl" />
+
+      <div className="relative max-w-md w-full bg-white/10 backdrop-blur-2xl border border-white/15 rounded-3xl p-8 sm:p-10 shadow-2xl overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-[#D4AF37]/60" />
+        <Link href="/portal" aria-label="Back to portal" className="absolute top-6 left-6 sm:top-8 sm:left-8 flex items-center gap-2 text-white/50 hover:text-white transition-colors text-xs font-bold uppercase tracking-widest group bg-white/10 sm:bg-transparent rounded-full w-10 h-10 sm:w-auto sm:h-auto justify-center">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           <span className="hidden sm:inline">Back to Portal</span>
         </Link>
 
         <div className="text-center mb-10 mt-8 sm:mt-0">
-          <div className="w-16 h-16 bg-brand-secondary/50 rounded-2xl mx-auto flex items-center justify-center text-brand-primary mb-4">
+          <div className="w-16 h-16 bg-[#D4AF37]/15 border border-[#D4AF37]/30 rounded-2xl mx-auto flex items-center justify-center text-[#D4AF37] mb-4">
             {status === "checking" || submitting ? <Loader2 className="w-8 h-8 animate-spin" /> : <ShieldCheck className="w-8 h-8" />}
           </div>
-          <h2 className="text-2xl font-serif text-brand-primary mb-2">Confirming your link</h2>
+          <h2 className="text-2xl font-serif text-white mb-2">Confirming your link</h2>
         </div>
 
         {status === "checking" && (
-          <p className="text-center text-zinc-500 text-sm">One moment...</p>
+          <p className="text-center text-white/50 text-sm">One moment...</p>
         )}
 
         {error && (
-          <p className="text-rose-600 text-xs text-center font-medium bg-rose-50 border border-rose-100 py-3 px-4 rounded-2xl mb-6">
+          <p className="text-rose-200 text-xs text-center font-medium bg-rose-500/10 border border-rose-400/20 py-3 px-4 rounded-2xl mb-6">
             {error}
           </p>
         )}
@@ -100,15 +103,15 @@ export default function VerifyMagicLink() {
             className="space-y-4"
           >
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase text-zinc-400 tracking-widest">Confirm Your Email</label>
-              <p className="text-[11px] text-zinc-400">For your security, please re-enter the email this link was sent to.</p>
+              <label className="text-xs font-bold uppercase text-white/50 tracking-widest">Confirm Your Email</label>
+              <p className="text-[11px] text-white/40">For your security, please re-enter the email this link was sent to.</p>
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-300" />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 rounded-2xl border focus:ring-2 focus:ring-brand-primary outline-none transition-all"
+                  className="w-full pl-12 pr-4 py-4 rounded-xl border border-white/15 bg-white/5 text-white placeholder:text-white/30 focus:ring-2 focus:ring-[#D4AF37] outline-none transition-all"
                   placeholder="you@example.com"
                   required
                   disabled={submitting}
@@ -123,7 +126,7 @@ export default function VerifyMagicLink() {
 
         {status === "error" && (
           <div className="text-center">
-            <Link href="/portal" className="text-xs font-bold uppercase text-brand-primary hover:text-brand-accent transition-colors">
+            <Link href="/portal" className="text-xs font-bold uppercase text-[#D4AF37] hover:text-white transition-colors">
               Return to portal login
             </Link>
           </div>

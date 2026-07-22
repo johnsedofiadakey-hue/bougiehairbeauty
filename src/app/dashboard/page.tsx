@@ -57,7 +57,7 @@ export default function ClientDashboard() {
               <UserIcon className="w-10 h-10" />
             </div>
             <div>
-              <h2 className="text-3xl font-serif text-brand-primary">{profile.name}</h2>
+              <h2 className="text-3xl font-serif text-[#1A1A1A]">{profile.name}</h2>
               <p className="text-zinc-500">{profile.email} • Member since {new Date(profile.createdAt).getFullYear()}</p>
             </div>
           </div>

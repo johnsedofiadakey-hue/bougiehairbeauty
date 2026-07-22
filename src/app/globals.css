@@ -59,6 +59,20 @@ body {
   transform: translateY(0);
 }
 
+/* Per-item stagger for grids (icon rows, cards) inside a .reveal section —
+   pair with an inline transitionDelay per index so items settle in one
+   after another instead of the whole grid popping in as a single block. */
+.reveal-stagger-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.2, 1, 0.3, 1), transform 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.reveal-active .reveal-stagger-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 @keyframes bounce-in {
   0% { transform: scale(0.9); opacity: 0; }
   70% { transform: scale(1.05); }
@@ -67,4 +81,26 @@ body {
 
 .animate-bounce-in {
   animation: bounce-in 0.6s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+}
+
+/* Hero's entrance sequence referenced these classes already, but with no
+   keyframe defined anywhere they were silent no-ops — content just appeared
+   instantly. `delay-150`/`delay-300` are real Tailwind utilities, just for
+   `transition-delay`, not `animation-delay`, so they needed a matching rule
+   here rather than a transition. */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.7s cubic-bezier(0.2, 1, 0.3, 1) both;
+}
+
+.animate-fade-in-up.delay-150 {
+  animation-delay: 150ms;
+}
+
+.animate-fade-in-up.delay-300 {
+  animation-delay: 300ms;
 }

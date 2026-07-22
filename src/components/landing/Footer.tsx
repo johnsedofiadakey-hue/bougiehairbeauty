@@ -14,7 +14,7 @@ export function Footer({ settings }: { settings?: any }) {
   return (
     <footer className="bg-[#3E1D10] text-white pt-24 pb-12 border-t border-brand-accent/20">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
           {/* Brand Column */}
           <div className="space-y-6">
             {settings?.logoUrl ? (
@@ -25,7 +25,7 @@ export function Footer({ settings }: { settings?: any }) {
               <h3 className="text-3xl font-serif text-brand-secondary">{studioName}</h3>
             )}
             <p className="text-zinc-400 text-sm leading-relaxed">
-              Elevating natural beauty through technical precision and organic-infused care. Your journey to transformation starts here.
+              Five disciplines, one standard of craft — braiding, wigs, lash artistry, head spa and nails, all under one roof at 41 Crouch Street.
             </p>
             <div className="flex gap-4">
               {settings?.instagramUrl && (
@@ -70,7 +70,6 @@ export function Footer({ settings }: { settings?: any }) {
               <Link href="/about" className="text-zinc-400 hover:text-white transition-colors text-sm">Our Story</Link>
               <Link href="/portal" className="text-zinc-400 hover:text-white transition-colors text-sm">Client Portal</Link>
               <Link href="/booking" className="text-zinc-400 hover:text-white transition-colors text-sm">Book Session</Link>
-              <Link href="/admin" className="text-zinc-400 hover:text-white transition-colors text-sm font-bold border-t border-white/5 pt-2">Admin Portal</Link>
             </nav>
           </div>
 
@@ -92,16 +91,6 @@ export function Footer({ settings }: { settings?: any }) {
               </div>
             </div>
           </div>
-
-          {/* Newsletter / CTA */}
-          <div className="space-y-6">
-             <h4 className="text-xs font-bold uppercase tracking-widest text-brand-secondary">Join the Club</h4>
-             <p className="text-zinc-400 text-xs">Sign up for luxury aftercare tips and seasonal offers.</p>
-             <div className="flex gap-2">
-                <input className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs flex-1 outline-none focus:border-brand-secondary transition-colors" placeholder="Email Address" />
-                <button className="bg-brand-secondary text-brand-primary px-4 py-3 rounded-xl text-xs font-bold">Join</button>
-             </div>
-          </div>
         </div>
 
         {/* Bottom Bar */}
@@ -109,13 +98,6 @@ export function Footer({ settings }: { settings?: any }) {
           <p className="text-[10px] text-zinc-500 uppercase tracking-widest">
             © {currentYear} {studioName}. All rights reserved.
           </p>
-          <div className="flex flex-col md:flex-row items-center gap-6">
-            <Link href="/admin/settings">
-              <button className="bg-white/10 hover:bg-white/20 px-6 py-2 rounded-full text-[10px] uppercase tracking-widest transition-all font-bold border border-white/5">
-                Admin Control Center
-              </button>
-            </Link>
-          </div>
         </div>
       </div>
     </footer>

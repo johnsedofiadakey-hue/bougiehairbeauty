@@ -19,7 +19,7 @@ export function FAQ() {
     },
     {
       question: "Which products do you use in the studio?",
-      answer: "We exclusively use professional-grade, organic-infused products tailored to your specific hair and skin needs. You can also purchase these for aftercare."
+      answer: "We exclusively use professional-grade products chosen for your specific hair and skin needs. You can also purchase these for aftercare."
     }
   ];
 
@@ -29,7 +29,7 @@ export function FAQ() {
     <section className="py-24 bg-white">
       <div className="max-w-3xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-serif text-brand-primary mb-4">Common Inquiries</h2>
+          <h2 className="text-4xl md:text-5xl font-serif text-[#1A1A1A] mb-4">Common Inquiries</h2>
           <p className="text-zinc-500">Everything you need to know before your Bougie experience.</p>
         </div>
 

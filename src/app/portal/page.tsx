@@ -183,18 +183,22 @@ export default function ClientPortalAuth() {
   };
 
   return (
-    <div className="min-h-screen bg-brand-primary flex items-center justify-center p-6">
+    <div className="relative min-h-screen bg-[#1C140F] flex items-center justify-center p-6 overflow-hidden">
+      {/* Ambient glow for the glass card to actually blur against — see Login page for the same treatment. */}
+      <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-brand-primary/25 blur-3xl" />
+      <div className="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-[#D4AF37]/20 blur-3xl" />
+
       <div id="recaptcha-container" />
-      <div className="max-w-md w-full bg-white rounded-[40px] p-8 sm:p-10 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-2 bg-brand-accent" />
-        <Link href="/" aria-label="Back to website" className="absolute top-6 left-6 sm:top-8 sm:left-8 flex items-center gap-2 text-zinc-400 hover:text-brand-primary transition-colors text-xs font-bold uppercase tracking-widest group bg-zinc-100 sm:bg-transparent rounded-full w-10 h-10 sm:w-auto sm:h-auto justify-center">
+      <div className="relative max-w-md w-full bg-white/10 backdrop-blur-2xl border border-white/15 rounded-3xl p-8 sm:p-10 shadow-2xl overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-[#D4AF37]/60" />
+        <Link href="/" aria-label="Back to website" className="absolute top-6 left-6 sm:top-8 sm:left-8 flex items-center gap-2 text-white/50 hover:text-white transition-colors text-xs font-bold uppercase tracking-widest group bg-white/10 sm:bg-transparent rounded-full w-10 h-10 sm:w-auto sm:h-auto justify-center">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           <span className="hidden sm:inline">Back to Website</span>
         </Link>
 
         <div className="text-center mb-10 mt-8 sm:mt-0">
-          <h2 className="text-3xl sm:text-4xl font-serif text-brand-primary mb-2">{settings?.companyName || "Bougie Hair & Beauty"} Portal</h2>
-          <p className="text-zinc-400 text-sm">Access your treatment history and book new sessions.</p>
+          <h2 className="text-3xl sm:text-4xl font-serif text-white mb-2">{settings?.companyName || "Bougie Hair & Beauty"} Portal</h2>
+          <p className="text-white/50 text-sm">Access your treatment history and book new sessions.</p>
         </div>
 
         <form
@@ -208,7 +212,7 @@ export default function ClientPortalAuth() {
           className="space-y-6"
         >
           {error && (
-            <p className="text-rose-600 text-xs text-center font-medium bg-rose-50 border border-rose-100 py-3 px-4 rounded-2xl animate-in fade-in zoom-in-95 duration-200">
+            <p className="text-rose-200 text-xs text-center font-medium bg-rose-500/10 border border-rose-400/20 py-3 px-4 rounded-2xl animate-in fade-in zoom-in-95 duration-200">
               {error}
             </p>
           )}
@@ -217,14 +221,14 @@ export default function ClientPortalAuth() {
             <div className="space-y-4 animate-in fade-in slide-in-from-right-4">
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <label className="text-xs font-bold uppercase text-zinc-400 tracking-widest">Phone Number</label>
+                  <label className="text-xs font-bold uppercase text-white/50 tracking-widest">Phone Number</label>
                   {typeof window !== "undefined" && localStorage.getItem("client_phone") && (
-                    <span className="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">Prefilled</span>
+                    <span className="text-[10px] text-emerald-300 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full">Prefilled</span>
                   )}
                 </div>
                 <div className="relative flex items-stretch">
-                  <div className="flex items-center gap-1.5 pl-4 pr-3 rounded-l-2xl border border-r-0 bg-zinc-50 text-zinc-500 font-bold text-sm">
-                    <Phone className="w-4 h-4 text-zinc-300" />
+                  <div className="flex items-center gap-1.5 pl-4 pr-3 rounded-l-xl border border-r-0 border-white/15 bg-white/5 text-white/60 font-bold text-sm">
+                    <Phone className="w-4 h-4 text-white/30" />
                     +44
                   </div>
                   <input
@@ -232,7 +236,7 @@ export default function ClientPortalAuth() {
                     inputMode="numeric"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
-                    className="w-full pl-3 pr-4 py-4 rounded-r-2xl border focus:ring-2 focus:ring-brand-primary outline-none transition-all"
+                    className="w-full pl-3 pr-4 py-4 rounded-r-xl border border-white/15 bg-white/5 text-white placeholder:text-white/30 focus:ring-2 focus:ring-[#D4AF37] outline-none transition-all"
                     placeholder="07770 375859 or 7770375859"
                     required
                     disabled={loading}
@@ -246,7 +250,7 @@ export default function ClientPortalAuth() {
                 <button
                   type="button"
                   onClick={() => { if (!loading) { setError(""); setStep("email"); } }}
-                  className="w-full py-2 text-xs font-bold uppercase text-zinc-400 hover:text-brand-primary transition-colors flex items-center justify-center gap-2"
+                  className="w-full py-2 text-xs font-bold uppercase text-white/50 hover:text-white transition-colors flex items-center justify-center gap-2"
                   disabled={loading}
                 >
                   <Mail className="w-3 h-3" /> Use email instead
@@ -258,20 +262,20 @@ export default function ClientPortalAuth() {
           {step === "email" && (
             <div className="space-y-4 animate-in fade-in slide-in-from-right-4">
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase text-zinc-400 tracking-widest">Email Address</label>
+                <label className="text-xs font-bold uppercase text-white/50 tracking-widest">Email Address</label>
                 <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-300" />
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-12 pr-4 py-4 rounded-2xl border focus:ring-2 focus:ring-brand-primary outline-none transition-all"
+                    className="w-full pl-12 pr-4 py-4 rounded-xl border border-white/15 bg-white/5 text-white placeholder:text-white/30 focus:ring-2 focus:ring-[#D4AF37] outline-none transition-all"
                     placeholder="you@example.com"
                     required
                     disabled={loading}
                   />
                 </div>
-                <p className="text-[11px] text-zinc-400">We'll email you a one-click link — no code to type.</p>
+                <p className="text-[11px] text-white/40">We'll email you a one-click link — no code to type.</p>
               </div>
               <Button type="submit" className="w-full h-16 text-lg rounded-2xl gap-2 shadow-xl shadow-brand-primary/20" disabled={loading}>
                 {loading ? "Sending link..." : <>Send Me a Link <ArrowRight className="w-5 h-5" /></>}
@@ -279,7 +283,7 @@ export default function ClientPortalAuth() {
               <button
                 type="button"
                 onClick={() => { if (!loading) { setError(""); setStep("phone"); } }}
-                className="w-full py-2 text-xs font-bold uppercase text-zinc-400 hover:text-brand-primary transition-colors flex items-center justify-center gap-2"
+                className="w-full py-2 text-xs font-bold uppercase text-white/50 hover:text-white transition-colors flex items-center justify-center gap-2"
                 disabled={loading}
               >
                 <ArrowLeft className="w-3 h-3" /> Use phone number instead
@@ -289,16 +293,16 @@ export default function ClientPortalAuth() {
 
           {step === "email-sent" && (
             <div className="space-y-4 text-center animate-in fade-in slide-in-from-right-4">
-              <div className="w-16 h-16 bg-brand-secondary/50 rounded-2xl mx-auto flex items-center justify-center text-brand-primary">
+              <div className="w-16 h-16 bg-[#D4AF37]/15 border border-[#D4AF37]/30 rounded-2xl mx-auto flex items-center justify-center text-[#D4AF37]">
                 <MailCheck className="w-8 h-8" />
               </div>
-              <p className="text-sm text-zinc-600">
-                Check your inbox at <span className="font-bold">{email}</span> — tap the link we sent to finish signing in.
+              <p className="text-sm text-white/60">
+                Check your inbox at <span className="font-bold text-white">{email}</span> — tap the link we sent to finish signing in.
               </p>
               <button
                 type="button"
                 onClick={() => { if (!loading) { setError(""); setStep("email"); } }}
-                className="w-full py-2 text-xs font-bold uppercase text-zinc-400 hover:text-brand-primary transition-colors flex items-center justify-center gap-2"
+                className="w-full py-2 text-xs font-bold uppercase text-white/50 hover:text-white transition-colors flex items-center justify-center gap-2"
                 disabled={loading}
               >
                 <ArrowLeft className="w-3 h-3" /> Wrong email? Try again
@@ -309,15 +313,15 @@ export default function ClientPortalAuth() {
           {step === "otp" && (
             <div className="space-y-4 animate-in fade-in slide-in-from-right-4">
               <div className="space-y-2 text-center">
-                <label className="text-xs font-bold uppercase text-zinc-400 tracking-widest">Verification Code</label>
-                <p className="text-[10px] text-zinc-500 mb-4">Enter the 6-digit code sent by SMS to +{fullPhone()}</p>
+                <label className="text-xs font-bold uppercase text-white/50 tracking-widest">Verification Code</label>
+                <p className="text-[10px] text-white/40 mb-4">Enter the 6-digit code sent by SMS to +{fullPhone()}</p>
                 <input
                   type="text"
                   inputMode="numeric"
                   maxLength={6}
                   value={otp}
                   onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-                  className="w-full text-center text-4xl tracking-[0.5em] font-bold py-4 rounded-2xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                  className="w-full text-center text-4xl tracking-[0.5em] font-bold py-4 rounded-xl border border-white/15 bg-white/5 text-white focus:ring-2 focus:ring-[#D4AF37] outline-none"
                   placeholder="000000"
                   required
                   disabled={loading}
@@ -330,7 +334,7 @@ export default function ClientPortalAuth() {
                 <button
                   type="button"
                   onClick={() => { if (!loading) setStep("password"); }}
-                  className="w-full text-xs font-bold uppercase text-brand-primary hover:text-brand-accent transition-colors flex items-center justify-center gap-2"
+                  className="w-full text-xs font-bold uppercase text-[#D4AF37] hover:text-white transition-colors flex items-center justify-center gap-2"
                   disabled={loading}
                 >
                   Log in with password instead
@@ -338,7 +342,7 @@ export default function ClientPortalAuth() {
                 <button
                   type="button"
                   onClick={() => { if (!loading) setStep("phone"); }}
-                  className="w-full py-2 text-xs font-bold uppercase text-zinc-400 hover:text-brand-primary transition-colors flex items-center justify-center gap-2"
+                  className="w-full py-2 text-xs font-bold uppercase text-white/50 hover:text-white transition-colors flex items-center justify-center gap-2"
                   disabled={loading}
                 >
                   <ArrowLeft className="w-3 h-3" /> Change Phone Number
@@ -350,14 +354,14 @@ export default function ClientPortalAuth() {
           {step === "password" && (
             <div className="space-y-4 animate-in fade-in slide-in-from-right-4">
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase text-zinc-400 tracking-widest">Secure Password</label>
+                <label className="text-xs font-bold uppercase text-white/50 tracking-widest">Secure Password</label>
                 <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-300" />
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
                   <input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-12 pr-4 py-4 rounded-2xl border focus:ring-2 focus:ring-brand-primary outline-none transition-all"
+                    className="w-full pl-12 pr-4 py-4 rounded-xl border border-white/15 bg-white/5 text-white placeholder:text-white/30 focus:ring-2 focus:ring-[#D4AF37] outline-none transition-all"
                     placeholder="••••••••"
                     required
                     disabled={loading}
@@ -383,7 +387,7 @@ export default function ClientPortalAuth() {
                       }
                     }
                   }}
-                  className="w-full text-xs font-bold uppercase text-brand-primary hover:text-brand-accent transition-colors flex items-center justify-center gap-2"
+                  className="w-full text-xs font-bold uppercase text-[#D4AF37] hover:text-white transition-colors flex items-center justify-center gap-2"
                   disabled={loading}
                 >
                   Forgot password? Use OTP code
@@ -391,7 +395,7 @@ export default function ClientPortalAuth() {
                 <button
                   type="button"
                   onClick={() => { if (!loading) setStep("phone"); }}
-                  className="w-full py-2 text-xs font-bold uppercase text-zinc-400 hover:text-brand-primary transition-colors flex items-center justify-center gap-2"
+                  className="w-full py-2 text-xs font-bold uppercase text-white/50 hover:text-white transition-colors flex items-center justify-center gap-2"
                   disabled={loading}
                 >
                   <ArrowLeft className="w-3 h-3" /> Change Phone Number
@@ -401,8 +405,8 @@ export default function ClientPortalAuth() {
           )}
         </form>
 
-        <div className="mt-12 text-center border-t pt-8">
-           <p className="text-[10px] text-zinc-400 uppercase tracking-widest">Powered by Bougie Hair & Beauty</p>
+        <div className="mt-12 text-center border-t border-white/10 pt-8">
+           <p className="text-[10px] text-white/30 uppercase tracking-widest">Powered by Bougie Hair & Beauty</p>
         </div>
       </div>
     </div>

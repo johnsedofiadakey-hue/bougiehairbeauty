@@ -18,19 +18,19 @@ function SuccessContent() {
       particleCount: 150,
       spread: 70,
       origin: { y: 0.6 },
-      colors: ['#E8B8B0', '#FFF9F6', '#D4AF37']
+      colors: ['#E6127E', '#FAF3E7', '#D4AF37']
     });
     setLoading(false);
   }, []);
 
   return (
     <div className="min-h-screen bg-zinc-50 flex items-center justify-center px-6">
-      <div className="max-w-xl w-full bg-white rounded-[40px] p-12 shadow-2xl border text-center animate-in fade-in zoom-in-95 duration-700">
+      <div className="max-w-xl w-full bg-white rounded-3xl p-12 shadow-2xl border text-center animate-in fade-in zoom-in-95 duration-700">
         <div className="w-24 h-24 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-8 animate-bounce">
           <Check className="w-12 h-12 text-emerald-600" />
         </div>
-        
-        <h1 className="text-5xl font-serif text-brand-primary mb-4">Booking Secured!</h1>
+
+        <h1 className="text-5xl font-serif text-[#1A1A1A] mb-4">Booking Secured!</h1>
         <p className="text-lg text-zinc-500 mb-10">
           Your transformation is on the calendar. We look forward to seeing you.
         </p>

@@ -42,7 +42,7 @@ export default async function AboutPage() {
       <section className="pt-36 md:pt-40 pb-20 px-6 bg-[var(--color-secondary)]">
         <div className="max-w-4xl mx-auto text-center">
           <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-primary mb-4 block">Our Story</span>
-          <h1 className="text-5xl md:text-6xl font-serif text-brand-primary mb-6 leading-tight">{heading}</h1>
+          <h1 className="text-5xl md:text-6xl font-serif text-[#1A1A1A] mb-6 leading-tight">{heading}</h1>
         </div>
       </section>
 
