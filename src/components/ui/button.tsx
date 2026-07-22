@@ -16,10 +16,10 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "primary", size = "md", ...props }, ref) => {
     const variants = {
-      primary: "bg-brand-primary text-brand-secondary hover:opacity-90",
-      secondary: "bg-brand-secondary text-brand-primary hover:bg-opacity-90",
-      outline: "border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white",
-      ghost: "text-brand-primary hover:bg-brand-secondary",
+      primary: "bg-bougie-espresso text-bougie-cream hover:opacity-90",
+      secondary: "bg-bougie-cream text-bougie-espresso hover:bg-opacity-90",
+      outline: "border-2 border-bougie-espresso text-bougie-espresso hover:bg-bougie-espresso hover:text-white",
+      ghost: "text-bougie-espresso hover:bg-bougie-cream",
     };
 
     const sizes = {

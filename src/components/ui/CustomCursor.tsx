@@ -35,7 +35,7 @@ export function CustomCursor() {
 
   return (
     <div 
-      className={`fixed top-0 left-0 w-8 h-8 rounded-full border border-brand-accent pointer-events-none z-[9999] transition-transform duration-300 ease-out hidden md:block ${
+      className={`fixed top-0 left-0 w-8 h-8 rounded-full border border-bougie-champagne pointer-events-none z-[9999] transition-transform duration-300 ease-out hidden md:block ${
         isVisible ? "opacity-100" : "opacity-0"
       }`}
       style={{

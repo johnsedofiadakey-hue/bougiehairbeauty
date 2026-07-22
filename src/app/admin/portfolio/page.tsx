@@ -95,8 +95,8 @@ export default function AdminPortfolio() {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h3 className="text-3xl font-serif text-brand-primary">Transformation Gallery</h3>
-          <p className="text-zinc-500">Manage the visual showcase of your professional work.</p>
+          <h3 className="text-3xl font-serif text-bougie-espresso">Transformation Gallery</h3>
+          <p className="text-bougie-espresso/60">Manage the visual showcase of your professional work.</p>
         </div>
         <Button onClick={openAdd} className="gap-2 shadow-xl shadow-brand-primary/20">
           <Plus className="w-4 h-4" /> Add Transformation
@@ -106,25 +106,25 @@ export default function AdminPortfolio() {
       {isOpen && (
         <div className="bg-white p-10 rounded-[40px] border shadow-2xl animate-in fade-in slide-in-from-top-6">
           <h4 className="text-xl font-bold mb-8 flex items-center gap-2">
-            <ImageIcon className="w-6 h-6 text-brand-accent" /> {editingId ? "Edit Showcase Item" : "New Showcase Item"}
+            <ImageIcon className="w-6 h-6 text-bougie-champagne" /> {editingId ? "Edit Showcase Item" : "New Showcase Item"}
           </h4>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase text-zinc-400">Project Title</label>
+              <label className="text-xs font-bold uppercase text-bougie-espresso/50">Project Title</label>
               <input
                 value={formState.title}
                 onChange={e => setFormState({...formState, title: e.target.value})}
-                className="w-full px-5 py-4 rounded-2xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                className="w-full px-5 py-4 rounded-2xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                 placeholder="e.g. Platinum Balayage"
                 required
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase text-zinc-400">Category</label>
+              <label className="text-xs font-bold uppercase text-bougie-espresso/50">Category</label>
               <select
                 value={formState.category}
                 onChange={e => setFormState({...formState, category: e.target.value})}
-                className="w-full px-5 py-4 rounded-2xl border focus:ring-2 focus:ring-brand-primary outline-none bg-white"
+                className="w-full px-5 py-4 rounded-2xl border focus:ring-2 focus:ring-bougie-espresso outline-none bg-white"
               >
                 <option>Bridal</option>
                 <option>Coloring</option>
@@ -133,16 +133,16 @@ export default function AdminPortfolio() {
               </select>
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase text-zinc-400">Media (Image/Video)</label>
+              <label className="text-xs font-bold uppercase text-bougie-espresso/50">Media (Image/Video)</label>
               <div className="flex flex-col gap-2">
                 <input
                   type="file"
                   accept="image/*,video/*"
                   onChange={uploadFile}
-                  className="text-xs text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brand-primary/10 file:text-brand-primary hover:file:bg-brand-primary/20 cursor-pointer"
+                  className="text-xs text-bougie-espresso/60 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-bougie-espresso/10 file:text-bougie-espresso hover:file:bg-bougie-espresso/20 cursor-pointer"
                   required={!editingId && !formState.imageUrl}
                 />
-                {uploading && <p className="text-[10px] text-brand-primary animate-pulse">Uploading...</p>}
+                {uploading && <p className="text-[10px] text-bougie-espresso animate-pulse">Uploading...</p>}
                 {formState.imageUrl && <p className="text-[10px] text-emerald-600 truncate">Uploaded: {formState.imageUrl}</p>}
               </div>
             </div>
@@ -176,8 +176,8 @@ export default function AdminPortfolio() {
             </div>
             <div className="p-6">
               <div className="flex items-center gap-2 mb-2">
-                <Tag className="w-3 h-3 text-brand-accent" />
-                <span className="text-[10px] font-bold uppercase tracking-widest text-brand-primary">{item.category}</span>
+                <Tag className="w-3 h-3 text-bougie-champagne" />
+                <span className="text-[10px] font-bold uppercase tracking-widest text-bougie-espresso">{item.category}</span>
               </div>
               <h4 className="text-lg font-bold">{item.title}</h4>
             </div>

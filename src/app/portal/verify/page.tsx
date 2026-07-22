@@ -69,8 +69,8 @@ export default function VerifyMagicLink() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#1C140F] flex items-center justify-center p-6 overflow-hidden">
-      <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-brand-primary/25 blur-3xl" />
+    <div className="relative min-h-screen bg-bougie-espresso flex items-center justify-center p-6 overflow-hidden">
+      <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-bougie-espresso/25 blur-3xl" />
       <div className="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-[#D4AF37]/20 blur-3xl" />
 
       <div className="relative max-w-md w-full bg-white/10 backdrop-blur-2xl border border-white/15 rounded-3xl p-8 sm:p-10 shadow-2xl overflow-hidden">

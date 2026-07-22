@@ -39,10 +39,10 @@ export default async function AboutPage() {
         <Navbar settings={serializedSettings} />
       </header>
 
-      <section className="pt-36 md:pt-40 pb-20 px-6 bg-[var(--color-secondary)]">
+      <section className="pt-36 md:pt-40 pb-20 px-6 bg-bougie-cream">
         <div className="max-w-4xl mx-auto text-center">
-          <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-primary mb-4 block">Our Story</span>
-          <h1 className="text-5xl md:text-6xl font-serif text-[#1A1A1A] mb-6 leading-tight">{heading}</h1>
+          <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-bougie-espresso mb-4 block">Our Story</span>
+          <h1 className="text-5xl md:text-6xl font-serif text-bougie-espresso mb-6 leading-tight">{heading}</h1>
         </div>
       </section>
 

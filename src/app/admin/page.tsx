@@ -23,7 +23,7 @@ export default function AdminDashboard() {
   if (loading) {
     return (
       <div className="h-96 flex items-center justify-center">
-        <Loader2 className="w-10 h-10 animate-spin text-brand-primary" />
+        <Loader2 className="w-10 h-10 animate-spin text-bougie-champagne" />
       </div>
     );
   }
@@ -37,8 +37,8 @@ export default function AdminDashboard() {
 
   const statCards = [
     { name: "Total Revenue", value: `${currency}${stats?.totalRevenue?.toLocaleString()}`, icon: DollarSign, trend: formatTrend(stats?.trends?.revenue), positive: (stats?.trends?.revenue ?? 0) >= 0, color: "bg-emerald-100 text-emerald-600" },
-    { name: "Appointments", value: stats?.appointmentCount?.toString(), icon: Calendar, trend: formatTrend(stats?.trends?.appointments), positive: (stats?.trends?.appointments ?? 0) >= 0, color: "bg-brand-secondary/50 text-brand-primary" },
-    { name: "New Clients", value: stats?.newClientsCount?.toString(), icon: Users, trend: formatTrend(stats?.trends?.newClients), positive: (stats?.trends?.newClients ?? 0) >= 0, color: "bg-brand-accent/20 text-brand-accent" },
+    { name: "Appointments", value: stats?.appointmentCount?.toString(), icon: Calendar, trend: formatTrend(stats?.trends?.appointments), positive: (stats?.trends?.appointments ?? 0) >= 0, color: "bg-bougie-champagne/20 text-bougie-champagne" },
+    { name: "New Clients", value: stats?.newClientsCount?.toString(), icon: Users, trend: formatTrend(stats?.trends?.newClients), positive: (stats?.trends?.newClients ?? 0) >= 0, color: "bg-bougie-taupe/20 text-bougie-taupe" },
   ];
 
   const monthlyRevenue: { label: string; revenue: number }[] = stats?.monthlyRevenue || [];
@@ -47,12 +47,12 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-8">
       <div>
-        <h3 className="text-3xl font-serif text-brand-primary">Studio Pulse</h3>
-        <p className="text-zinc-500">A snapshot of your business performance this month.</p>
+        <h3 className="text-3xl font-serif text-bougie-champagne">Studio Pulse</h3>
+        <p className="text-bougie-taupe">A snapshot of your business performance this month.</p>
       </div>
 
       {/* Quick Actions Bar */}
-      <div className="bg-brand-primary p-2 rounded-[2rem] shadow-xl flex flex-wrap gap-2">
+      <div className="bg-bougie-espresso p-2 rounded-[2rem] shadow-xl flex flex-wrap gap-2">
         <button 
           onClick={() => window.location.href = '/admin/appointments'}
           className="px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm font-bold transition-all flex items-center gap-2"
@@ -121,7 +121,7 @@ export default function AdminDashboard() {
                 <stat.icon className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-sm font-medium text-zinc-500">{stat.name}</p>
+                <p className="text-sm font-medium text-bougie-taupe">{stat.name}</p>
                 <p className="text-2xl font-bold">{stat.value}</p>
               </div>
             </div>
@@ -137,7 +137,7 @@ export default function AdminDashboard() {
         <div className="bg-white p-8 rounded-[40px] border shadow-sm">
           <div className="flex justify-between items-center mb-8">
             <h4 className="text-xl font-bold">Revenue Growth</h4>
-            <span className="bg-zinc-50 text-xs font-bold rounded-lg px-3 py-2 text-zinc-500">Last 6 Months</span>
+            <span className="bg-bougie-cream text-xs font-bold rounded-lg px-3 py-2 text-bougie-taupe">Last 6 Months</span>
           </div>
           {monthlyRevenue.length > 0 ? (
             <>
@@ -147,7 +147,7 @@ export default function AdminDashboard() {
                   return (
                     <div key={i} className="flex-1 group relative">
                       <div
-                        className="w-full bg-brand-primary/10 rounded-t-xl group-hover:bg-brand-primary transition-all duration-500 cursor-pointer"
+                        className="w-full bg-bougie-champagne/20 rounded-t-xl group-hover:bg-bougie-champagne transition-all duration-500 cursor-pointer"
                         style={{ height: `${heightPct}%` }}
                       />
                       <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-zinc-900 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
@@ -157,12 +157,12 @@ export default function AdminDashboard() {
                   );
                 })}
               </div>
-              <div className="flex justify-between mt-4 text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
+              <div className="flex justify-between mt-4 text-[10px] font-bold text-bougie-taupe/70 uppercase tracking-widest">
                 {monthlyRevenue.map((month, i) => <span key={i}>{month.label}</span>)}
               </div>
             </>
           ) : (
-            <p className="text-center text-zinc-400 py-16">No revenue data yet.</p>
+            <p className="text-center text-bougie-taupe/70 py-16">No revenue data yet.</p>
           )}
         </div>
 
@@ -175,12 +175,12 @@ export default function AdminDashboard() {
                     <span className="font-medium text-zinc-700">{service.name}</span>
                     <span className="font-bold">{service.share}%</span>
                   </div>
-                  <div className="w-full h-3 bg-zinc-50 rounded-full overflow-hidden">
+                  <div className="w-full h-3 bg-bougie-cream rounded-full overflow-hidden">
                     <div className={`h-full ${service.color}`} style={{ width: `${service.share}%` }} />
                   </div>
                 </div>
               )) : (
-                <p className="text-center text-zinc-400 py-8">No booking data available yet.</p>
+                <p className="text-center text-bougie-espresso/50 py-8">No booking data available yet.</p>
               )}
            </div>
         </div>

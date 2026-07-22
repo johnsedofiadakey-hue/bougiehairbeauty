@@ -113,8 +113,8 @@ export default function FormulationLab() {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h3 className="text-3xl font-serif text-brand-primary">Formulation Lab</h3>
-          <p className="text-zinc-500">Manage your secret mixes and chemical recipes.</p>
+          <h3 className="text-3xl font-serif text-bougie-espresso">Formulation Lab</h3>
+          <p className="text-bougie-espresso/60">Manage your secret mixes and chemical recipes.</p>
         </div>
         <Button onClick={openAdd} className="gap-2">
           <Plus className="w-4 h-4" /> New Formulation
@@ -122,11 +122,11 @@ export default function FormulationLab() {
       </div>
 
       <div className="relative">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 w-5 h-5" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-bougie-espresso/50 w-5 h-5" />
         <input
           type="text"
           placeholder="Search recipes, ingredients, or clients..."
-          className="w-full pl-12 pr-6 py-4 rounded-3xl border focus:ring-2 focus:ring-brand-primary outline-none"
+          className="w-full pl-12 pr-6 py-4 rounded-3xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
           value={search || ""}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -138,7 +138,7 @@ export default function FormulationLab() {
            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase text-zinc-400">Title</label>
+                  <label className="text-xs font-bold uppercase text-bougie-espresso/50">Title</label>
                   <input
                     value={newForm.title || ""}
                     onChange={e => setNewForm({...newForm, title: e.target.value})}
@@ -147,7 +147,7 @@ export default function FormulationLab() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase text-zinc-400">Client ID (Optional)</label>
+                  <label className="text-xs font-bold uppercase text-bougie-espresso/50">Client ID (Optional)</label>
                   <input
                     value={newForm.clientId || ""}
                     onChange={e => setNewForm({...newForm, clientId: e.target.value})}
@@ -156,28 +156,28 @@ export default function FormulationLab() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase text-zinc-400">Upload Before Image</label>
+                  <label className="text-xs font-bold uppercase text-bougie-espresso/50">Upload Before Image</label>
                   <input
                     type="file"
                     accept="image/*"
                     onChange={(e) => uploadFile(e, 'beforeImage')}
                     className="w-full px-4 py-2 rounded-xl border text-xs"
                   />
-                  {newForm.beforeImage && <p className="text-[10px] text-zinc-400 truncate">Uploaded: {newForm.beforeImage}</p>}
+                  {newForm.beforeImage && <p className="text-[10px] text-bougie-espresso/50 truncate">Uploaded: {newForm.beforeImage}</p>}
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase text-zinc-400">Upload After Image</label>
+                  <label className="text-xs font-bold uppercase text-bougie-espresso/50">Upload After Image</label>
                   <input
                     type="file"
                     accept="image/*"
                     onChange={(e) => uploadFile(e, 'afterImage')}
                     className="w-full px-4 py-2 rounded-xl border text-xs"
                   />
-                  {newForm.afterImage && <p className="text-[10px] text-zinc-400 truncate">Uploaded: {newForm.afterImage}</p>}
+                  {newForm.afterImage && <p className="text-[10px] text-bougie-espresso/50 truncate">Uploaded: {newForm.afterImage}</p>}
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase text-zinc-400">Mix Instructions</label>
+                <label className="text-xs font-bold uppercase text-bougie-espresso/50">Mix Instructions</label>
                 <textarea
                   value={newForm.description || ""}
                   onChange={e => setNewForm({...newForm, description: e.target.value})}
@@ -197,48 +197,48 @@ export default function FormulationLab() {
         {filtered.map((form) => (
           <div key={form.id} className="bg-white rounded-[40px] p-8 border hover:shadow-xl transition-all group">
             <div className="flex justify-between items-start mb-6">
-              <div className="w-12 h-12 rounded-2xl bg-brand-primary/5 flex items-center justify-center text-brand-primary">
+              <div className="w-12 h-12 rounded-2xl bg-bougie-espresso/5 flex items-center justify-center text-bougie-espresso">
                 <Beaker className="w-6 h-6" />
               </div>
               <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button onClick={() => handleCopy(form)} className="p-2 hover:bg-zinc-50 rounded-lg text-zinc-400" title="Copy mix instructions">
+                <button onClick={() => handleCopy(form)} className="p-2 hover:bg-bougie-cream rounded-lg text-bougie-espresso/50" title="Copy mix instructions">
                   {copiedId === form.id ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
                 </button>
-                <button onClick={() => openEdit(form)} className="p-2 hover:bg-zinc-50 rounded-lg text-zinc-400" title="Edit">
+                <button onClick={() => openEdit(form)} className="p-2 hover:bg-bougie-cream rounded-lg text-bougie-espresso/50" title="Edit">
                   <Pencil className="w-4 h-4" />
                 </button>
-                <button onClick={() => handleDelete(form.id)} className="p-2 hover:bg-zinc-50 rounded-lg text-zinc-400 hover:text-red-500" title="Delete">
+                <button onClick={() => handleDelete(form.id)} className="p-2 hover:bg-bougie-cream rounded-lg text-bougie-espresso/50 hover:text-red-500" title="Delete">
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
             </div>
-            <h4 className="text-xl font-serif text-brand-primary mb-2">{form.title}</h4>
-            <p className="text-xs text-zinc-400 font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+            <h4 className="text-xl font-serif text-bougie-espresso mb-2">{form.title}</h4>
+            <p className="text-xs text-bougie-espresso/50 font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
               <User className="w-3 h-3" /> {form.clientId ? "Client Specific" : "Global Template"}
             </p>
-            <div className="p-4 bg-zinc-50 rounded-2xl border border-dashed text-sm text-zinc-600 line-clamp-3">
+            <div className="p-4 bg-bougie-cream rounded-2xl border border-dashed text-sm text-bougie-espresso/70 line-clamp-3">
               {form.description}
             </div>
             <div className="mt-6 pt-6 border-t flex justify-between items-center">
-              <span className="text-[10px] text-zinc-400 uppercase tracking-widest">{new Date(form.createdAt).toLocaleDateString()}</span>
+              <span className="text-[10px] text-bougie-espresso/50 uppercase tracking-widest">{new Date(form.createdAt).toLocaleDateString()}</span>
               <Button variant="ghost" size="sm" className="text-xs" onClick={() => setViewing(form)}>View Full Mix</Button>
             </div>
           </div>
         ))}
         {filtered.length === 0 && (
-          <p className="col-span-full text-center py-12 text-zinc-400 italic">No formulations match your search.</p>
+          <p className="col-span-full text-center py-12 text-bougie-espresso/50 italic">No formulations match your search.</p>
         )}
       </div>
 
       {viewing && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-6" onClick={() => setViewing(null)}>
           <div className="bg-white rounded-[40px] w-full max-w-lg p-10 shadow-2xl relative animate-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
-            <button onClick={() => setViewing(null)} className="absolute top-8 right-8 p-2 hover:bg-zinc-100 rounded-full">
-              <X className="w-6 h-6 text-zinc-400" />
+            <button onClick={() => setViewing(null)} className="absolute top-8 right-8 p-2 hover:bg-bougie-cream drop-shadow-sm rounded-full">
+              <X className="w-6 h-6 text-bougie-espresso/50" />
             </button>
-            <h4 className="text-2xl font-serif text-brand-primary mb-2">{viewing.title}</h4>
-            <p className="text-xs text-zinc-400 font-bold uppercase tracking-widest mb-6">{new Date(viewing.createdAt).toLocaleDateString()}</p>
-            <div className="p-6 bg-zinc-50 rounded-2xl border border-dashed text-sm text-zinc-600 whitespace-pre-wrap">
+            <h4 className="text-2xl font-serif text-bougie-espresso mb-2">{viewing.title}</h4>
+            <p className="text-xs text-bougie-espresso/50 font-bold uppercase tracking-widest mb-6">{new Date(viewing.createdAt).toLocaleDateString()}</p>
+            <div className="p-6 bg-bougie-cream rounded-2xl border border-dashed text-sm text-bougie-espresso/70 whitespace-pre-wrap">
               {viewing.description}
             </div>
             {(viewing.beforeImage || viewing.afterImage) && (

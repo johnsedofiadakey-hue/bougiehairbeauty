@@ -23,8 +23,8 @@ export function CalendarGrid({ appointments, onSelect }: { appointments: any[], 
           <div />
           {days.map(day => (
             <div key={day.toString()} className="text-center">
-              <p className="text-[10px] font-bold uppercase text-zinc-400 tracking-widest mb-1">{format(day, 'EEE')}</p>
-              <p className={`text-lg font-serif ${isSameDay(day, new Date()) ? 'text-brand-primary font-bold underline decoration-brand-accent decoration-2 underline-offset-4' : 'text-zinc-600'}`}>
+              <p className="text-[10px] font-bold uppercase text-bougie-espresso/50 tracking-widest mb-1">{format(day, 'EEE')}</p>
+              <p className={`text-lg font-serif ${isSameDay(day, new Date()) ? 'text-bougie-espresso font-bold underline decoration-brand-accent decoration-2 underline-offset-4' : 'text-bougie-espresso/70'}`}>
                 {format(day, 'dd')}
               </p>
             </div>
@@ -35,13 +35,13 @@ export function CalendarGrid({ appointments, onSelect }: { appointments: any[], 
         <div className="relative">
           {hours.map(hour => (
             <div key={hour} className="grid grid-cols-[100px_repeat(7,1fr)] border-b border-zinc-50 h-24 group">
-              <div className="flex items-center justify-center text-[10px] font-bold text-zinc-300 group-hover:text-brand-primary transition-colors">
+              <div className="flex items-center justify-center text-[10px] font-bold text-zinc-300 group-hover:text-bougie-espresso transition-colors">
                 {format(new Date().setHours(hour, 0), 'h:mm a')}
               </div>
               {days.map(day => {
                 const slotApts = getAptsForSlot(day, hour);
                 return (
-                  <div key={day.toString() + hour} className="border-l border-zinc-50 relative p-1 group/slot hover:bg-zinc-50/50 transition-colors">
+                  <div key={day.toString() + hour} className="border-l border-zinc-50 relative p-1 group/slot hover:bg-bougie-cream/50 transition-colors">
                     {slotApts.map(apt => (
                       <div 
                         key={apt.id}
@@ -49,7 +49,7 @@ export function CalendarGrid({ appointments, onSelect }: { appointments: any[], 
                         className={`absolute inset-1 rounded-2xl border p-2 shadow-sm cursor-pointer transition-all hover:scale-[1.02] hover:z-10 group/apt ${
                           apt.status === 'COMPLETED' ? 'bg-emerald-50 border-emerald-100 text-emerald-800' :
                           apt.status === 'PENDING' ? 'bg-amber-50 border-amber-100 text-amber-800' :
-                          'bg-brand-primary/5 text-brand-primary/20 text-brand-primary'
+                          'bg-bougie-espresso/5 text-bougie-espresso/20 text-bougie-espresso'
                         }`}
                       >
                         <div className="flex items-center gap-1 mb-1">
@@ -58,7 +58,7 @@ export function CalendarGrid({ appointments, onSelect }: { appointments: any[], 
                         </div>
                         <p className="text-[8px] opacity-70 truncate">{apt.services?.map((s: any) => s.name).join(', ')}</p>
                         <div className="absolute bottom-2 right-2 opacity-0 group-hover/apt:opacity-100 transition-opacity">
-                           <Clock className="w-3 h-3 text-brand-primary/40" />
+                           <Clock className="w-3 h-3 text-bougie-espresso/40" />
                         </div>
                       </div>
                     ))}

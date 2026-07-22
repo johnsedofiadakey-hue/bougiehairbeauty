@@ -111,8 +111,8 @@ export default function AdminServices() {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h3 className="text-3xl font-serif text-brand-primary">Service Menu</h3>
-          <p className="text-zinc-500">Define your treatments and their professional pricing.</p>
+          <h3 className="text-3xl font-serif text-bougie-espresso">Service Menu</h3>
+          <p className="text-bougie-espresso/60">Define your treatments and their professional pricing.</p>
         </div>
         <Button onClick={openAdd} className="gap-2">
           <Plus className="w-4 h-4" /> Add Service
@@ -124,22 +124,22 @@ export default function AdminServices() {
           <h4 className="text-xl font-bold mb-6">{editingId ? "Edit Treatment" : "New Treatment"}</h4>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase text-zinc-400">Name</label>
+              <label className="text-xs font-bold uppercase text-bougie-espresso/50">Name</label>
               <input
                 value={formState.name || ""}
                 onChange={e => setFormState({...formState, name: e.target.value})}
-                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                 placeholder="e.g. Classic Lashes"
                 required
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase text-zinc-400">Category</label>
+              <label className="text-xs font-bold uppercase text-bougie-espresso/50">Category</label>
               <input
                 value={formState.category || ""}
                 onChange={e => setFormState({...formState, category: e.target.value})}
                 list="service-categories"
-                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                 placeholder="e.g. Waxing, Lashes, Brows..."
                 required
               />
@@ -148,56 +148,56 @@ export default function AdminServices() {
               </datalist>
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase text-zinc-400">Price ({currency})</label>
+              <label className="text-xs font-bold uppercase text-bougie-espresso/50">Price ({currency})</label>
               <input
                 type="number"
                 value={formState.price || ""}
                 onChange={e => setFormState({...formState, price: e.target.value})}
-                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                 placeholder="0.00"
                 required
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase text-zinc-400">Max Price (optional, for a range)</label>
+              <label className="text-xs font-bold uppercase text-bougie-espresso/50">Max Price (optional, for a range)</label>
               <input
                 type="number"
                 value={formState.priceMax || ""}
                 onChange={e => setFormState({...formState, priceMax: e.target.value})}
-                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                 placeholder="Leave blank for a fixed price"
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase text-zinc-400">Duration (min)</label>
+              <label className="text-xs font-bold uppercase text-bougie-espresso/50">Duration (min)</label>
               <input
                 type="number"
                 value={formState.duration || ""}
                 onChange={e => setFormState({...formState, duration: e.target.value})}
-                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                 placeholder="60"
                 required
               />
             </div>
             <div className="md:col-span-3 space-y-2">
-              <label className="text-xs font-bold uppercase text-zinc-400">Description</label>
+              <label className="text-xs font-bold uppercase text-bougie-espresso/50">Description</label>
               <textarea
                 value={formState.description || ""}
                 onChange={e => setFormState({...formState, description: e.target.value})}
-                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none h-12"
+                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none h-12"
                 placeholder="Brief description of the service..."
               />
             </div>
             <div className="md:col-span-4 space-y-2">
-              <label className="text-xs font-bold uppercase text-zinc-400">Upload Service Image (optional)</label>
+              <label className="text-xs font-bold uppercase text-bougie-espresso/50">Upload Service Image (optional)</label>
               <div className="flex flex-col gap-2">
                 <input
                   type="file"
                   accept="image/*"
                   onChange={uploadFile}
-                  className="text-xs text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brand-primary/10 file:text-brand-primary hover:file:bg-brand-primary/20 cursor-pointer"
+                  className="text-xs text-bougie-espresso/60 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-bougie-espresso/10 file:text-bougie-espresso hover:file:bg-bougie-espresso/20 cursor-pointer"
                 />
-                {formState.imageUrl && <p className="text-[10px] text-zinc-400 truncate">Uploaded: {formState.imageUrl}</p>}
+                {formState.imageUrl && <p className="text-[10px] text-bougie-espresso/50 truncate">Uploaded: {formState.imageUrl}</p>}
               </div>
             </div>
             <div className="flex items-end gap-2 md:col-span-4">
@@ -211,20 +211,20 @@ export default function AdminServices() {
       {categories.map((category) => (
         <div key={category} className="space-y-4">
           <div className="flex items-center gap-2">
-            <ServiceCategoryIcon category={category} className="w-5 h-5 text-brand-primary" />
-            <h4 className="text-lg font-bold text-brand-primary">{category}</h4>
+            <ServiceCategoryIcon category={category} className="w-5 h-5 text-bougie-espresso" />
+            <h4 className="text-lg font-bold text-bougie-espresso">{category}</h4>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.filter((s) => (s.category || "Other") === category).map((service) => (
               <div key={service.id} className="bg-white p-6 rounded-3xl border hover:shadow-md transition-all group relative">
                 <div className="flex justify-between items-start mb-4">
-                  <div className="w-12 h-12 rounded-2xl bg-brand-secondary/50 flex items-center justify-center text-brand-primary">
+                  <div className="w-12 h-12 rounded-2xl bg-bougie-cream/50 flex items-center justify-center text-bougie-espresso">
                     <ServiceCategoryIcon category={service.category} className="w-6 h-6" />
                   </div>
                   <div className="flex gap-3">
                     <button
                       onClick={() => openEdit(service)}
-                      className="text-zinc-300 hover:text-brand-primary transition-colors"
+                      className="text-zinc-300 hover:text-bougie-espresso transition-colors"
                     >
                       <Pencil className="w-5 h-5" />
                     </button>
@@ -237,10 +237,10 @@ export default function AdminServices() {
                   </div>
                 </div>
                 <h4 className="text-lg font-bold">{service.name}</h4>
-                <p className="text-zinc-500 text-sm mb-6">{service.duration} mins</p>
+                <p className="text-bougie-espresso/60 text-sm mb-6">{service.duration} mins</p>
                 <div className="flex justify-between items-center pt-4 border-t border-zinc-50">
-                  <span className="text-xl font-bold text-brand-primary">{formatServicePrice(service, currency)}</span>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Active</span>
+                  <span className="text-xl font-bold text-bougie-espresso">{formatServicePrice(service, currency)}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-bougie-espresso/50">Active</span>
                 </div>
               </div>
             ))}

@@ -36,7 +36,7 @@ export async function generateViewport(): Promise<any> {
   } catch (e) {}
 
   return {
-    themeColor: settings?.primaryColor || "#E6127E",
+    themeColor: settings?.primaryColor || "#4A3B32",
     width: "device-width",
     initialScale: 1,
     maximumScale: 1,
@@ -56,11 +56,11 @@ export default async function RootLayout({
   } catch (e) {}
 
   const themeSettings = settings || {
-    primaryColor: '#E6127E',
-    secondaryColor: '#FAF3E7',
+    primaryColor: '#4A3B32', // Mocha
+    secondaryColor: '#E6127E', // Pink
     accentColor: '#D4AF37',
-    textPrimaryColor: '#3E1D10',
-    textSecondaryColor: '#6B5850',
+    textPrimaryColor: '#4A3B32',
+    textSecondaryColor: '#8B7355', // Taupe
     fontFamily: 'Inter'
   };
 
@@ -85,7 +85,7 @@ export default async function RootLayout({
         {settings?.logoUrl && <link rel="apple-touch-icon" href={settings.logoUrl} />}
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
-      <body className="font-[family-name:var(--font-body)] bg-[var(--color-secondary)] text-[var(--color-text-primary)] antialiased">
+      <body className="font-[family-name:var(--font-body)] bg-bougie-cream text-[var(--color-text-primary)] antialiased">
         <Providers>
           {children}
         </Providers>

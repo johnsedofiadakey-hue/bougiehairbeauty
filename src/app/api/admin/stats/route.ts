@@ -72,7 +72,7 @@ export async function GET() {
     const popularServices = store.services.map((service) => ({
       name: service.name,
       share: totalBookings > 0 ? Math.round(((serviceCounts.get(service.id) || 0) / totalBookings) * 100) : 0,
-      color: "bg-brand-primary"
+      color: "bg-bougie-espresso"
     })).sort((a, b) => b.share - a.share).slice(0, 3);
 
     return NextResponse.json({

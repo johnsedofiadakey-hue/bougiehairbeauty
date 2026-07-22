@@ -66,19 +66,19 @@ export default function AdminAppointments() {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h3 className="text-3xl font-serif text-brand-primary">Appointment Book</h3>
-          <p className="text-zinc-500">Manage your daily schedule and confirm client arrivals.</p>
+          <h3 className="text-3xl font-serif text-bougie-espresso">Appointment Book</h3>
+          <p className="text-bougie-espresso/60">Manage your daily schedule and confirm client arrivals.</p>
         </div>
-        <div className="flex bg-zinc-100 p-1 rounded-xl">
+        <div className="flex bg-bougie-cream drop-shadow-sm p-1 rounded-xl">
           <button 
             onClick={() => setView("list")}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${view === 'list' ? 'bg-white shadow-sm text-brand-primary' : 'text-zinc-500'}`}
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${view === 'list' ? 'bg-white shadow-sm text-bougie-espresso' : 'text-bougie-espresso/60'}`}
           >
             List View
           </button>
           <button 
             onClick={() => setView("calendar")}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${view === 'calendar' ? 'bg-white shadow-sm text-brand-primary' : 'text-zinc-500'}`}
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${view === 'calendar' ? 'bg-white shadow-sm text-bougie-espresso' : 'text-bougie-espresso/60'}`}
           >
             Calendar
           </button>
@@ -89,8 +89,8 @@ export default function AdminAppointments() {
         <div className="bg-white rounded-[40px] shadow-sm border overflow-hidden">
         <div className="overflow-x-auto">
         <table className="w-full text-left min-w-[640px]">
-          <thead className="bg-zinc-50 border-b">
-            <tr className="text-xs uppercase tracking-widest text-zinc-500">
+          <thead className="bg-bougie-cream border-b">
+            <tr className="text-xs uppercase tracking-widest text-bougie-espresso/60">
               <th className="px-8 py-4 font-bold">Client & Service</th>
               <th className="px-8 py-4 font-bold">Time</th>
               <th className="px-8 py-4 font-bold">Status</th>
@@ -99,23 +99,23 @@ export default function AdminAppointments() {
           </thead>
           <tbody className="divide-y">
             {appointments.length > 0 ? appointments.map((apt) => (
-              <tr key={apt.id} className="hover:bg-zinc-50 transition-colors">
+              <tr key={apt.id} className="hover:bg-bougie-cream transition-colors">
                 <td className="px-8 py-6">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-brand-secondary/50 flex items-center justify-center text-brand-primary">
+                    <div className="w-10 h-10 rounded-full bg-bougie-cream/50 flex items-center justify-center text-bougie-espresso">
                       <User className="w-5 h-5" />
                     </div>
                     <div>
                       <p className="font-bold">{apt.client?.user?.name || 'Walk-in Client'}</p>
-                      <p className="text-xs text-brand-primary">{apt.services?.map((s: any) => s.name).join(', ') || 'No services'}</p>
+                      <p className="text-xs text-bougie-espresso">{apt.services?.map((s: any) => s.name).join(', ') || 'No services'}</p>
                     </div>
                   </div>
                 </td>
                 <td className="px-8 py-6">
                   <div className="flex items-center gap-2 text-sm">
-                    <CalendarIcon className="w-4 h-4 text-zinc-400" />
+                    <CalendarIcon className="w-4 h-4 text-bougie-espresso/50" />
                     <span>{new Date(apt.startTime).toLocaleDateString()}</span>
-                    <Clock className="w-4 h-4 text-zinc-400 ml-2" />
+                    <Clock className="w-4 h-4 text-bougie-espresso/50 ml-2" />
                     <span>{new Date(apt.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                   </div>
                 </td>
@@ -123,7 +123,7 @@ export default function AdminAppointments() {
                   <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                     apt.status === 'COMPLETED' ? 'bg-emerald-100 text-emerald-700' :
                     apt.status === 'PENDING' ? 'bg-amber-100 text-amber-700' :
-                    'bg-zinc-100 text-zinc-700'
+                    'bg-bougie-cream drop-shadow-sm text-zinc-700'
                   }`}>
                     {apt.status}
                   </span>
@@ -148,14 +148,14 @@ export default function AdminAppointments() {
                     )}
                     <button 
                       onClick={() => setActiveInvoice(apt)}
-                      className="px-3 py-2 text-[10px] font-bold uppercase bg-zinc-100 rounded-lg hover:bg-zinc-200"
+                      className="px-3 py-2 text-[10px] font-bold uppercase bg-bougie-cream drop-shadow-sm rounded-lg hover:bg-zinc-200"
                     >
                       Invoice
                     </button>
                     <div className="relative">
                       <button
                         onClick={() => setOpenMenuId(openMenuId === apt.id ? null : apt.id)}
-                        className="p-2 hover:bg-zinc-100 rounded-lg text-zinc-400"
+                        className="p-2 hover:bg-bougie-cream drop-shadow-sm rounded-lg text-bougie-espresso/50"
                       >
                         <MoreVertical className="w-5 h-5" />
                       </button>
@@ -166,7 +166,7 @@ export default function AdminAppointments() {
                             {apt.status !== 'CANCELLED' && (
                               <button
                                 onClick={() => { updateStatus(apt.id, 'CANCELLED'); setOpenMenuId(null); }}
-                                className="w-full text-left px-4 py-3 text-xs font-medium hover:bg-zinc-50 text-zinc-700"
+                                className="w-full text-left px-4 py-3 text-xs font-medium hover:bg-bougie-cream text-zinc-700"
                               >
                                 Cancel Appointment
                               </button>
@@ -186,7 +186,7 @@ export default function AdminAppointments() {
               </tr>
             )) : (
               <tr>
-                <td colSpan={4} className="px-8 py-12 text-center text-zinc-400 italic">
+                <td colSpan={4} className="px-8 py-12 text-center text-bougie-espresso/50 italic">
                   No appointments scheduled yet.
                 </td>
               </tr>
@@ -208,15 +208,15 @@ export default function AdminAppointments() {
           <div className="bg-white rounded-[40px] w-full max-w-lg p-10 shadow-2xl relative animate-in zoom-in-95 duration-200">
             <button 
               onClick={() => setActiveInvoice(null)}
-              className="absolute top-8 right-8 p-2 hover:bg-zinc-100 rounded-full"
+              className="absolute top-8 right-8 p-2 hover:bg-bougie-cream drop-shadow-sm rounded-full"
             >
-              <XCircle className="w-6 h-6 text-zinc-400" />
+              <XCircle className="w-6 h-6 text-bougie-espresso/50" />
             </button>
             <div className="mb-8">
-              <h4 className="text-2xl font-serif text-brand-primary">Billing Summary</h4>
-              <p className="text-zinc-500 text-sm">Receipt for session #${activeInvoice.id.slice(-6)}</p>
+              <h4 className="text-2xl font-serif text-bougie-espresso">Billing Summary</h4>
+              <p className="text-bougie-espresso/60 text-sm">Receipt for session #${activeInvoice.id.slice(-6)}</p>
             </div>
-            <pre className="bg-zinc-50 p-8 rounded-3xl font-mono text-sm leading-relaxed text-zinc-700 whitespace-pre-wrap border border-dashed">
+            <pre className="bg-bougie-cream p-8 rounded-3xl font-mono text-sm leading-relaxed text-zinc-700 whitespace-pre-wrap border border-dashed">
               {generateInvoiceSummary({
                 invoiceNumber: `INV-${activeInvoice.id.slice(-6).toUpperCase()}`,
                 date: new Date(activeInvoice.startTime).toLocaleDateString(),

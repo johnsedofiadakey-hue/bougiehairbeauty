@@ -183,14 +183,14 @@ export default function ClientPortalAuth() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#1C140F] flex items-center justify-center p-6 overflow-hidden">
+    <div className="relative min-h-screen bg-bougie-espresso flex items-center justify-center p-6 overflow-hidden">
       {/* Ambient glow for the glass card to actually blur against — see Login page for the same treatment. */}
-      <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-brand-primary/25 blur-3xl" />
-      <div className="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-[#D4AF37]/20 blur-3xl" />
+      <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-bougie-pink/25 blur-3xl" />
+      <div className="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-bougie-champagne/20 blur-3xl" />
 
       <div id="recaptcha-container" />
       <div className="relative max-w-md w-full bg-white/10 backdrop-blur-2xl border border-white/15 rounded-3xl p-8 sm:p-10 shadow-2xl overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-1 bg-[#D4AF37]/60" />
+        <div className="absolute top-0 left-0 w-full h-1 bg-bougie-champagne/60" />
         <Link href="/" aria-label="Back to website" className="absolute top-6 left-6 sm:top-8 sm:left-8 flex items-center gap-2 text-white/50 hover:text-white transition-colors text-xs font-bold uppercase tracking-widest group bg-white/10 sm:bg-transparent rounded-full w-10 h-10 sm:w-auto sm:h-auto justify-center">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           <span className="hidden sm:inline">Back to Website</span>
@@ -236,14 +236,14 @@ export default function ClientPortalAuth() {
                     inputMode="numeric"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
-                    className="w-full pl-3 pr-4 py-4 rounded-r-xl border border-white/15 bg-white/5 text-white placeholder:text-white/30 focus:ring-2 focus:ring-[#D4AF37] outline-none transition-all"
+                    className="w-full pl-3 pr-4 py-4 rounded-r-xl border border-white/15 bg-white/5 text-white placeholder:text-white/30 focus:ring-2 focus:ring-bougie-champagne outline-none transition-all"
                     placeholder="07770 375859 or 7770375859"
                     required
                     disabled={loading}
                   />
                 </div>
               </div>
-              <Button type="submit" className="w-full h-16 text-lg rounded-2xl gap-2 shadow-xl shadow-brand-primary/20" disabled={loading || !settingsLoaded}>
+              <Button type="submit" className="w-full h-16 text-lg rounded-2xl gap-2 shadow-xl shadow-bougie-champagne/20 bg-white text-bougie-espresso hover:bg-bougie-cream" disabled={loading || !settingsLoaded}>
                 {!settingsLoaded ? "Loading..." : loading ? "Sending code..." : <>Continue <ArrowRight className="w-5 h-5" /></>}
               </Button>
               {settings?.enableEmailLink && (
@@ -269,7 +269,7 @@ export default function ClientPortalAuth() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-12 pr-4 py-4 rounded-xl border border-white/15 bg-white/5 text-white placeholder:text-white/30 focus:ring-2 focus:ring-[#D4AF37] outline-none transition-all"
+                    className="w-full pl-12 pr-4 py-4 rounded-xl border border-white/15 bg-white/5 text-white placeholder:text-white/30 focus:ring-2 focus:ring-bougie-champagne outline-none transition-all"
                     placeholder="you@example.com"
                     required
                     disabled={loading}
@@ -277,7 +277,7 @@ export default function ClientPortalAuth() {
                 </div>
                 <p className="text-[11px] text-white/40">We'll email you a one-click link — no code to type.</p>
               </div>
-              <Button type="submit" className="w-full h-16 text-lg rounded-2xl gap-2 shadow-xl shadow-brand-primary/20" disabled={loading}>
+              <Button type="submit" className="w-full h-16 text-lg rounded-2xl gap-2 shadow-xl shadow-bougie-champagne/20 bg-white text-bougie-espresso hover:bg-bougie-cream" disabled={loading}>
                 {loading ? "Sending link..." : <>Send Me a Link <ArrowRight className="w-5 h-5" /></>}
               </Button>
               <button
@@ -293,7 +293,7 @@ export default function ClientPortalAuth() {
 
           {step === "email-sent" && (
             <div className="space-y-4 text-center animate-in fade-in slide-in-from-right-4">
-              <div className="w-16 h-16 bg-[#D4AF37]/15 border border-[#D4AF37]/30 rounded-2xl mx-auto flex items-center justify-center text-[#D4AF37]">
+              <div className="w-16 h-16 bg-bougie-champagne/15 border border-bougie-champagne/30 rounded-2xl mx-auto flex items-center justify-center text-bougie-champagne">
                 <MailCheck className="w-8 h-8" />
               </div>
               <p className="text-sm text-white/60">
@@ -321,20 +321,20 @@ export default function ClientPortalAuth() {
                   maxLength={6}
                   value={otp}
                   onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-                  className="w-full text-center text-4xl tracking-[0.5em] font-bold py-4 rounded-xl border border-white/15 bg-white/5 text-white focus:ring-2 focus:ring-[#D4AF37] outline-none"
+                  className="w-full text-center text-4xl tracking-[0.5em] font-bold py-4 rounded-xl border border-white/15 bg-white/5 text-white focus:ring-2 focus:ring-bougie-champagne outline-none"
                   placeholder="000000"
                   required
                   disabled={loading}
                 />
               </div>
-              <Button type="submit" className="w-full h-16 text-lg rounded-2xl gap-2 shadow-xl shadow-brand-primary/20" disabled={loading}>
+              <Button type="submit" className="w-full h-16 text-lg rounded-2xl gap-2 shadow-xl shadow-bougie-champagne/20 bg-white text-bougie-espresso hover:bg-bougie-cream" disabled={loading}>
                 {loading ? "Verifying..." : <>Verify & Enter <ShieldCheck className="w-5 h-5" /></>}
               </Button>
               <div className="flex flex-col gap-2 pt-2">
                 <button
                   type="button"
                   onClick={() => { if (!loading) setStep("password"); }}
-                  className="w-full text-xs font-bold uppercase text-[#D4AF37] hover:text-white transition-colors flex items-center justify-center gap-2"
+                  className="w-full text-xs font-bold uppercase text-bougie-champagne hover:text-white transition-colors flex items-center justify-center gap-2"
                   disabled={loading}
                 >
                   Log in with password instead
@@ -361,14 +361,14 @@ export default function ClientPortalAuth() {
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-12 pr-4 py-4 rounded-xl border border-white/15 bg-white/5 text-white placeholder:text-white/30 focus:ring-2 focus:ring-[#D4AF37] outline-none transition-all"
+                    className="w-full pl-12 pr-4 py-4 rounded-xl border border-white/15 bg-white/5 text-white placeholder:text-white/30 focus:ring-2 focus:ring-bougie-champagne outline-none transition-all"
                     placeholder="••••••••"
                     required
                     disabled={loading}
                   />
                 </div>
               </div>
-              <Button type="submit" className="w-full h-16 text-lg rounded-2xl gap-2 shadow-xl shadow-brand-primary/20" disabled={loading}>
+              <Button type="submit" className="w-full h-16 text-lg rounded-2xl gap-2 shadow-xl shadow-bougie-champagne/20 bg-white text-bougie-espresso hover:bg-bougie-cream" disabled={loading}>
                 {loading ? "Securing Session..." : <>Secure Login <ShieldCheck className="w-5 h-5" /></>}
               </Button>
               <div className="flex flex-col gap-2 pt-2">
@@ -387,7 +387,7 @@ export default function ClientPortalAuth() {
                       }
                     }
                   }}
-                  className="w-full text-xs font-bold uppercase text-[#D4AF37] hover:text-white transition-colors flex items-center justify-center gap-2"
+                  className="w-full text-xs font-bold uppercase text-bougie-champagne hover:text-white transition-colors flex items-center justify-center gap-2"
                   disabled={loading}
                 >
                   Forgot password? Use OTP code

@@ -93,19 +93,19 @@ export function AdminNotifications() {
       {pushEnabled === false && (
         <button
           onClick={handleEnablePush}
-          className="hidden sm:block text-[11px] font-bold uppercase tracking-wider text-zinc-400 hover:text-brand-primary transition-colors whitespace-nowrap"
+          className="hidden sm:block text-[11px] font-bold uppercase tracking-wider text-bougie-espresso/50 hover:text-bougie-espresso transition-colors whitespace-nowrap"
         >
           Enable Alerts
         </button>
       )}
       <button
         onClick={handleBellClick}
-        className="relative p-2 hover:bg-zinc-100 rounded-lg text-zinc-500 transition-colors"
+        className="relative p-2 hover:bg-bougie-cream drop-shadow-sm rounded-lg text-bougie-espresso/60 transition-colors"
         aria-label="New bookings"
       >
-        {count > 0 ? <BellRing className="w-5 h-5 text-brand-primary" /> : <Bell className="w-5 h-5" />}
+        {count > 0 ? <BellRing className="w-5 h-5 text-bougie-espresso" /> : <Bell className="w-5 h-5" />}
         {count > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
+          <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-bougie-espresso text-white text-[10px] font-bold flex items-center justify-center">
             {count > 9 ? "9+" : count}
           </span>
         )}

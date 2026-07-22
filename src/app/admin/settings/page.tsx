@@ -136,7 +136,7 @@ export default function SettingsPage() {
       <div className="flex-1 space-y-8">
         <div className="bg-white rounded-3xl p-8 shadow-sm border">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary">
+            <div className="w-10 h-10 rounded-full bg-bougie-espresso/10 flex items-center justify-center text-bougie-espresso">
               <Palette className="w-5 h-5" />
             </div>
             <h3 className="text-2xl font-serif">Brand Control Center</h3>
@@ -146,7 +146,7 @@ export default function SettingsPage() {
             {/* Visual Identity */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-zinc-500">Primary Color</label>
+                <label className="text-sm font-medium text-bougie-espresso/60">Primary Color</label>
                 <div className="flex gap-2">
                   <input 
                     type="color" 
@@ -158,7 +158,7 @@ export default function SettingsPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-zinc-500">Secondary Color</label>
+                <label className="text-sm font-medium text-bougie-espresso/60">Secondary Color</label>
                 <div className="flex gap-2">
                   <input 
                     type="color" 
@@ -170,7 +170,7 @@ export default function SettingsPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-zinc-500">Accent Color</label>
+                <label className="text-sm font-medium text-bougie-espresso/60">Accent Color</label>
                 <div className="flex gap-2">
                   <input 
                     type="color" 
@@ -186,7 +186,7 @@ export default function SettingsPage() {
             {/* Typography Colors */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-dashed">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-zinc-500">Primary Font Color (Titles & Headers)</label>
+                <label className="text-sm font-medium text-bougie-espresso/60">Primary Font Color (Titles & Headers)</label>
                 <div className="flex gap-2">
                   <input 
                     type="color" 
@@ -198,7 +198,7 @@ export default function SettingsPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-zinc-500">Secondary Font Color (Body & Subtitles)</label>
+                <label className="text-sm font-medium text-bougie-espresso/60">Secondary Font Color (Body & Subtitles)</label>
                 <div className="flex gap-2">
                   <input 
                     type="color" 
@@ -213,7 +213,7 @@ export default function SettingsPage() {
 
             {/* Content Control */}
             <div className="space-y-6 pt-6 border-t">
-              <div className="flex items-center gap-2 text-zinc-400 mb-2">
+              <div className="flex items-center gap-2 text-bougie-espresso/50 mb-2">
                 <Type className="w-4 h-4" />
                 <span className="text-xs font-bold uppercase tracking-widest">Content & Messaging</span>
               </div>
@@ -225,7 +225,7 @@ export default function SettingsPage() {
                     type="text" 
                     value={settings.companyName || ""}
                     onChange={(e) => setSettings({...settings, companyName: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                    className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                   />
                 </div>
                 <div className="space-y-2">
@@ -248,23 +248,23 @@ export default function SettingsPage() {
 
                 {/* Gateways & Integrations */}
                 <div className="pt-8 border-t space-y-6">
-                  <div className="flex items-center gap-2 text-zinc-400 mb-2">
+                  <div className="flex items-center gap-2 text-bougie-espresso/50 mb-2">
                     <ImageIcon className="w-4 h-4" />
                     <span className="text-xs font-bold uppercase tracking-widest">Hero Media & Branding</span>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-zinc-700">Hero Media Type</label>
-                      <div className="flex bg-zinc-100 p-1 rounded-xl">
+                      <div className="flex bg-bougie-cream drop-shadow-sm p-1 rounded-xl">
                         <button 
                           onClick={() => setSettings({...settings, heroMediaType: 'image'})}
-                          className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${settings.heroMediaType === 'image' ? 'bg-white shadow-sm text-brand-primary' : 'text-zinc-500'}`}
+                          className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${settings.heroMediaType === 'image' ? 'bg-white shadow-sm text-bougie-espresso' : 'text-bougie-espresso/60'}`}
                         >
                           Image
                         </button>
                         <button 
                           onClick={() => setSettings({...settings, heroMediaType: 'video'})}
-                          className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${settings.heroMediaType === 'video' ? 'bg-white shadow-sm text-brand-primary' : 'text-zinc-500'}`}
+                          className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${settings.heroMediaType === 'video' ? 'bg-white shadow-sm text-bougie-espresso' : 'text-bougie-espresso/60'}`}
                         >
                           Video
                         </button>
@@ -279,9 +279,9 @@ export default function SettingsPage() {
                           type="file" 
                           accept={settings.heroMediaType === 'image' ? "image/*" : "video/*"}
                           onChange={(e) => uploadFile(e, settings.heroMediaType === 'image' ? 'heroImage' : 'heroVideoUrl')}
-                          className="text-xs text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brand-primary/10 file:text-brand-primary hover:file:bg-brand-primary/20 cursor-pointer"
+                          className="text-xs text-bougie-espresso/60 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-bougie-espresso/10 file:text-bougie-espresso hover:file:bg-bougie-espresso/20 cursor-pointer"
                         />
-                        <p className="text-[10px] text-zinc-400 truncate">Current: {settings.heroMediaType === 'image' ? settings.heroImage : settings.heroVideoUrl}</p>
+                        <p className="text-[10px] text-bougie-espresso/50 truncate">Current: {settings.heroMediaType === 'image' ? settings.heroImage : settings.heroVideoUrl}</p>
                       </div>
                     </div>
                     <div className="space-y-2">
@@ -291,9 +291,9 @@ export default function SettingsPage() {
                           type="file" 
                           accept="image/*"
                           onChange={(e) => uploadFile(e, 'logoUrl')}
-                          className="text-xs text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brand-primary/10 file:text-brand-primary hover:file:bg-brand-primary/20 cursor-pointer"
+                          className="text-xs text-bougie-espresso/60 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-bougie-espresso/10 file:text-bougie-espresso hover:file:bg-bougie-espresso/20 cursor-pointer"
                         />
-                        <p className="text-[10px] text-zinc-400 truncate">Current Logo: {settings.logoUrl || "None"}</p>
+                        <p className="text-[10px] text-bougie-espresso/50 truncate">Current Logo: {settings.logoUrl || "None"}</p>
                       </div>
                     </div>
                   </div>
@@ -301,11 +301,11 @@ export default function SettingsPage() {
 
                 {/* About / Our Story */}
                 <div className="pt-8 border-t space-y-6">
-                  <div className="flex items-center gap-2 text-zinc-400 mb-2">
+                  <div className="flex items-center gap-2 text-bougie-espresso/50 mb-2">
                     <Type className="w-4 h-4" />
                     <span className="text-xs font-bold uppercase tracking-widest">About / Our Story</span>
                   </div>
-                  <p className="text-xs text-zinc-500 -mt-4">Powers the homepage teaser and the full <code className="bg-zinc-100 px-1 rounded">/about</code> page.</p>
+                  <p className="text-xs text-bougie-espresso/60 -mt-4">Powers the homepage teaser and the full <code className="bg-bougie-cream drop-shadow-sm px-1 rounded">/about</code> page.</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-zinc-700">Section Heading</label>
@@ -313,7 +313,7 @@ export default function SettingsPage() {
                         type="text"
                         value={settings.aboutHeading || ''}
                         onChange={(e) => setSettings({...settings, aboutHeading: e.target.value})}
-                        className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                        className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                         placeholder="Our Story"
                       />
                     </div>
@@ -324,9 +324,9 @@ export default function SettingsPage() {
                           type="file"
                           accept="image/*"
                           onChange={(e) => uploadFile(e, 'aboutImage')}
-                          className="text-xs text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brand-primary/10 file:text-brand-primary hover:file:bg-brand-primary/20 cursor-pointer"
+                          className="text-xs text-bougie-espresso/60 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-bougie-espresso/10 file:text-bougie-espresso hover:file:bg-bougie-espresso/20 cursor-pointer"
                         />
-                        <p className="text-[10px] text-zinc-400 truncate">Current: {settings.aboutImage || "None"}</p>
+                        <p className="text-[10px] text-bougie-espresso/50 truncate">Current: {settings.aboutImage || "None"}</p>
                       </div>
                     </div>
                   </div>
@@ -355,7 +355,7 @@ export default function SettingsPage() {
                         type="text"
                         value={settings.aboutBadgeNumber || ''}
                         onChange={(e) => setSettings({...settings, aboutBadgeNumber: e.target.value})}
-                        className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                        className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                         placeholder="10+"
                       />
                     </div>
@@ -365,7 +365,7 @@ export default function SettingsPage() {
                         type="text"
                         value={settings.aboutBadgeLabel || ''}
                         onChange={(e) => setSettings({...settings, aboutBadgeLabel: e.target.value})}
-                        className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                        className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                         placeholder="Years of Luxury Experience"
                       />
                     </div>
@@ -478,50 +478,50 @@ export default function SettingsPage() {
                         type="text"
                         value={settings.currencySymbol || '£'}
                         onChange={(e) => setSettings({...settings, currencySymbol: e.target.value})}
-                        className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                        className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                         placeholder="£ or $"
                       />
                     </div>
                   </div>
-                  <div className="flex items-center justify-between p-4 bg-zinc-50 rounded-2xl border border-dashed border-zinc-200">
+                  <div className="flex items-center justify-between p-4 bg-bougie-cream rounded-2xl border border-dashed border-bougie-espresso/15">
                     <div>
                       <p className="text-sm font-bold">Enable SMS/OTP Authentication</p>
-                      <p className="text-xs text-zinc-500">Requires an active SMS provider balance (e.g. Twilio).</p>
+                      <p className="text-xs text-bougie-espresso/60">Requires an active SMS provider balance (e.g. Twilio).</p>
                     </div>
                     <button 
                       onClick={() => setSettings({...settings, enableOTP: !settings.enableOTP})}
-                      className={`w-12 h-6 rounded-full transition-colors relative ${settings.enableOTP ? 'bg-brand-primary' : 'bg-zinc-300'}`}
+                      className={`w-12 h-6 rounded-full transition-colors relative ${settings.enableOTP ? 'bg-bougie-espresso' : 'bg-zinc-300'}`}
                     >
                       <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${settings.enableOTP ? 'right-1' : 'left-1'}`} />
                     </button>
                   </div>
-                  <div className="flex items-center justify-between p-4 bg-zinc-50 rounded-2xl border border-dashed border-zinc-200">
+                  <div className="flex items-center justify-between p-4 bg-bougie-cream rounded-2xl border border-dashed border-bougie-espresso/15">
                     <div>
                       <p className="text-sm font-bold">Enable Email Link Sign-In</p>
-                      <p className="text-xs text-zinc-500">Lets clients access their portal via a one-click emailed link instead of SMS — same Firebase-verified login, no password or code to type. Requires Brevo to be configured.</p>
+                      <p className="text-xs text-bougie-espresso/60">Lets clients access their portal via a one-click emailed link instead of SMS — same Firebase-verified login, no password or code to type. Requires Brevo to be configured.</p>
                     </div>
                     <button
                       onClick={() => setSettings({...settings, enableEmailLink: !settings.enableEmailLink})}
-                      className={`w-12 h-6 rounded-full transition-colors relative ${settings.enableEmailLink ? 'bg-brand-primary' : 'bg-zinc-300'}`}
+                      className={`w-12 h-6 rounded-full transition-colors relative ${settings.enableEmailLink ? 'bg-bougie-espresso' : 'bg-zinc-300'}`}
                     >
                       <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${settings.enableEmailLink ? 'right-1' : 'left-1'}`} />
                     </button>
                   </div>
-                  <div className="flex items-center justify-between p-4 bg-zinc-50 rounded-2xl border border-dashed border-zinc-200">
+                  <div className="flex items-center justify-between p-4 bg-bougie-cream rounded-2xl border border-dashed border-bougie-espresso/15">
                     <div>
                       <p className="text-sm font-bold">Require Booking Deposit</p>
-                      <p className="text-xs text-zinc-500">Off: clients confirm booking and pay by cash/bank transfer in person. On: shows your booking policy and bank transfer details, and requires agreement before confirming (no online charge — Stripe Checkout isn't connected yet).</p>
+                      <p className="text-xs text-bougie-espresso/60">Off: clients confirm booking and pay by cash/bank transfer in person. On: shows your booking policy and bank transfer details, and requires agreement before confirming (no online charge — Stripe Checkout isn't connected yet).</p>
                     </div>
                     <button
                       onClick={() => setSettings({...settings, requireDeposit: !settings.requireDeposit})}
-                      className={`w-12 h-6 rounded-full transition-colors relative ${settings.requireDeposit ? 'bg-brand-primary' : 'bg-zinc-300'}`}
+                      className={`w-12 h-6 rounded-full transition-colors relative ${settings.requireDeposit ? 'bg-bougie-espresso' : 'bg-zinc-300'}`}
                     >
                       <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${settings.requireDeposit ? 'right-1' : 'left-1'}`} />
                     </button>
                   </div>
 
                   {settings.requireDeposit && (
-                    <div className="space-y-4 p-4 bg-brand-primary/5 rounded-2xl border border-dashed border-brand-primary/20">
+                    <div className="space-y-4 p-4 bg-bougie-espresso/5 rounded-2xl border border-dashed border-bougie-espresso/20">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <label className="text-sm font-medium text-zinc-700">Bank Transfer Details</label>
@@ -529,7 +529,7 @@ export default function SettingsPage() {
                             type="text"
                             value={settings.bankDetails || ''}
                             onChange={(e) => setSettings({...settings, bankDetails: e.target.value})}
-                            className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                            className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                             placeholder="e.g. Sort code 12-34-56, Account 12345678"
                           />
                         </div>
@@ -539,7 +539,7 @@ export default function SettingsPage() {
                             type="text"
                             value={settings.bankAccountName || ''}
                             onChange={(e) => setSettings({...settings, bankAccountName: e.target.value})}
-                            className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                            className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                             placeholder="e.g. Bougie Hair & Beauty"
                           />
                         </div>
@@ -570,7 +570,7 @@ export default function SettingsPage() {
         {/* Account Security */}
         <div className="bg-white rounded-3xl p-8 shadow-sm border">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary">
+            <div className="w-10 h-10 rounded-full bg-bougie-espresso/10 flex items-center justify-center text-bougie-espresso">
               <Lock className="w-5 h-5" />
             </div>
             <h3 className="text-2xl font-serif">Account Security</h3>
@@ -583,7 +583,7 @@ export default function SettingsPage() {
                 type="password"
                 value={accountForm.currentPassword}
                 onChange={(e) => setAccountForm({ ...accountForm, currentPassword: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                 placeholder="Required to make any change below"
                 required
               />
@@ -594,7 +594,7 @@ export default function SettingsPage() {
                 type="email"
                 value={accountForm.newEmail}
                 onChange={(e) => setAccountForm({ ...accountForm, newEmail: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                 placeholder="Leave blank to keep current email"
               />
             </div>
@@ -605,7 +605,7 @@ export default function SettingsPage() {
                   type="password"
                   value={accountForm.newPassword}
                   onChange={(e) => setAccountForm({ ...accountForm, newPassword: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                  className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                   placeholder="Leave blank to keep current"
                   minLength={8}
                 />
@@ -616,7 +616,7 @@ export default function SettingsPage() {
                   type="password"
                   value={accountForm.confirmPassword}
                   onChange={(e) => setAccountForm({ ...accountForm, confirmPassword: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                  className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                   minLength={8}
                 />
               </div>
@@ -642,7 +642,7 @@ export default function SettingsPage() {
       <div className="w-full lg:w-[400px] space-y-4">
         <div className="bg-zinc-900 rounded-3xl p-4 text-white">
           <div className="flex items-center gap-2 mb-4 px-2">
-            <Layout className="w-4 h-4 text-brand-secondary" />
+            <Layout className="w-4 h-4 text-bougie-cream" />
             <span className="text-xs font-bold uppercase tracking-widest">Live Preview</span>
           </div>
           
@@ -698,7 +698,7 @@ export default function SettingsPage() {
             </div>
           </div>
           
-          <p className="text-[10px] text-center mt-4 text-zinc-500">This is a real-time reflection of your public landing page.</p>
+          <p className="text-[10px] text-center mt-4 text-bougie-espresso/60">This is a real-time reflection of your public landing page.</p>
         </div>
       </div>
     </div>

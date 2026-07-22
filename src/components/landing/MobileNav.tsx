@@ -59,12 +59,12 @@ export function MobileNav() {
                 <item.icon
                   className={cn(
                     "w-6 h-6 mb-1 transition-colors",
-                    (pathname === item.href || (item.href.startsWith("/#") && pathname === "/")) ? "text-[#1A1A1A]" : "text-zinc-400"
+                    (pathname === item.href || (item.href.startsWith("/#") && pathname === "/")) ? "text-bougie-espresso" : "text-bougie-espresso/50"
                   )}
                 />
                 <span className={cn(
                   "text-[10px] font-bold uppercase tracking-wider transition-colors",
-                  (pathname === item.href || (item.href.startsWith("/#") && pathname === "/")) ? "text-[#1A1A1A]" : "text-zinc-500"
+                  (pathname === item.href || (item.href.startsWith("/#") && pathname === "/")) ? "text-bougie-espresso" : "text-bougie-espresso/60"
                 )}>
                   {item.name}
                 </span>

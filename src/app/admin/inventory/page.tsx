@@ -75,8 +75,8 @@ export default function AdminInventory() {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h3 className="text-3xl font-serif text-brand-primary">Inventory Vault</h3>
-          <p className="text-zinc-500">Track your raw materials and receive stock alerts.</p>
+          <h3 className="text-3xl font-serif text-bougie-espresso">Inventory Vault</h3>
+          <p className="text-bougie-espresso/60">Track your raw materials and receive stock alerts.</p>
         </div>
         <Button onClick={openAdd} className="gap-2">
           <Plus className="w-4 h-4" /> Add Item
@@ -88,43 +88,43 @@ export default function AdminInventory() {
           <h4 className="text-xl font-bold mb-6">{editingId ? "Edit Material" : "New Raw Material"}</h4>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase text-zinc-400">Material Name</label>
+              <label className="text-xs font-bold uppercase text-bougie-espresso/50">Material Name</label>
               <input
                 value={formState.name}
                 onChange={e => setFormState({...formState, name: e.target.value})}
-                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                 placeholder="e.g. Organic Serum"
                 required
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase text-zinc-400">{editingId ? "Quantity in Stock" : "Initial Quantity"}</label>
+              <label className="text-xs font-bold uppercase text-bougie-espresso/50">{editingId ? "Quantity in Stock" : "Initial Quantity"}</label>
               <input
                 type="number"
                 value={formState.quantity}
                 onChange={e => setFormState({...formState, quantity: e.target.value})}
-                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                 placeholder="1000"
                 required
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase text-zinc-400">Unit (ml, g, etc)</label>
+              <label className="text-xs font-bold uppercase text-bougie-espresso/50">Unit (ml, g, etc)</label>
               <input
                 value={formState.unit}
                 onChange={e => setFormState({...formState, unit: e.target.value})}
-                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                 placeholder="ml"
                 required
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase text-zinc-400">Low Stock Threshold</label>
+              <label className="text-xs font-bold uppercase text-bougie-espresso/50">Low Stock Threshold</label>
               <input
                 type="number"
                 value={formState.minThreshold}
                 onChange={e => setFormState({...formState, minThreshold: e.target.value})}
-                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-primary outline-none"
+                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
                 placeholder="50"
                 required
               />
@@ -144,7 +144,7 @@ export default function AdminInventory() {
           return (
             <div key={item.id} className={`bg-white p-6 rounded-3xl border transition-all group relative ${isLow ? 'border-red-200 ring-2 ring-red-50' : willBeLow ? 'border-amber-200 ring-2 ring-amber-50' : 'hover:shadow-md'}`}>
               <div className="flex justify-between items-start mb-6">
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${isLow ? 'bg-red-100 text-red-600' : willBeLow ? 'bg-amber-100 text-amber-600' : 'bg-brand-secondary/50 text-brand-primary'}`}>
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${isLow ? 'bg-red-100 text-red-600' : willBeLow ? 'bg-amber-100 text-amber-600' : 'bg-bougie-cream/50 text-bougie-espresso'}`}>
                   {isLow ? <AlertCircle className="w-6 h-6" /> : willBeLow ? <Clock className="w-6 h-6" /> : <Package className="w-6 h-6" />}
                 </div>
                 <div className="flex items-center gap-3">
@@ -153,7 +153,7 @@ export default function AdminInventory() {
                   ) : willBeLow ? (
                     <span className="text-[10px] font-bold text-amber-600 uppercase tracking-tighter">Shortage Predicted</span>
                   ) : null}
-                  <button onClick={() => openEdit(item)} className="text-zinc-300 hover:text-brand-primary transition-colors">
+                  <button onClick={() => openEdit(item)} className="text-zinc-300 hover:text-bougie-espresso transition-colors">
                     <Pencil className="w-4 h-4" />
                   </button>
                   <button onClick={() => handleDelete(item.id)} className="text-zinc-300 hover:text-red-500 transition-colors">
@@ -164,24 +164,24 @@ export default function AdminInventory() {
               <h4 className="text-lg font-bold truncate">{item.name}</h4>
               <div className="mt-4 flex items-end justify-between">
                 <div>
-                  <p className="text-2xl font-bold">{item.quantity} <span className="text-sm font-medium text-zinc-400">{item.unit}</span></p>
-                  <div className="w-full bg-zinc-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                  <p className="text-2xl font-bold">{item.quantity} <span className="text-sm font-medium text-bougie-espresso/50">{item.unit}</span></p>
+                  <div className="w-full bg-bougie-cream drop-shadow-sm h-1.5 rounded-full mt-2 overflow-hidden">
                     <div
-                      className={`h-full rounded-full ${isLow ? 'bg-red-500' : willBeLow ? 'bg-amber-500' : 'bg-brand-accent'}`}
+                      className={`h-full rounded-full ${isLow ? 'bg-red-500' : willBeLow ? 'bg-amber-500' : 'bg-bougie-champagne'}`}
                       style={{ width: `${Math.min((item.quantity / (item.minThreshold * 5)) * 100, 100)}%` }}
                     />
                   </div>
                   {item.projectedUsage > 0 && (
-                    <div className="mt-3 p-2 bg-zinc-50 rounded-lg border border-dashed">
-                      <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mb-1">Forecast</p>
+                    <div className="mt-3 p-2 bg-bougie-cream rounded-lg border border-dashed">
+                      <p className="text-[10px] text-bougie-espresso/60 uppercase font-bold tracking-widest mb-1">Forecast</p>
                       <div className="flex justify-between text-xs">
-                        <span className="text-zinc-400">Reserved:</span>
+                        <span className="text-bougie-espresso/50">Reserved:</span>
                         <span className="font-bold">-{item.projectedUsage}{item.unit}</span>
                       </div>
                     </div>
                   )}
                 </div>
-                <button className="p-2 hover:bg-zinc-50 rounded-xl text-zinc-400 group relative">
+                <button className="p-2 hover:bg-bougie-cream rounded-xl text-bougie-espresso/50 group relative">
                   <BarChart3 className="w-5 h-5" />
                   <div className="absolute bottom-full right-0 mb-2 w-48 p-2 bg-zinc-900 text-white text-[10px] rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
                     Projected balance of {item.projectedBalance}{item.unit} after all upcoming sessions.

@@ -37,15 +37,15 @@ export default function ClientDashboard() {
       });
   }, [router]);
 
-  if (loading) return <div className="min-h-screen bg-zinc-50 flex items-center justify-center">Refining your profile...</div>;
-  if (!data) return <div className="min-h-screen bg-zinc-50 flex items-center justify-center">Redirecting you to the portal...</div>;
+  if (loading) return <div className="min-h-screen bg-bougie-cream flex items-center justify-center">Refining your profile...</div>;
+  if (!data) return <div className="min-h-screen bg-bougie-cream flex items-center justify-center">Redirecting you to the portal...</div>;
 
   const { profile, appointments, formulations } = data;
 
   return (
-    <div className="min-h-screen bg-zinc-50 pt-24 pb-12 px-6">
+    <div className="min-h-screen bg-bougie-cream pt-24 pb-12 px-6">
       <div className="max-w-5xl mx-auto">
-        <Link href="/" className="inline-flex items-center gap-2 text-zinc-400 hover:text-brand-primary transition-colors text-xs font-bold uppercase tracking-widest mb-6 group">
+        <Link href="/" className="inline-flex items-center gap-2 text-bougie-espresso/50 hover:text-bougie-espresso transition-colors text-xs font-bold uppercase tracking-widest mb-6 group">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           Back to Website
         </Link>
@@ -53,18 +53,18 @@ export default function ClientDashboard() {
         {/* Profile Header */}
         <div className="bg-white rounded-3xl p-8 mb-8 border shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-6 text-center md:text-left flex-col md:flex-row">
-            <div className="w-24 h-24 rounded-full bg-brand-secondary/50 flex items-center justify-center text-brand-primary border-4 border-white shadow-xl">
+            <div className="w-24 h-24 rounded-full bg-bougie-cream/50 flex items-center justify-center text-bougie-espresso border-4 border-white shadow-xl">
               <UserIcon className="w-10 h-10" />
             </div>
             <div>
-              <h2 className="text-3xl font-serif text-[#1A1A1A]">{profile.name}</h2>
-              <p className="text-zinc-500">{profile.email} • Member since {new Date(profile.createdAt).getFullYear()}</p>
+              <h2 className="text-3xl font-serif text-bougie-espresso">{profile.name}</h2>
+              <p className="text-bougie-espresso/60">{profile.email} • Member since {new Date(profile.createdAt).getFullYear()}</p>
             </div>
           </div>
           <div className="flex gap-3">
              <button 
                onClick={() => router.push("/booking")}
-               className="px-6 py-3 bg-brand-primary text-white rounded-xl shadow-lg hover:scale-105 transition-transform font-medium"
+               className="px-6 py-3 bg-bougie-espresso text-white rounded-xl shadow-lg hover:scale-105 transition-transform font-medium"
              >
                Book New Service
              </button>
@@ -76,19 +76,19 @@ export default function ClientDashboard() {
           <div className="w-64 hidden lg:flex flex-col gap-2">
             <button 
               onClick={() => setActiveTab("appointments")}
-              className={`flex items-center gap-3 px-6 py-4 rounded-2xl transition-all ${activeTab === 'appointments' ? 'bg-brand-primary text-white shadow-lg' : 'hover:bg-white text-zinc-500'}`}
+              className={`flex items-center gap-3 px-6 py-4 rounded-2xl transition-all ${activeTab === 'appointments' ? 'bg-bougie-espresso text-white shadow-lg' : 'hover:bg-white text-bougie-espresso/60'}`}
             >
               <Calendar className="w-5 h-5" /> Appointments
             </button>
             <button 
               onClick={() => setActiveTab("invoices")}
-              className={`flex items-center gap-3 px-6 py-4 rounded-2xl transition-all ${activeTab === 'invoices' ? 'bg-brand-primary text-white shadow-lg' : 'hover:bg-white text-zinc-500'}`}
+              className={`flex items-center gap-3 px-6 py-4 rounded-2xl transition-all ${activeTab === 'invoices' ? 'bg-bougie-espresso text-white shadow-lg' : 'hover:bg-white text-bougie-espresso/60'}`}
             >
               <FileText className="w-5 h-5" /> Digital Receipts
             </button>
             <button 
               onClick={() => setActiveTab("timeline")}
-              className={`flex items-center gap-3 px-6 py-4 rounded-2xl transition-all ${activeTab === 'timeline' ? 'bg-brand-primary text-white shadow-lg' : 'hover:bg-white text-zinc-500'}`}
+              className={`flex items-center gap-3 px-6 py-4 rounded-2xl transition-all ${activeTab === 'timeline' ? 'bg-bougie-espresso text-white shadow-lg' : 'hover:bg-white text-bougie-espresso/60'}`}
             >
               <TreatmentHistory className="w-5 h-5" /> My History
             </button>
@@ -109,14 +109,14 @@ export default function ClientDashboard() {
                 <h3 className="text-xl font-bold mb-6">Upcoming Sessions</h3>
                 <div className="space-y-4">
                   {appointments.filter((a: any) => a.status === 'PENDING' || a.status === 'CONFIRMED').map((apt: any) => (
-                    <div key={apt.id} className="flex flex-col sm:flex-row items-center justify-between p-6 rounded-2xl border bg-zinc-50 hover:border-brand-accent transition-colors gap-4">
+                    <div key={apt.id} className="flex flex-col sm:flex-row items-center justify-between p-6 rounded-2xl border bg-bougie-cream hover:border-bougie-champagne transition-colors gap-4">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-brand-primary shadow-sm">
+                        <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-bougie-espresso shadow-sm">
                           <Scissors className="w-6 h-6" />
                         </div>
                         <div>
                           <p className="font-bold">{apt.services.map((s: any) => s.name).join(', ') || 'Unnamed Service'}</p>
-                          <p className="text-xs text-zinc-500 flex items-center gap-2">
+                          <p className="text-xs text-bougie-espresso/60 flex items-center gap-2">
                             <Calendar className="w-3 h-3" /> {new Date(apt.startTime).toLocaleDateString()} • <Clock className="w-3 h-3" /> {new Date(apt.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                           </p>
                         </div>
@@ -125,7 +125,7 @@ export default function ClientDashboard() {
                         <div className="text-right">
                            <p className="text-sm font-bold">{currency}{apt.totalPrice.toFixed(2)}</p>
                           <span className={`text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-full ${
-                            apt.status === 'CONFIRMED' ? 'bg-emerald-100 text-emerald-700' : 'bg-brand-secondary/50 text-brand-primary'
+                            apt.status === 'CONFIRMED' ? 'bg-emerald-100 text-emerald-700' : 'bg-bougie-cream/50 text-bougie-espresso'
                           }`}>
                             {apt.status}
                           </span>
@@ -134,7 +134,7 @@ export default function ClientDashboard() {
                     </div>
                   ))}
                   {appointments.filter((a: any) => a.status === 'PENDING' || a.status === 'CONFIRMED').length === 0 && (
-                    <p className="text-center py-12 text-zinc-400 italic">No upcoming appointments. Ready for a new look?</p>
+                    <p className="text-center py-12 text-bougie-espresso/50 italic">No upcoming appointments. Ready for a new look?</p>
                   )}
                 </div>
               </div>
@@ -145,11 +145,11 @@ export default function ClientDashboard() {
                 <h3 className="text-xl font-bold mb-6">Historical Log & Formulations</h3>
                 <div className="space-y-8">
                   {formulations.map((form: any) => (
-                    <div key={form.id} className="relative pl-12 border-l-2 border-zinc-100 pb-8 last:pb-0">
-                      <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-brand-accent border-2 border-white shadow-sm" />
-                      <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1">{new Date(form.createdAt).toLocaleDateString()}</p>
+                    <div key={form.id} className="relative pl-12 border-l-2 border-bougie-espresso/10 pb-8 last:pb-0">
+                      <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-bougie-champagne border-2 border-white shadow-sm" />
+                      <p className="text-[10px] font-bold text-bougie-espresso/50 uppercase tracking-widest mb-1">{new Date(form.createdAt).toLocaleDateString()}</p>
                       <h4 className="font-bold text-lg mb-2">{form.title}</h4>
-                      <div className="p-4 bg-zinc-50 rounded-2xl border border-dashed text-sm text-zinc-600 mb-4">
+                      <div className="p-4 bg-bougie-cream rounded-2xl border border-dashed text-sm text-bougie-espresso/70 mb-4">
                         {form.description}
                       </div>
                       
@@ -157,7 +157,7 @@ export default function ClientDashboard() {
                         <div className="flex gap-4">
                            {form.beforeImage && (
                              <div className="relative group cursor-pointer" onClick={() => setSelectedImage(form.beforeImage)}>
-                                <div className="w-32 h-32 rounded-2xl bg-zinc-100 overflow-hidden border-2 border-white shadow-md">
+                                <div className="w-32 h-32 rounded-2xl bg-bougie-cream drop-shadow-sm overflow-hidden border-2 border-white shadow-md">
                                    <img src={form.beforeImage} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" alt="Before" />
                                 </div>
                                 <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-zinc-900 text-white text-[8px] px-2 py-0.5 rounded-full font-bold uppercase">Before</span>
@@ -165,10 +165,10 @@ export default function ClientDashboard() {
                            )}
                            {form.afterImage && (
                              <div className="relative group cursor-pointer" onClick={() => setSelectedImage(form.afterImage)}>
-                                <div className="w-32 h-32 rounded-2xl bg-zinc-100 overflow-hidden border-2 border-brand-accent shadow-md">
+                                <div className="w-32 h-32 rounded-2xl bg-bougie-cream drop-shadow-sm overflow-hidden border-2 border-bougie-champagne shadow-md">
                                    <img src={form.afterImage} className="w-full h-full object-cover group-hover:scale-110 transition-transform" alt="After" />
                                 </div>
-                                <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-brand-accent text-white text-[8px] px-2 py-0.5 rounded-full font-bold uppercase">After</span>
+                                <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-bougie-champagne text-white text-[8px] px-2 py-0.5 rounded-full font-bold uppercase">After</span>
                              </div>
                            )}
                         </div>
@@ -178,7 +178,7 @@ export default function ClientDashboard() {
                   {formulations.length === 0 && (
                     <div className="text-center py-12">
                        <TreatmentHistory className="w-12 h-12 text-zinc-200 mx-auto mb-4" />
-                       <p className="text-zinc-400 italic">Your transformation notes will appear here after your sessions.</p>
+                       <p className="text-bougie-espresso/50 italic">Your transformation notes will appear here after your sessions.</p>
                     </div>
                   )}
                 </div>
@@ -190,22 +190,22 @@ export default function ClientDashboard() {
                 <h3 className="text-xl font-bold mb-6">Past Receipts</h3>
                 <div className="space-y-4">
                    {appointments.filter((a: any) => a.status === 'COMPLETED').map((apt: any) => (
-                     <div key={apt.id} className="flex items-center justify-between p-6 rounded-2xl border bg-zinc-50 hover:bg-zinc-100 transition-colors">
+                     <div key={apt.id} className="flex items-center justify-between p-6 rounded-2xl border bg-bougie-cream hover:bg-bougie-cream drop-shadow-sm transition-colors">
                         <div className="flex items-center gap-4">
-                          <FileText className="w-6 h-6 text-brand-primary" />
+                          <FileText className="w-6 h-6 text-bougie-espresso" />
                           <div>
                             <p className="font-bold">#{apt.id.slice(-6).toUpperCase()}</p>
-                            <p className="text-xs text-zinc-500">{new Date(apt.startTime).toLocaleDateString()} • {apt.services.map((s: any) => s.name).join(', ')}</p>
+                            <p className="text-xs text-bougie-espresso/60">{new Date(apt.startTime).toLocaleDateString()} • {apt.services.map((s: any) => s.name).join(', ')}</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-6">
                             <p className="font-bold text-sm">{currency}{apt.totalPrice.toFixed(2)}</p>
-                           <button className="text-brand-primary font-bold text-xs hover:underline uppercase tracking-widest">Receipt</button>
+                           <button className="text-bougie-espresso font-bold text-xs hover:underline uppercase tracking-widest">Receipt</button>
                         </div>
                      </div>
                    ))}
                    {appointments.filter((a: any) => a.status === 'COMPLETED').length === 0 && (
-                    <p className="text-center py-12 text-zinc-400 italic">No completed sessions found.</p>
+                    <p className="text-center py-12 text-bougie-espresso/50 italic">No completed sessions found.</p>
                    )}
                 </div>
               </div>

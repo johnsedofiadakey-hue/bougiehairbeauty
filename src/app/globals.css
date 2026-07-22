@@ -21,14 +21,26 @@
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FAFAF7;
+  --foreground: #4A3B32;
+  --color-primary: #4A3B32; /* Softer Mocha Espresso */
+  --color-secondary: #E6127E; /* Signature Pink */
+  --color-accent: #D4AF37; /* Champagne Gold */
+  --color-text-primary: #4A3B32;
+  --color-text-secondary: #8B7355; /* Warm Taupe */
+}
+
+::selection {
+  background: #E8D7D0;
+  color: #2C1E16;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-brand);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @layer base {

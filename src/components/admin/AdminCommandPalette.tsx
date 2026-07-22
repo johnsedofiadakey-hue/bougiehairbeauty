@@ -64,8 +64,8 @@ export function AdminCommandPalette() {
         className="bg-white rounded-3xl w-full max-w-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-6 border-b border-zinc-100 flex items-center gap-4">
-          <Search className="w-5 h-5 text-zinc-400" />
+        <div className="p-6 border-b border-bougie-espresso/10 flex items-center gap-4">
+          <Search className="w-5 h-5 text-bougie-espresso/50" />
           <input 
             autoFocus
             placeholder="Type a command or search..."
@@ -73,7 +73,7 @@ export function AdminCommandPalette() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <div className="px-2 py-1 bg-zinc-100 rounded-lg flex items-center gap-1 text-[10px] font-bold text-zinc-400 uppercase">
+          <div className="px-2 py-1 bg-bougie-cream drop-shadow-sm rounded-lg flex items-center gap-1 text-[10px] font-bold text-bougie-espresso/50 uppercase">
             <Command className="w-3 h-3" />
             <span>K</span>
           </div>
@@ -87,22 +87,22 @@ export function AdminCommandPalette() {
                 router.push(action.link);
                 setIsOpen(false);
               }}
-              className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all group text-left ${i === selectedIndex ? 'bg-brand-primary text-white' : 'hover:bg-zinc-50'}`}
+              className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all group text-left ${i === selectedIndex ? 'bg-bougie-espresso text-white' : 'hover:bg-bougie-cream'}`}
             >
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${i === selectedIndex ? 'bg-white/20' : 'bg-zinc-50'}`}>
-                <action.icon className={`w-5 h-5 transition-colors ${i === selectedIndex ? 'text-white' : 'text-zinc-500'}`} />
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${i === selectedIndex ? 'bg-white/20' : 'bg-bougie-cream'}`}>
+                <action.icon className={`w-5 h-5 transition-colors ${i === selectedIndex ? 'text-white' : 'text-bougie-espresso/60'}`} />
               </div>
               <span className={`font-medium transition-colors ${i === selectedIndex ? 'text-white' : 'text-zinc-700'}`}>{action.name}</span>
             </button>
           ))}
           {filteredActions.length === 0 && (
-            <div className="p-8 text-center text-zinc-400 font-serif italic">
+            <div className="p-8 text-center text-bougie-espresso/50 font-serif italic">
               No matching commands found.
             </div>
           )}
         </div>
         
-        <div className="p-4 bg-zinc-50 border-t border-zinc-100 flex justify-between items-center text-[10px] text-zinc-400 font-bold uppercase tracking-widest">
+        <div className="p-4 bg-bougie-cream border-t border-bougie-espresso/10 flex justify-between items-center text-[10px] text-bougie-espresso/50 font-bold uppercase tracking-widest">
            <div className="flex gap-4">
               <span>↑↓ Navigate</span>
               <span>↵ Select</span>
