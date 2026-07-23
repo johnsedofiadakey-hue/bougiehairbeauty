@@ -84,7 +84,7 @@ export function Hero({
       </div>
 
       {/* Left Side Content */}
-      <div className="flex-1 lg:w-[55%] flex flex-col justify-center px-6 md:px-12 lg:px-20 pt-32 pb-24 z-20 relative">
+      <div className="flex-1 lg:w-[55%] flex flex-col justify-center px-6 md:px-12 lg:px-20 pt-28 pb-8 lg:pt-32 lg:pb-24 z-20 relative">
         <div className="flex items-center gap-2 mb-6">
           <Star className="w-4 h-4" style={{ color: dustyPlum, fill: dustyPlum }} />
           <span className="text-[10px] font-sans font-bold uppercase tracking-[0.25em]" style={{ color: dustyPlum }}>
@@ -118,19 +118,17 @@ export function Hero({
         </div>
 
         {/* Floating Stats Widget */}
-        <div className="bg-white/90 backdrop-blur-md rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex items-center gap-12 max-w-max border border-white">
-          <div className="flex flex-col items-center text-center">
+        <div className="bg-white/90 backdrop-blur-md rounded-3xl p-4 sm:p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] grid grid-cols-3 gap-2 sm:gap-8 lg:gap-12 w-full max-w-sm lg:w-auto lg:max-w-max border border-white">
+          <div className="flex flex-col items-center text-center border-r border-black/5 pr-2 sm:pr-4">
             <Star className="w-5 h-5 mb-3" style={{ color: dustyPlum, fill: dustyPlum }} />
             <span className="text-xl font-serif font-bold mb-1" style={{ color: textDark }}>{statOneValue}</span>
             <span className="text-[10px] font-sans font-medium uppercase tracking-wider" style={{ color: textDark, opacity: 0.7 }}>{statOneLabel}</span>
           </div>
-          <div className="w-px h-12 bg-black/5" />
-          <div className="flex flex-col items-center text-center">
+          <div className="flex flex-col items-center text-center border-r border-black/5 pr-2 sm:pr-4">
             <Users className="w-5 h-5 mb-3" style={{ color: dustyPlum }} />
             <span className="text-xl font-serif font-bold mb-1" style={{ color: textDark }}>{statTwoValue}</span>
             <span className="text-[10px] font-sans font-medium uppercase tracking-wider" style={{ color: textDark, opacity: 0.7 }}>{statTwoLabel}</span>
           </div>
-          <div className="w-px h-12 bg-black/5" />
           <div className="flex flex-col items-center text-center">
             <ShieldCheck className="w-5 h-5 mb-3" style={{ color: dustyPlum }} />
             <span className="text-xl font-serif font-bold mb-1" style={{ color: textDark }}>{statThreeValue}</span>
@@ -140,30 +138,13 @@ export function Hero({
       </div>
 
       {/* Right Side Image & Calendar */}
-      <div className="w-full lg:w-[45%] relative lg:min-h-screen flex flex-col justify-end lg:justify-center z-10 lg:pt-0 pt-10">
-        
-        {/* The Image Container */}
-        <div className="relative w-full h-[60vh] lg:h-[100%] lg:rounded-tl-[400px] lg:rounded-bl-[100px] overflow-visible lg:overflow-hidden shadow-2xl rounded-t-3xl mx-4 lg:mx-0 lg:ml-0 lg:rounded-tr-none lg:rounded-br-none w-[calc(100%-2rem)] lg:w-full">
-          
-          {/* Top Wave Overlay for Navbar Area */}
-          <div className="absolute top-0 right-0 w-full h-[150px] z-10 pointer-events-none hidden lg:block">
-            <svg viewBox="0 0 1440 320" preserveAspectRatio="none" className="w-full h-full" style={{ fill: bgCream }}>
-              <path d="M0,0 L1440,0 L1440,80 Q720,320 0,80 Z" />
-            </svg>
-          </div>
+      <div className="w-full lg:w-[45%] relative lg:min-h-screen flex flex-col justify-end lg:justify-center z-10 lg:pt-0 pt-4">
 
-          <Image
-            src={image}
-            alt={title}
-            fill
-            priority
-            sizes="(min-width: 1024px) 45vw, 100vw"
-            className="object-cover rounded-t-3xl lg:rounded-none"
-          />
-        </div>
-
-        {/* Custom Shape Calendar Widget */}
-        <div className="relative lg:absolute lg:bottom-32 lg:left-[-120px] xl:left-[-150px] w-[90%] lg:w-[340px] z-30 mx-auto lg:mx-0 mt-[-60px] lg:mt-0">
+        {/* Custom Shape Calendar Widget — the actual booking tool, so on
+            mobile it comes before the (much taller) image instead of after
+            it. On desktop this is absolutely positioned over the image
+            anyway, so document order doesn't matter there. */}
+        <div className="relative lg:absolute lg:bottom-32 lg:left-[-120px] xl:left-[-150px] w-[90%] lg:w-[340px] z-30 mx-auto lg:mx-0 mb-6 lg:mb-0">
           {/* The "bump" tab */}
           <div className="absolute -top-10 left-6 bg-white/95 backdrop-blur-xl rounded-t-3xl w-16 h-12 shadow-[0_-8px_20px_rgb(0,0,0,0.05)] z-0 flex items-center justify-center pt-2">
             <div className="bg-[#917079] rounded-lg p-1.5">
@@ -295,6 +276,28 @@ export function Hero({
               </button>
             </Link>
           </div>
+        </div>
+
+        {/* The Image Container — comes after the widget in document order now
+            (mobile stacks top-to-bottom); on desktop the widget is absolutely
+            positioned over this anyway, so order here only affects mobile. */}
+        <div className="relative w-full h-[38vh] lg:h-[100%] lg:rounded-tl-[400px] lg:rounded-bl-[100px] overflow-visible lg:overflow-hidden shadow-2xl rounded-t-3xl mx-4 lg:mx-0 lg:ml-0 lg:rounded-tr-none lg:rounded-br-none w-[calc(100%-2rem)] lg:w-full">
+
+          {/* Top Wave Overlay for Navbar Area */}
+          <div className="absolute top-0 right-0 w-full h-[150px] z-10 pointer-events-none hidden lg:block">
+            <svg viewBox="0 0 1440 320" preserveAspectRatio="none" className="w-full h-full" style={{ fill: bgCream }}>
+              <path d="M0,0 L1440,0 L1440,80 Q720,320 0,80 Z" />
+            </svg>
+          </div>
+
+          <Image
+            src={image}
+            alt={title}
+            fill
+            priority
+            sizes="(min-width: 1024px) 45vw, 100vw"
+            className="object-cover rounded-t-3xl lg:rounded-none"
+          />
         </div>
       </div>
 
