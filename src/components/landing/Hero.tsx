@@ -66,11 +66,13 @@ export function Hero({
       .finally(() => setLoadingTimes(false));
   }, [formattedDate]);
 
-  // Exact colors from inspiration
-  const bgCream = "#F6F1EC";
-  const dustyPlum = "#917079";
-  const textMauve = "#917079";
-  const textDark = "#3A3335";
+  // Refined palette — softer cream/mauve than the original guesses, picked
+  // up from a design pass that was otherwise discarded (it re-hardcoded
+  // real content back to placeholders — see docs/HANDOVER.md). Colors are
+  // the only part of that pass worth keeping.
+  const bgCream = "#F7F3F0";
+  const dustyPlum = "#8B6B75";
+  const textDark = "#2A2421";
 
   return (
     <section className="relative w-full min-h-screen flex flex-col lg:flex-row overflow-hidden" style={{ backgroundColor: bgCream }}>
