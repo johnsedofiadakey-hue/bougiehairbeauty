@@ -87,7 +87,10 @@ export function Hero({
 
       {/* Left Side Content */}
       <div className="flex-1 lg:w-[55%] flex flex-col justify-center px-6 md:px-12 lg:px-20 pt-28 pb-8 lg:pt-32 lg:pb-24 z-20 relative">
-        <div className="flex items-center gap-2 mb-6">
+        {/* Redundant with the Navbar's own tagline directly above it on
+            mobile — the two stacked so close they read as clutter rather
+            than reinforcement. Kept for desktop, where there's room. */}
+        <div className="hidden lg:flex items-center gap-2 mb-6">
           <Star className="w-4 h-4" style={{ color: dustyPlum, fill: dustyPlum }} />
           <span className="text-[10px] font-sans font-bold uppercase tracking-[0.25em]" style={{ color: dustyPlum }}>
             Where Beauty Meets Artistry

@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Scissors } from "lucide-react";
 
 export function Navbar({ settings }: { settings?: any }) {
   const [isScrolled, setIsScrolled] = useState(false);
-  const studioName = settings?.companyName || "BOUGIE";
+  const studioName = settings?.companyName || "Bougie Hair & Beauty";
+  const [brandWord, ...rest] = studioName.trim().split(" ");
+  const brandRest = rest.join(" ") || "Hair & Beauty";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,17 +20,17 @@ export function Navbar({ settings }: { settings?: any }) {
   return (
     <nav
       className={`w-full transition-all duration-300 ${
-        isScrolled ? "py-4 bg-luxe-blush/90 backdrop-blur-xl shadow-lg border-b border-luxe-plum/10" : "py-8 bg-transparent"
+        isScrolled ? "py-3 lg:py-4 bg-luxe-blush/90 backdrop-blur-xl shadow-lg border-b border-luxe-plum/10" : "py-5 lg:py-8 bg-transparent"
       }`}
     >
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between">
         {/* Logo Section */}
         <Link href="/" className="flex flex-col items-start gap-1">
-          <span className="text-3xl font-serif tracking-[0.2em] leading-none text-luxe-dark">
-            B O U G I Ė
+          <span className="text-2xl sm:text-3xl font-serif tracking-[0.15em] leading-none text-luxe-dark uppercase">
+            {brandWord}
           </span>
           <span className="text-[9px] font-sans tracking-[0.3em] uppercase text-luxe-dark/70 font-semibold">
-            Salon & Studio
+            {brandRest}
           </span>
         </Link>
 
@@ -63,15 +63,6 @@ export function Navbar({ settings }: { settings?: any }) {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
                 </svg>
               </span>
-            </button>
-          </Link>
-        </div>
-
-        {/* Mobile Menu Trigger */}
-        <div className="lg:hidden flex items-center gap-4">
-           <Link href="/booking">
-            <button className="px-5 py-2 rounded-full text-xs font-sans font-medium bg-luxe-plum text-white">
-              BOOK
             </button>
           </Link>
         </div>
