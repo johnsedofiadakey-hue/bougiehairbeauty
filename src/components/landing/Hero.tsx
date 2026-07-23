@@ -169,12 +169,12 @@ export function Hero({
           </div>
 
           {/* Right Column: Floating Calendar Widget */}
-          <div className="flex items-center justify-center h-full relative lg:mt-0 mt-8 mb-12 lg:mb-0">
+          <div className="flex items-center justify-center h-full relative lg:mt-0 mt-8 mb-12 lg:mb-0 w-full">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 1.2 }}
-              className="absolute right-10 bottom-32 bg-white/95 backdrop-blur-xl rounded-[2rem] p-8 shadow-2xl border border-white/50 w-[340px]"
+              className="relative lg:absolute lg:right-10 lg:bottom-32 bg-white/95 backdrop-blur-xl rounded-[2rem] p-8 shadow-2xl border border-white/50 w-[340px] max-w-full"
             >
               {/* Decorative top tab */}
               <div className="absolute -top-6 left-8 bg-luxe-plum rounded-t-2xl px-5 py-3 shadow-md">

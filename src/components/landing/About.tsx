@@ -10,7 +10,7 @@ export function About({ settings, hideCta = false }: { settings?: any, hideCta?:
   const revealRef = useReveal();
 
   const heading = settings?.aboutHeading || "Our Story";
-  const image = "/about_realistic.jpg";
+  const image = settings?.aboutImage || "/service_hair.png";
   const intro = settings?.aboutIntro ||
     "Bougie Hair & Beauty is a full-service salon in the heart of Colchester, built around care, craft, and confidence.";
 
