@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Instagram, Facebook, Twitter, Mail, Phone, MapPin, Youtube, Type as TikTok } from "lucide-react";
 
 export function Footer({ settings }: { settings?: any }) {
@@ -19,7 +20,7 @@ export function Footer({ settings }: { settings?: any }) {
           <div className="space-y-6">
             {settings?.logoUrl ? (
               <div className="relative w-20 h-20 overflow-hidden rounded-full border border-luxe-dark/10 shadow-sm">
-                <img src={settings.logoUrl} alt={studioName} className="w-full h-full object-cover scale-[1.03]" />
+                <Image src={settings.logoUrl} alt={studioName} fill sizes="80px" className="object-cover scale-[1.03]" />
               </div>
             ) : (
               <h3 className="text-3xl font-serif text-luxe-dark">{studioName}</h3>

@@ -65,12 +65,6 @@ export function Navbar({ settings }: { settings?: any }) {
               </span>
             </button>
           </Link>
-          
-          <button className="w-12 h-12 rounded-full bg-white shadow-sm flex items-center justify-center text-luxe-dark hover:bg-luxe-stone transition-colors">
-             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-             </svg>
-          </button>
         </div>
 
         {/* Mobile Menu Trigger */}

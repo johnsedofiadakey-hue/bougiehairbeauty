@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Play, Star, CalendarDays, Clock, ShieldCheck, Flower2, Users } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, Star, CalendarDays, Clock, ShieldCheck, Flower2, Users } from "lucide-react";
 import { formatSlotLabel } from "@/lib/utils";
 
 interface HeroProps {
@@ -114,13 +115,6 @@ export function Hero({
               </span>
             </button>
           </Link>
-          
-          <button className="flex items-center gap-3 text-sm font-sans font-medium transition-colors group" style={{ color: textDark }}>
-            <span className="w-12 h-12 rounded-full border border-black/10 flex items-center justify-center group-hover:border-black/30 bg-white shadow-sm">
-              <Play className="w-4 h-4 ml-1" style={{ fill: textDark, color: textDark }} />
-            </span>
-            Watch Our Studio
-          </button>
         </div>
 
         {/* Floating Stats Widget */}
@@ -158,7 +152,14 @@ export function Hero({
             </svg>
           </div>
 
-          <img src={image} alt={title} className="w-full h-full object-cover rounded-t-3xl lg:rounded-none lg:absolute lg:inset-0" />
+          <Image
+            src={image}
+            alt={title}
+            fill
+            priority
+            sizes="(min-width: 1024px) 45vw, 100vw"
+            className="object-cover rounded-t-3xl lg:rounded-none"
+          />
         </div>
 
         {/* Custom Shape Calendar Widget */}
