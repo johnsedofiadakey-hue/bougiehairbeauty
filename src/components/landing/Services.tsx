@@ -31,6 +31,9 @@ export function Services({ settings, hideCta = false }: { settings?: any; hideCt
       matchLabel: name,
       count: items.length,
       cheapest: items.length ? Math.min(...items.map((s) => s.price)) : null,
+      // First real category in this department — passed to /booking so it
+      // opens on the right department tab instead of a generic first page.
+      firstCategory: items[0]?.category as string | undefined,
     };
   }).filter((d) => d.count > 0);
 
@@ -46,10 +49,10 @@ export function Services({ settings, hideCta = false }: { settings?: any; hideCt
           <p className="text-center text-luxe-dark/70 italic">Our service menu is being updated — check back soon.</p>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-8">
-            {departmentCards.map(({ name, count, cheapest }, i) => (
+            {departmentCards.map(({ name, count, cheapest, firstCategory }, i) => (
               <Link
                 key={name}
-                href="/booking"
+                href={firstCategory ? `/booking?category=${encodeURIComponent(firstCategory)}` : "/booking"}
                 className="reveal-stagger-item group flex flex-col items-center text-center"
                 style={{ transitionDelay: `${i * 90}ms` }}
               >

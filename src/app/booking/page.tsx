@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { format, addDays, startOfToday, isSameDay } from "date-fns";
-import { ChevronRight, ChevronLeft, ChevronDown, Check, Clock, Phone, Banknote, ShieldCheck } from "lucide-react";
+import { ChevronRight, ChevronLeft, ChevronDown, Check, Clock, Phone, Banknote, ShieldCheck, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import confetti from "canvas-confetti";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -34,11 +34,33 @@ export default function BookingPage() {
   const [bookingPolicy, setBookingPolicy] = useState("");
   const [agreedToPolicy, setAgreedToPolicy] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // Set when the Hero's "Book Your Slot" widget hands off a date + time —
+  // lets her land straight on service selection and skip re-picking a slot
+  // she already chose. Cleared automatically if that slot turns out not to
+  // actually be free (see the availability check below) rather than letting
+  // a stale/fake slot silently through.
+  const [dateTimePrefilled, setDateTimePrefilled] = useState(false);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     setIsAdmin(searchParams.get("admin") === "true");
     const requestedCategory = searchParams.get("category");
+
+    // Hand-off from the Hero's booking widget — she already picked a date
+    // and time there, so don't make her pick it again here.
+    const requestedDateStr = searchParams.get("date");
+    const requestedTime = searchParams.get("time");
+    if (requestedDateStr) {
+      const parsedDate = new Date(`${requestedDateStr}T00:00:00`);
+      if (!isNaN(parsedDate.getTime())) {
+        setSelectedDate(parsedDate);
+        if (requestedTime) {
+          setSelectedTime(requestedTime);
+          setDateTimePrefilled(true);
+        }
+      }
+    }
+
     setIsLoadingServices(true);
     fetch("/api/services")
       .then(res => res.json())
@@ -73,12 +95,22 @@ export default function BookingPage() {
         .then(data => {
           setAvailableSlots(data);
           setIsLoadingSlots(false);
+          // The Hero widget offers a fixed set of times without checking
+          // real availability first — confirm the hand-off slot is actually
+          // still free against the real schedule before trusting it enough
+          // to skip a whole step. If it's gone, fall back to the normal
+          // flow instead of silently letting a conflicting booking through.
+          if (dateTimePrefilled && selectedTime && Array.isArray(data) && !data.includes(selectedTime)) {
+            setDateTimePrefilled(false);
+            setSelectedTime(null);
+          }
         });
     }
   }, [selectedDate]);
 
   const needsPolicyStep = requireDeposit && !isAdmin;
-  const steps: Step[] = needsPolicyStep ? ["service", "datetime", "details", "policy"] : ["service", "datetime", "details"];
+  const baseSteps: Step[] = needsPolicyStep ? ["service", "datetime", "details", "policy"] : ["service", "datetime", "details"];
+  const steps: Step[] = dateTimePrefilled ? baseSteps.filter((s) => s !== "datetime") : baseSteps;
   const stepIndex = steps.indexOf(currentStep);
 
   const days = Array.from({ length: 14 }, (_, i) => addDays(startOfToday(), i));
@@ -104,7 +136,7 @@ export default function BookingPage() {
     : categories;
 
   const handleNext = async () => {
-    if (currentStep === "service") setCurrentStep("datetime");
+    if (currentStep === "service") setCurrentStep(dateTimePrefilled ? "details" : "datetime");
     else if (currentStep === "datetime") setCurrentStep("details");
     else if (currentStep === "details") {
       if (needsPolicyStep) {
@@ -156,7 +188,7 @@ export default function BookingPage() {
 
   const handleBack = () => {
     if (currentStep === "datetime") setCurrentStep("service");
-    else if (currentStep === "details") setCurrentStep("datetime");
+    else if (currentStep === "details") setCurrentStep(dateTimePrefilled ? "service" : "datetime");
     else if (currentStep === "policy") setCurrentStep("details");
   };
 
@@ -236,6 +268,20 @@ export default function BookingPage() {
                 <h2 className="text-2xl sm:text-3xl font-serif text-bougie-espresso mb-2">Select Services</h2>
                 <p className="text-sm sm:text-base text-bougie-taupe">Tap a category to see options. Choose as many as you like.</p>
               </div>
+
+              {dateTimePrefilled && selectedTime && (
+                <div className="flex items-center justify-center gap-2 text-sm bg-emerald-50 text-emerald-800 rounded-full px-4 py-2.5 mx-auto w-fit">
+                  <Calendar className="w-4 h-4 flex-shrink-0" />
+                  <span>Your slot: {format(selectedDate, "EEEE d MMMM")} at {formatSlotLabel(selectedTime)}</span>
+                  <button
+                    type="button"
+                    onClick={() => { setDateTimePrefilled(false); setCurrentStep("datetime"); }}
+                    className="underline font-bold hover:text-emerald-900 transition-colors"
+                  >
+                    Change
+                  </button>
+                </div>
+              )}
 
               {isLoadingServices ? (
                 <div className="space-y-3">
