@@ -51,11 +51,13 @@ export default async function Home() {
       <Hero
         title={currentSettings.heroTitle}
         subtitle={currentSettings.heroSubtitle}
-        backgroundImage={currentSettings.heroImage || defaultSettings.heroImage}
-        videoUrl={currentSettings.heroVideoUrl}
-        mediaType={currentSettings.heroMediaType}
-        whatsappNumber={currentSettings.whatsappNumber}
-        address={currentSettings.address}
+        image={currentSettings.heroImage || defaultSettings.heroImage}
+        statOneValue={currentSettings.heroStatOneValue || "5"}
+        statOneLabel={currentSettings.heroStatOneLabel || "Specialties"}
+        statTwoValue={currentSettings.heroStatTwoValue || "130+"}
+        statTwoLabel={currentSettings.heroStatTwoLabel || "Treatments"}
+        statThreeValue={currentSettings.heroStatThreeValue || "100%"}
+        statThreeLabel={currentSettings.heroStatThreeLabel || "Personalised Care"}
       />
 
       <Services settings={serializedSettings} />

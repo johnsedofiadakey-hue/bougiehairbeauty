@@ -18,6 +18,16 @@ export default function SettingsPage() {
     heroImage: "/hero_model_2.jpg",
     heroVideoUrl: "",
     heroMediaType: "image",
+    heroStatOneValue: "5",
+    heroStatOneLabel: "Specialties",
+    heroStatTwoValue: "130+",
+    heroStatTwoLabel: "Treatments",
+    heroStatThreeValue: "100%",
+    heroStatThreeLabel: "Personalised Care",
+    stylistName: "Bougie Hair & Beauty",
+    stylistTitle: "Owner & Lead Specialist",
+    stylistBio: "",
+    stylistImage: "",
     logoUrl: "",
     aboutHeading: "Our Story",
     aboutImage: "/service_hair.png",
@@ -294,6 +304,91 @@ export default function SettingsPage() {
                           className="text-xs text-bougie-espresso/60 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-bougie-espresso/10 file:text-bougie-espresso hover:file:bg-bougie-espresso/20 cursor-pointer"
                         />
                         <p className="text-[10px] text-bougie-espresso/50 truncate">Current Logo: {settings.logoUrl || "None"}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Hero Stats — the floating stats widget on the homepage.
+                    Kept editable rather than fixed so real numbers can go
+                    here instead of placeholder/guessed ones. */}
+                <div className="pt-8 border-t space-y-6">
+                  <div className="flex items-center gap-2 text-bougie-espresso/50 mb-2">
+                    <Type className="w-4 h-4" />
+                    <span className="text-xs font-bold uppercase tracking-widest">Hero Stats</span>
+                  </div>
+                  <p className="text-xs text-bougie-espresso/60 -mt-4">The three-number strip on the homepage hero. Use real figures — these are shown to every visitor as fact.</p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {(["One", "Two", "Three"] as const).map((n) => (
+                      <div key={n} className="space-y-2">
+                        <label className="text-sm font-medium text-zinc-700">Stat {n}</label>
+                        <input
+                          type="text"
+                          value={(settings as any)[`heroStat${n}Value`] || ''}
+                          onChange={(e) => setSettings({ ...settings, [`heroStat${n}Value`]: e.target.value })}
+                          className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
+                          placeholder="Value, e.g. 130+"
+                        />
+                        <input
+                          type="text"
+                          value={(settings as any)[`heroStat${n}Label`] || ''}
+                          onChange={(e) => setSettings({ ...settings, [`heroStat${n}Label`]: e.target.value })}
+                          className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
+                          placeholder="Label, e.g. Treatments"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Team / Stylist — Bougie is currently a solo studio, so
+                    this is one real profile (shown on /stylists), not a
+                    fabricated multi-person team grid. */}
+                <div className="pt-8 border-t space-y-6">
+                  <div className="flex items-center gap-2 text-bougie-espresso/50 mb-2">
+                    <Type className="w-4 h-4" />
+                    <span className="text-xs font-bold uppercase tracking-widest">Team / Stylist</span>
+                  </div>
+                  <p className="text-xs text-bougie-espresso/60 -mt-4">Powers the <code className="bg-bougie-cream drop-shadow-sm px-1 rounded">/stylists</code> page — one real profile.</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-zinc-700">Name</label>
+                      <input
+                        type="text"
+                        value={settings.stylistName || ''}
+                        onChange={(e) => setSettings({ ...settings, stylistName: e.target.value })}
+                        className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-zinc-700">Title</label>
+                      <input
+                        type="text"
+                        value={settings.stylistTitle || ''}
+                        onChange={(e) => setSettings({ ...settings, stylistTitle: e.target.value })}
+                        className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
+                        placeholder="Owner & Lead Specialist"
+                      />
+                    </div>
+                    <div className="space-y-2 md:col-span-2">
+                      <label className="text-sm font-medium text-zinc-700">Bio</label>
+                      <textarea
+                        value={settings.stylistBio || ''}
+                        onChange={(e) => setSettings({ ...settings, stylistBio: e.target.value })}
+                        rows={2}
+                        className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-zinc-700">Photo</label>
+                      <div className="flex flex-col gap-2">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => uploadFile(e, 'stylistImage')}
+                          className="text-xs text-bougie-espresso/60 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-bougie-espresso/10 file:text-bougie-espresso hover:file:bg-bougie-espresso/20 cursor-pointer"
+                        />
+                        <p className="text-[10px] text-bougie-espresso/50 truncate">Current: {settings.stylistImage || "None yet — placeholder shown on site"}</p>
                       </div>
                     </div>
                   </div>

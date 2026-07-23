@@ -10,7 +10,7 @@ export function MobileNav() {
 
   const navItems = [
     { name: "Home", href: "/", icon: Home },
-    { name: "Services", href: "/#services", icon: Scissors },
+    { name: "Services", href: "/services", icon: Scissors },
     { name: "Book", href: "/booking", icon: Calendar, primary: true },
     { name: "Contact", href: "/#contact", icon: Phone },
     { name: "Profile", href: "/dashboard", icon: User },
@@ -50,7 +50,7 @@ export function MobileNav() {
               // mobile page load) so it should carry the same restrained
               // CTA identity as the rest of the site, with a thin gold ring
               // for a touch of the new accent instead of solid pink.
-              <div className="w-16 h-16 rounded-full bg-black shadow-xl shadow-black/30 flex items-center justify-center text-white ring-4 ring-white active:scale-95 transition-transform relative">
+              <div className="w-16 h-16 rounded-full bg-luxe-dark shadow-xl shadow-black/30 flex items-center justify-center text-white ring-4 ring-white active:scale-95 transition-transform relative">
                 <div className="absolute inset-0 rounded-full border border-[#D4AF37]/50" />
                 <item.icon className="w-7 h-7" />
               </div>
@@ -59,12 +59,12 @@ export function MobileNav() {
                 <item.icon
                   className={cn(
                     "w-6 h-6 mb-1 transition-colors",
-                    (pathname === item.href || (item.href.startsWith("/#") && pathname === "/")) ? "text-bougie-espresso" : "text-bougie-espresso/50"
+                    (pathname === item.href || (item.href.startsWith("/#") && pathname === "/")) ? "text-luxe-dark" : "text-luxe-dark/50"
                   )}
                 />
                 <span className={cn(
                   "text-[10px] font-bold uppercase tracking-wider transition-colors",
-                  (pathname === item.href || (item.href.startsWith("/#") && pathname === "/")) ? "text-bougie-espresso" : "text-bougie-espresso/60"
+                  (pathname === item.href || (item.href.startsWith("/#") && pathname === "/")) ? "text-luxe-dark" : "text-luxe-dark/60"
                 )}>
                   {item.name}
                 </span>

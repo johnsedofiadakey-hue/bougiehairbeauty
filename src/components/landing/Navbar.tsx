@@ -19,46 +19,64 @@ export function Navbar({ settings }: { settings?: any }) {
 
   return (
     <nav
-      className={`transition-all duration-300 border-b z-50 ${
-        isScrolled ? "py-4 bg-bougie-cream/95 backdrop-blur-xl shadow-lg shadow-bougie-espresso/5 border-bougie-espresso/10" : "py-6 bg-transparent border-white/10"
+      className={`w-full transition-all duration-300 ${
+        isScrolled ? "py-4 bg-luxe-blush/90 backdrop-blur-xl shadow-lg border-b border-luxe-plum/10" : "py-8 bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between">
         {/* Logo Section */}
-        <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
-          <div className="flex flex-col">
-            <span className={`text-3xl font-serif tracking-wide leading-none transition-colors ${isScrolled ? 'text-bougie-espresso' : 'text-white'}`}>
-              {studioName}
-            </span>
-            <span className={`text-[9px] font-sans tracking-[0.3em] uppercase mt-1 transition-colors ${isScrolled ? 'text-bougie-espresso/70' : 'text-white/70'}`}>
-              Hair & Beauty
-            </span>
-          </div>
+        <Link href="/" className="flex flex-col items-start gap-1">
+          <span className="text-3xl font-serif tracking-[0.2em] leading-none text-luxe-dark">
+            B O U G I Ė
+          </span>
+          <span className="text-[9px] font-sans tracking-[0.3em] uppercase text-luxe-dark/70 font-semibold">
+            Salon & Studio
+          </span>
         </Link>
 
         {/* Centered nav links */}
-        <div className="hidden lg:flex items-center gap-10">
-          {["HOME", "SERVICES", "GALLERY", "OUR TEAM", "BLOG", "CONTACT"].map((item) => (
-            <Link key={item} href={`#${item.toLowerCase().replace(' ', '-')}`} className={`text-xs font-sans font-medium uppercase tracking-widest transition-colors relative group/link ${isScrolled ? 'text-bougie-espresso hover:text-bougie-pink' : 'text-white/80 hover:text-white'}`}>
-              {item}
-              <span className={`absolute -bottom-2 left-0 w-0 h-[2px] transition-all group-hover/link:w-full ${isScrolled ? 'bg-bougie-pink' : 'bg-white'}`} />
+        <div className="hidden lg:flex items-center gap-8">
+          {[
+            { name: "Home", href: "/" },
+            { name: "Services", href: "/services" },
+            { name: "Stylists", href: "/stylists" },
+            { name: "Gallery", href: "/gallery" },
+            { name: "About Us", href: "/about" },
+            { name: "Contact", href: "/#contact" }
+          ].map((item, idx) => (
+            <Link key={item.name} href={item.href} className={`text-sm font-sans font-medium transition-colors relative group/link text-luxe-dark hover:text-luxe-plum`}>
+              {item.name}
+              {idx === 0 && (
+                 <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-[2px] bg-luxe-plum rounded-full" />
+              )}
             </Link>
           ))}
         </div>
 
         {/* Right-side actions */}
-        <div className="hidden lg:flex items-center gap-5 flex-shrink-0">
+        <div className="hidden lg:flex items-center gap-4 flex-shrink-0">
           <Link href="/booking">
-            <button className={`px-8 py-3.5 text-xs font-sans font-medium uppercase tracking-widest transition-colors shadow-lg ${isScrolled ? 'bg-bougie-espresso text-bougie-cream hover:bg-[#3A1D0D]' : 'bg-white text-bougie-espresso hover:bg-white/90'}`}>
-              BOOK NOW
+            <button className="flex items-center gap-3 px-6 py-3 rounded-full text-sm font-sans font-medium transition-all shadow-sm bg-luxe-plum text-white hover:bg-luxe-plumDark hover:shadow-md">
+              Book Appointment
+              <span className="bg-white rounded-full p-1">
+                <svg className="w-3 h-3 text-luxe-plum" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
             </button>
           </Link>
+          
+          <button className="w-12 h-12 rounded-full bg-white shadow-sm flex items-center justify-center text-luxe-dark hover:bg-luxe-stone transition-colors">
+             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+             </svg>
+          </button>
         </div>
 
         {/* Mobile Menu Trigger */}
         <div className="lg:hidden flex items-center gap-4">
            <Link href="/booking">
-            <button className={`px-5 py-2 text-xs font-sans font-medium uppercase tracking-widest ${isScrolled ? 'bg-bougie-espresso text-bougie-cream' : 'bg-white text-bougie-espresso'}`}>
+            <button className="px-5 py-2 rounded-full text-xs font-sans font-medium bg-luxe-plum text-white">
               BOOK
             </button>
           </Link>

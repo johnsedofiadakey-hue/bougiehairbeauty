@@ -12,7 +12,7 @@ export function TopBar({ settings }: { settings?: any }) {
   if (!address && !phone && !instagramUrl && !facebookUrl && !whatsappNumber) return null;
 
   return (
-    <div className="bg-black text-white/70 text-xs">
+    <div className="bg-luxe-dark text-white/70 text-xs">
       <div className="max-w-7xl mx-auto px-6 h-10 flex items-center justify-between gap-4">
         <div className="flex items-center gap-5 min-w-0 overflow-hidden">
           {address && (

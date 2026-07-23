@@ -69,7 +69,7 @@ export default async function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&family=Alex+Brush&display=swap" rel="stylesheet" />
         <style dangerouslySetInnerHTML={{ __html: `
           :root {
             --color-primary: ${themeSettings.primaryColor};
@@ -80,12 +80,13 @@ export default async function RootLayout({
             --font-brand: "Playfair Display", "Georgia", serif;
             --font-serif: "Playfair Display", "Georgia", serif;
             --font-body: "Poppins", sans-serif;
+            --font-cursive: "Alex Brush", cursive;
           }
         `}} />
         {settings?.logoUrl && <link rel="apple-touch-icon" href={settings.logoUrl} />}
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
-      <body className="font-[family-name:var(--font-body)] bg-bougie-cream text-[var(--color-text-primary)] antialiased">
+      <body className="font-[family-name:var(--font-body)] bg-luxe-blush text-[var(--color-text-primary)] antialiased">
         <Providers>
           {children}
         </Providers>

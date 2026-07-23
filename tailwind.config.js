@@ -23,6 +23,13 @@ module.exports = {
           taupe: "#8B7355", // Warm Taupe
           champagne: "#D4AF37", // Champagne Gold
         },
+        luxe: {
+          blush: "#FBF3F4", // The soft background color from mockup
+          plum: "#8A6B75", // The button and accent color
+          plumDark: "#745862", // Hover state for plum
+          dark: "#2C2A2A", // The main text color
+          sand: "#EAE0DF", // Light borders and cards
+        },
       },
       fontFamily: {
         brand: ["var(--font-brand)", "sans-serif"],

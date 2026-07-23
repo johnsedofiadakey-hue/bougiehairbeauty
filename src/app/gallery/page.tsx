@@ -4,11 +4,11 @@ import { Footer } from "@/components/landing/Footer";
 import { MobileNav } from "@/components/landing/MobileNav";
 import { WhatsAppFloat } from "@/components/landing/WhatsAppFloat";
 import { readStore } from "@/lib/data-store";
-import { About } from "@/components/landing/About";
+import { Portfolio } from "@/components/landing/Portfolio";
 
 export const dynamic = "force-dynamic";
 
-export default async function AboutPage() {
+export default async function GalleryPage() {
   let settings;
   try {
     settings = (await readStore()).settings;
@@ -30,7 +30,7 @@ export default async function AboutPage() {
       <div className="h-32 bg-luxe-blush"></div>
 
       <div className="min-h-[60vh]">
-        <About settings={serializedSettings} hideCta={true} />
+        <Portfolio hideCta={true} />
       </div>
       
       <Footer settings={serializedSettings} />

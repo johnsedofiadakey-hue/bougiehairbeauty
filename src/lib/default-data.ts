@@ -25,6 +25,24 @@ export const defaultSettings = {
   heroImage: "/hero_model_2.jpg",
   heroVideoUrl: "",
   heroMediaType: "image",
+  // The Hero's floating stats widget — kept genuinely editable rather than
+  // hardcoded, since made-up numbers ("500+ clients", "15+ stylists") would
+  // be a false claim for a real, currently solo-run studio. Defaults are
+  // deliberately true today (5 real departments, 130 real services) rather
+  // than impressive-sounding placeholders.
+  heroStatOneValue: "5",
+  heroStatOneLabel: "Specialties",
+  heroStatTwoValue: "130+",
+  heroStatTwoLabel: "Treatments",
+  heroStatThreeValue: "100%",
+  heroStatThreeLabel: "Personalised Care",
+  // Single-stylist team page (/stylists) — Bougie is currently a solo studio,
+  // so this is one real card, not a fabricated "our team" grid. Photo starts
+  // blank (renders a placeholder) until the client uploads a real one.
+  stylistName: "Bougie Hair & Beauty",
+  stylistTitle: "Owner & Lead Specialist",
+  stylistBio: "Hair braiding, wigs, lash extensions, head spa & nails — every appointment at Bougie is done personally, start to finish.",
+  stylistImage: "",
   // "Our Story" — the short homepage teaser plus the full elaborated
   // version on the dedicated /about page. aboutBody supports blank-line
   // separated paragraphs. Placeholder copy — swap for the client's own voice
