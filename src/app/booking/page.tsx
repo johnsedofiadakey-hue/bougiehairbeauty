@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { format, addDays, startOfToday, isSameDay } from "date-fns";
 import { ChevronRight, ChevronLeft, ChevronDown, Check, Clock, Phone, Banknote, ShieldCheck, Calendar } from "lucide-react";
@@ -12,6 +12,38 @@ import { ServiceCategoryIcon } from "@/components/landing/ServiceCategoryIcon";
 import { DEPARTMENTS, OTHER_DEPARTMENT, getDepartmentForCategory } from "@/lib/departments";
 
 type Step = "service" | "datetime" | "details" | "policy";
+
+// Horizontally-scrolling rows (department tabs, date picker) had no visual
+// cue that more content sat off-screen — customers said they had to guess
+// there was anything to swipe to. Tracks scroll position so callers can show
+// an edge fade + hint arrow only on the side that actually has more content.
+function useScrollFade(deps: any[]) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const update = () => {
+    const el = ref.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 4);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  };
+
+  useEffect(() => {
+    update();
+    const el = ref.current;
+    if (!el) return;
+    el.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      el.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
+
+  return { ref, canScrollLeft, canScrollRight };
+}
 
 export default function BookingPage() {
   const [currentStep, setCurrentStep] = useState<Step>("service");
@@ -135,6 +167,9 @@ export default function BookingPage() {
     ? categories.filter((c) => getDepartmentForCategory(c).name === selectedDepartment)
     : categories;
 
+  const deptScroll = useScrollFade([departmentTabs.length]);
+  const dateScroll = useScrollFade([days.length]);
+
   const handleNext = async () => {
     if (currentStep === "service") setCurrentStep(dateTimePrefilled ? "details" : "datetime");
     else if (currentStep === "datetime") setCurrentStep("details");
@@ -236,6 +271,29 @@ export default function BookingPage() {
         </div>
 
         <div className="backdrop-blur-2xl bg-white/60 rounded-3xl p-5 sm:p-8 md:p-12 shadow-[0_8px_32px_0_rgba(44,30,22,0.08)] border border-white/40 relative overflow-hidden">
+          {/* Top back button — mirrors the one in the fixed bottom bar so
+              it's visible the instant a step loads, without needing to
+              notice (or scroll to) the bottom nav bar first. */}
+          {!isSuccess && (
+            stepIndex === 0 ? (
+              <Link
+                href="/"
+                aria-label="Back to home"
+                className="absolute top-4 left-4 sm:top-6 sm:left-6 z-20 flex items-center justify-center w-10 h-10 rounded-full bg-bougie-espresso/5 hover:bg-bougie-espresso/10 text-bougie-taupe hover:text-bougie-espresso transition-colors"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </Link>
+            ) : (
+              <button
+                onClick={handleBack}
+                aria-label="Back"
+                className="absolute top-4 left-4 sm:top-6 sm:left-6 z-20 flex items-center justify-center w-10 h-10 rounded-full bg-bougie-espresso/5 hover:bg-bougie-espresso/10 text-bougie-taupe hover:text-bougie-espresso transition-colors"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+            )
+          )}
+
           {/* Success Overlay */}
           {isSuccess && (
             <div className="absolute inset-0 bg-white/95 backdrop-blur-md z-50 flex flex-col items-center justify-center p-8 sm:p-12 text-center animate-in fade-in duration-500">
@@ -292,29 +350,42 @@ export default function BookingPage() {
               ) : (
                 <div className="space-y-5">
                   {/* Department tabs — pick a department first so the list below
-                      shows a handful of categories at a time, not all 23 at once. */}
-                  <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide">
-                    {departmentTabs.map((dept) => {
-                      const isActive = selectedDepartment === dept.name;
-                      return (
-                        <button
-                          key={dept.name}
-                          type="button"
-                          onClick={() => {
-                            setSelectedDepartment(dept.name);
-                            if (!dept.categories.includes(expandedCategory || "")) {
-                              setExpandedCategory(dept.categories[0] || null);
-                            }
-                          }}
-                          className={`flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold uppercase tracking-wide transition-colors ${
-                            isActive ? "bg-bougie-espresso text-bougie-cream" : "bg-bougie-espresso/5 text-bougie-taupe hover:bg-bougie-espresso/10"
-                          }`}
-                        >
-                          <ServiceCategoryIcon category={dept.name} className="w-4 h-4" />
-                          {dept.name}
-                        </button>
-                      );
-                    })}
+                      shows a handful of categories at a time, not all 23 at once.
+                      Edge fades + a chevron hint on the right make it obvious
+                      there's more to swipe to instead of the row just trailing
+                      off with no cue. */}
+                  <div className="relative -mx-1 px-1">
+                    {deptScroll.canScrollLeft && (
+                      <div className="pointer-events-none absolute left-0 top-0 bottom-1 w-8 z-10 bg-gradient-to-r from-white/90 to-transparent" />
+                    )}
+                    <div ref={deptScroll.ref} className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                      {departmentTabs.map((dept) => {
+                        const isActive = selectedDepartment === dept.name;
+                        return (
+                          <button
+                            key={dept.name}
+                            type="button"
+                            onClick={() => {
+                              setSelectedDepartment(dept.name);
+                              if (!dept.categories.includes(expandedCategory || "")) {
+                                setExpandedCategory(dept.categories[0] || null);
+                              }
+                            }}
+                            className={`flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold uppercase tracking-wide transition-colors ${
+                              isActive ? "bg-bougie-espresso text-bougie-cream" : "bg-bougie-espresso/5 text-bougie-taupe hover:bg-bougie-espresso/10"
+                            }`}
+                          >
+                            <ServiceCategoryIcon category={dept.name} className="w-4 h-4" />
+                            {dept.name}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {deptScroll.canScrollRight && (
+                      <div className="pointer-events-none absolute right-0 top-0 bottom-1 w-12 z-10 flex items-center justify-end bg-gradient-to-l from-white/95 via-white/70 to-transparent">
+                        <ChevronRight className="w-4 h-4 text-bougie-taupe/70 mr-0.5 animate-pulse" />
+                      </div>
+                    )}
                   </div>
 
                   <div className="space-y-3">
@@ -391,19 +462,29 @@ export default function BookingPage() {
                 <p className="text-sm sm:text-base text-bougie-taupe">Select a slot for your {totalDuration} min session.</p>
               </div>
 
-              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-                {days.map((day) => (
-                  <button
-                    key={day.toISOString()}
-                    onClick={() => setSelectedDate(day)}
-                    className={`flex flex-col items-center min-w-[70px] p-4 rounded-2xl border-2 transition-all ${
-                      isSameDay(day, selectedDate) ? "border-bougie-espresso bg-bougie-espresso text-bougie-cream" : "border-bougie-espresso/10"
-                    }`}
-                  >
-                    <span className="text-[10px] uppercase font-bold mb-1 opacity-60">{format(day, "EEE")}</span>
-                    <span className="text-lg font-bold">{format(day, "d")}</span>
-                  </button>
-                ))}
+              <div className="relative">
+                {dateScroll.canScrollLeft && (
+                  <div className="pointer-events-none absolute left-0 top-0 bottom-4 w-8 z-10 bg-gradient-to-r from-white/90 to-transparent" />
+                )}
+                <div ref={dateScroll.ref} className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+                  {days.map((day) => (
+                    <button
+                      key={day.toISOString()}
+                      onClick={() => setSelectedDate(day)}
+                      className={`flex flex-col items-center min-w-[70px] p-4 rounded-2xl border-2 transition-all ${
+                        isSameDay(day, selectedDate) ? "border-bougie-espresso bg-bougie-espresso text-bougie-cream" : "border-bougie-espresso/10"
+                      }`}
+                    >
+                      <span className="text-[10px] uppercase font-bold mb-1 opacity-60">{format(day, "EEE")}</span>
+                      <span className="text-lg font-bold">{format(day, "d")}</span>
+                    </button>
+                  ))}
+                </div>
+                {dateScroll.canScrollRight && (
+                  <div className="pointer-events-none absolute right-0 top-0 bottom-4 w-12 z-10 flex items-center justify-end bg-gradient-to-l from-white/95 via-white/70 to-transparent">
+                    <ChevronRight className="w-4 h-4 text-bougie-taupe/70 mr-0.5 animate-pulse" />
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
