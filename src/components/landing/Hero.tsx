@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Star, CalendarDays, Clock, ShieldCheck, Flower2, Users } from "lucide-react";
+import { ArrowRight, Star, CalendarDays, Clock, ShieldCheck, Flower2, Users, Check } from "lucide-react";
 import { formatSlotLabel } from "@/lib/utils";
 
 interface HeroProps {
@@ -73,6 +73,15 @@ export function Hero({
   const bgCream = "#F7F3F0";
   const dustyPlum = "#8B6B75";
   const textDark = "#2A2421";
+
+  // Grouped by time of day so the list reads as "morning / afternoon /
+  // evening" rather than one flat column of 20 near-identical labels —
+  // customers said the bare start-time list "didn't explain itself".
+  const timeGroups = [
+    { label: "Morning", times: availableTimes.filter((t) => Number(t.split(":")[0]) < 12) },
+    { label: "Afternoon", times: availableTimes.filter((t) => { const h = Number(t.split(":")[0]); return h >= 12 && h < 17; }) },
+    { label: "Evening", times: availableTimes.filter((t) => Number(t.split(":")[0]) >= 17) },
+  ].filter((group) => group.times.length > 0);
 
   return (
     <section className="relative w-full min-h-screen flex flex-col lg:flex-row overflow-hidden" style={{ backgroundColor: bgCream }}>
@@ -165,24 +174,28 @@ export function Hero({
             {/* Mini Calendar / Time Selection Header */}
             <div className="flex items-center justify-between mb-4">
               {showTimeSelection ? (
-                <button onClick={() => setShowTimeSelection(false)} className="transition-colors flex items-center gap-1 text-[11px] font-sans font-bold" style={{ color: dustyPlum }}>
+                // Padded well beyond the visible text/icon — a bare 11px
+                // text link with no padding was a ~16px-tall tap target,
+                // easy to miss on a touchscreen (read as "the back button
+                // doesn't work" even though the handler itself was fine).
+                <button onClick={() => setShowTimeSelection(false)} className="transition-colors flex items-center gap-1 text-[11px] font-sans font-bold -m-2 p-2" style={{ color: dustyPlum }}>
                   <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
                   Back
                 </button>
               ) : (
-                <button onClick={handlePrevMonth} className="transition-colors p-1" style={{ color: textDark, opacity: 0.4 }}>
+                <button onClick={handlePrevMonth} className="transition-colors -m-2 p-2" style={{ color: textDark, opacity: 0.4 }}>
                   <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
                 </button>
               )}
-              
+
               <span className="text-[11px] font-sans font-bold" style={{ color: textDark }}>
                 {showTimeSelection ? formattedDate : `${monthName} ${year}`}
               </span>
-              
+
               {showTimeSelection ? (
                 <div className="w-5" />
               ) : (
-                <button onClick={handleNextMonth} className="transition-colors p-1" style={{ color: textDark, opacity: 0.4 }}>
+                <button onClick={handleNextMonth} className="transition-colors -m-2 p-2" style={{ color: textDark, opacity: 0.4 }}>
                   <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
                 </button>
               )}
@@ -198,20 +211,33 @@ export function Hero({
                     ))}
                   </div>
                 ) : availableTimes.length > 0 ? (
-                  <div className="grid grid-cols-2 gap-2 mb-6">
-                    {availableTimes.map((time, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setSelectedTime(time)}
-                        className="py-2 rounded-xl text-[10px] font-sans font-bold transition-all border"
-                        style={{
-                          backgroundColor: selectedTime === time ? dustyPlum : 'transparent',
-                          color: selectedTime === time ? 'white' : textDark,
-                          borderColor: selectedTime === time ? dustyPlum : 'rgba(0,0,0,0.05)'
-                        }}
-                      >
-                        {formatSlotLabel(time)}
-                      </button>
+                  <div className="space-y-3 mb-6">
+                    <p className="text-[10px] font-sans -mt-1 mb-1" style={{ color: textDark, opacity: 0.45 }}>
+                      Only open slots are shown — already-booked times are hidden automatically.
+                    </p>
+                    {timeGroups.map((group) => (
+                      <div key={group.label}>
+                        <p className="text-[9px] font-sans font-bold uppercase tracking-wider mb-2" style={{ color: textDark, opacity: 0.4 }}>
+                          {group.label}
+                        </p>
+                        <div className="grid grid-cols-2 gap-2">
+                          {group.times.map((time) => (
+                            <button
+                              key={time}
+                              onClick={() => setSelectedTime(time)}
+                              className="py-2 rounded-xl text-[10px] font-sans font-bold transition-all border flex items-center justify-center gap-1.5"
+                              style={{
+                                backgroundColor: selectedTime === time ? dustyPlum : 'transparent',
+                                color: selectedTime === time ? 'white' : textDark,
+                                borderColor: selectedTime === time ? dustyPlum : 'rgba(0,0,0,0.05)'
+                              }}
+                            >
+                              {selectedTime === time && <Check className="w-3 h-3" />}
+                              {formatSlotLabel(time)}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
                     ))}
                   </div>
                 ) : (

@@ -32,8 +32,11 @@ export function MobileNav() {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-[60] lg:hidden bg-white/80 backdrop-blur-2xl border-t border-[#D4AF37]/20 pb-safe shadow-[0_-8px_30px_rgb(0,0,0,0.04)]">
-      <div className="flex items-center justify-around h-20 px-2">
+    // Floating dock instead of an edge-to-edge bar — inset on all sides so
+    // it reads as an object sitting above the page rather than a strip of
+    // chrome, with its own rounded shell and shadow to sell the float.
+    <nav className="fixed bottom-4 left-4 right-4 z-[60] lg:hidden [padding-bottom:env(safe-area-inset-bottom)]">
+      <div className="max-w-md mx-auto bg-white/70 backdrop-blur-2xl border border-white/60 rounded-[2rem] shadow-[0_8px_32px_rgba(0,0,0,0.16)] flex items-center justify-around h-[72px] px-2">
         {navItems.map((item) => (
           <Link
             key={item.name}
