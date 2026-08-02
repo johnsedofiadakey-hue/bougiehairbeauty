@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { differenceInMinutes } from 'date-fns';
 import { readStore, updateStore } from '@/lib/data-store';
-import { sendBrevoEmail, buildReminderEmail, formatAppointmentWhen } from '@/lib/email';
+import { sendEmail, buildReminderEmail, formatAppointmentWhen } from '@/lib/email';
 import { generatePortalMagicLink } from '@/lib/magic-link';
 
 // Hit by Cloud Scheduler every 5-10 minutes with `Authorization: Bearer
@@ -62,7 +62,7 @@ export async function POST(request: Request) {
         portalLink,
       });
 
-      const result = await sendBrevoEmail({ to: { email, name: user?.name }, subject, htmlContent: html });
+      const result = await sendEmail({ to: { email, name: user?.name }, subject, htmlContent: html });
       if (result.sent) {
         sent++;
         await updateStore((s) => {

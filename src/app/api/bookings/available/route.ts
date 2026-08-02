@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { startOfDay, endOfDay, parseISO, addMinutes, format, isWithinInterval } from 'date-fns';
 import { readStore } from '@/lib/data-store';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const dateStr = searchParams.get('date');

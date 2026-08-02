@@ -227,9 +227,36 @@ export default function AdminAppointments() {
                 currencySymbol: currency
               })}
             </pre>
-            <div className="mt-8 flex gap-4">
-               <Button className="flex-1 h-14 rounded-2xl" onClick={() => window.print()}>Print Invoice</Button>
-               <Button variant="outline" className="flex-1 h-14 rounded-2xl" onClick={() => setActiveInvoice(null)}>Close</Button>
+            <div className="mt-8 flex flex-col gap-4">
+               <Button 
+                 onClick={async () => {
+                   try {
+                     const depositAmount = Math.round(activeInvoice.totalPrice * 0.2);
+                     const balanceAmount = activeInvoice.totalPrice - depositAmount;
+                     const res = await fetch('/api/payments/stripe/checkout-balance', {
+                       method: 'POST',
+                       headers: { 'Content-Type': 'application/json' },
+                       body: JSON.stringify({ appointmentId: activeInvoice.id, amount: balanceAmount })
+                     });
+                     const data = await res.json();
+                     if (data.checkout_url) {
+                       await navigator.clipboard.writeText(data.checkout_url);
+                       alert("Payment link copied to clipboard! You can now paste and send it to the client.");
+                     } else {
+                       alert(data.error || "Failed to generate link.");
+                     }
+                   } catch (e) {
+                     alert("Error generating link.");
+                   }
+                 }}
+                 className="w-full h-14 rounded-2xl bg-bougie-pink text-bougie-espresso hover:bg-bougie-pink/80 hover:text-bougie-espresso"
+               >
+                 Generate 80% Balance Payment Link
+               </Button>
+               <div className="flex gap-4">
+                 <Button className="flex-1 h-14 rounded-2xl" onClick={() => window.print()}>Print Invoice</Button>
+                 <Button variant="outline" className="flex-1 h-14 rounded-2xl" onClick={() => setActiveInvoice(null)}>Close</Button>
+               </div>
             </div>
           </div>
         </div>

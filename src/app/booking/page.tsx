@@ -66,6 +66,7 @@ export default function BookingPage() {
   const [bookingPolicy, setBookingPolicy] = useState("");
   const [agreedToPolicy, setAgreedToPolicy] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [confirmedAppointmentId, setConfirmedAppointmentId] = useState<string | null>(null);
   // Set when the Hero's "Book Your Slot" widget hands off a date + time —
   // lets her land straight on service selection and skip re-picking a slot
   // she already chose. Cleared automatically if that slot turns out not to
@@ -185,6 +186,29 @@ export default function BookingPage() {
     }
   };
 
+  const handleStripeCheckout = async () => {
+    if (!confirmedAppointmentId) return;
+    setIsSubmitting(true);
+    try {
+      // Use exact same logic for minimum deposit
+      const depositAmount = Math.round(totalPrice * 0.2);
+      const res = await fetch('/api/payments/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ appointmentId: confirmedAppointmentId, amount: depositAmount })
+      });
+      const data = await res.json();
+      if (data.checkout_url) {
+        window.location.href = data.checkout_url;
+      } else {
+        alert(data.error || "Failed to initiate payment");
+      }
+    } catch (e) {
+      alert("Error initiating payment");
+    }
+    setIsSubmitting(false);
+  };
+
   const finalizeBooking = async () => {
     setIsSubmitting(true);
     const normalizedPhone = normalizeUKPhone(clientData.phone);
@@ -202,6 +226,9 @@ export default function BookingPage() {
     });
 
     if (res.ok) {
+      const data = await res.json();
+      if (data.id) setConfirmedAppointmentId(data.id);
+      
       // Save phone to localStorage so they can auto-fill it when logging in
       if (typeof window !== "undefined") {
         localStorage.setItem("client_phone", normalizedPhone);
@@ -296,26 +323,63 @@ export default function BookingPage() {
 
           {/* Success Overlay */}
           {isSuccess && (
-            <div className="absolute inset-0 bg-white/95 backdrop-blur-md z-50 flex flex-col items-center justify-center p-8 sm:p-12 text-center animate-in fade-in duration-500">
-               <div className="w-24 h-24 rounded-full bg-emerald-100 flex items-center justify-center mb-6 animate-in zoom-in-50 duration-500 delay-200">
+            <div className="absolute inset-0 bg-white/95 backdrop-blur-md z-50 flex flex-col items-center justify-center p-8 sm:p-12 text-center animate-in fade-in duration-500 overflow-y-auto">
+               <div className="w-24 h-24 rounded-full bg-emerald-100 flex items-center justify-center mb-6 animate-in zoom-in-50 duration-500 delay-200 flex-shrink-0">
                   <Check className="w-12 h-12 text-emerald-600" />
                </div>
-               <h2 className="text-4xl font-serif text-bougie-espresso mb-4">Confirmed!</h2>
-               <p className="text-lg text-bougie-espresso/80 mb-8">Your appointment for {selectedServices.length} service{selectedServices.length === 1 ? "" : "s"} has been secured. We'll see you soon!</p>
-               <div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm">
-                 <Link
-                   href="/portal"
-                   className="flex-1 px-8 py-4 bg-bougie-espresso text-bougie-cream rounded-2xl font-bold hover:scale-105 transition-transform shadow-xl shadow-bougie-espresso/20"
-                 >
-                   Access Your Portal
-                 </Link>
-                 <Link
-                   href="/"
-                   className="flex-1 px-8 py-4 bg-bougie-espresso/5 text-bougie-espresso/80 rounded-2xl font-bold hover:bg-bougie-espresso/10 transition-colors"
-                 >
-                   Back to Home
-                 </Link>
-               </div>
+               <h2 className="text-3xl sm:text-4xl font-serif text-bougie-espresso mb-4">Confirmed!</h2>
+               <p className="text-lg text-bougie-espresso/80 mb-8 max-w-md">Your appointment for {selectedServices.length} service{selectedServices.length === 1 ? "" : "s"} has been secured. We'll see you soon!</p>
+               
+               {needsPolicyStep ? (
+                 <div className="w-full max-w-md space-y-4">
+                   <div className="p-5 bg-bougie-pink/20 rounded-2xl border border-bougie-champagne/30 mb-6">
+                     <p className="font-serif text-xl text-bougie-espresso mb-2">Deposit Required</p>
+                     <p className="text-sm text-bougie-espresso/80 mb-4">Please pay your {depositEstimate()} deposit to finalize this booking.</p>
+                     
+                     <button
+                       onClick={handleStripeCheckout}
+                       disabled={isSubmitting}
+                       className="w-full px-8 py-4 bg-bougie-espresso text-bougie-cream rounded-xl font-bold hover:scale-[1.02] transition-transform shadow-xl shadow-bougie-espresso/20 flex items-center justify-center gap-2"
+                     >
+                       {isSubmitting ? "Loading..." : "Pay Deposit via Card (Secure)"}
+                     </button>
+                     
+                     <div className="mt-4 pt-4 border-t border-bougie-champagne/20">
+                       <p className="text-xs font-bold uppercase tracking-widest text-bougie-champagne mb-2">Or Pay via Bank Transfer</p>
+                       {bankDetails ? (
+                         <>
+                           <p className="text-sm font-bold">{bankDetails}</p>
+                           {bankAccountName && <p className="text-xs text-bougie-espresso/80 mt-1">Account name: {bankAccountName}</p>}
+                         </>
+                       ) : (
+                         <p className="text-xs text-bougie-espresso/80">We'll share bank transfer details with you directly.</p>
+                       )}
+                     </div>
+                   </div>
+                   
+                   <Link
+                     href="/portal"
+                     className="block w-full px-8 py-4 bg-bougie-espresso/5 text-bougie-espresso/80 rounded-xl font-bold hover:bg-bougie-espresso/10 transition-colors"
+                   >
+                     Access Your Portal
+                   </Link>
+                 </div>
+               ) : (
+                 <div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm">
+                   <Link
+                     href="/portal"
+                     className="flex-1 px-8 py-4 bg-bougie-espresso text-bougie-cream rounded-2xl font-bold hover:scale-105 transition-transform shadow-xl shadow-bougie-espresso/20"
+                   >
+                     Access Your Portal
+                   </Link>
+                   <Link
+                     href="/"
+                     className="flex-1 px-8 py-4 bg-bougie-espresso/5 text-bougie-espresso/80 rounded-2xl font-bold hover:bg-bougie-espresso/10 transition-colors"
+                   >
+                     Back to Home
+                   </Link>
+                 </div>
+               )}
             </div>
           )}
 
@@ -558,12 +622,7 @@ export default function BookingPage() {
                   />
                   <p className="text-xs text-bougie-taupe/70">Get your booking details and a reminder by email, plus one-click access to your portal.</p>
                 </div>
-                {!needsPolicyStep && (
-                  <div className="flex items-center gap-3 p-4 bg-emerald-50 rounded-xl text-emerald-800 text-sm">
-                    <Banknote className="w-5 h-5 flex-shrink-0" />
-                    <p>No online payment needed — pay by Mobile Money or cash when you arrive.</p>
-                  </div>
-                )}
+
               </div>
             </div>
           )}

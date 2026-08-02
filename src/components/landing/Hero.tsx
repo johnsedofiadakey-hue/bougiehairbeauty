@@ -59,7 +59,7 @@ export function Hero({
   useEffect(() => {
     setLoadingTimes(true);
     setSelectedTime(null);
-    fetch(`/api/bookings/available?date=${formattedDate}`)
+    fetch(`/api/bookings/available?date=${formattedDate}`, { cache: 'no-store' })
       .then((res) => res.json())
       .then((data) => setAvailableTimes(Array.isArray(data) ? data : []))
       .catch(() => setAvailableTimes([]))

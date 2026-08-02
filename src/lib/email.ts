@@ -3,7 +3,7 @@ import type { Store } from "@/lib/data-store";
 
 type Settings = Store["settings"];
 
-const BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
+import nodemailer from 'nodemailer';
 
 export function getBaseUrl(): string {
   return process.env.NEXTAUTH_URL || "http://localhost:3000";
@@ -14,49 +14,48 @@ export type EmailSendResult = { sent: true } | { sent: false; reason: string };
 // Every send goes through here so the "not configured yet" fallback lives in
 // one place — mirrors the Stripe checkout route's pattern of degrading
 // gracefully instead of crashing when a third-party key isn't set up yet.
-export async function sendBrevoEmail(params: {
+export async function sendEmail(params: {
   to: { email: string; name?: string };
   subject: string;
   htmlContent: string;
 }): Promise<EmailSendResult> {
-  const apiKey = process.env.BREVO_API_KEY;
-  const senderEmail = process.env.BREVO_SENDER_EMAIL;
-  const senderName = process.env.BREVO_SENDER_NAME || "Bougie Hair & Beauty";
+  const host = process.env.SMTP_HOST;
+  const port = parseInt(process.env.SMTP_PORT || '587', 10);
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASSWORD;
+  const senderName = process.env.SMTP_SENDER_NAME || "Bougie Hair & Beauty";
 
-  if (!apiKey || !senderEmail) {
-    console.warn("[BREVO] Not configured (missing BREVO_API_KEY or BREVO_SENDER_EMAIL) — skipping send.", {
+  if (!host || !user || !pass) {
+    console.warn("[SMTP] Not configured (missing SMTP_HOST, SMTP_USER, or SMTP_PASSWORD) — skipping send.", {
       subject: params.subject,
       to: params.to.email,
     });
-    return { sent: false, reason: "Brevo not configured" };
+    return { sent: false, reason: "SMTP not configured" };
   }
 
   try {
-    const res = await fetch(BREVO_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "api-key": apiKey,
+    const transporter = nodemailer.createTransport({
+      host,
+      port,
+      secure: port === 465, // true for 465, false for other ports
+      auth: {
+        user,
+        pass,
       },
-      body: JSON.stringify({
-        sender: { email: senderEmail, name: senderName },
-        to: [params.to],
-        subject: params.subject,
-        htmlContent: params.htmlContent,
-      }),
     });
 
-    if (!res.ok) {
-      const body = await res.text();
-      console.error("[BREVO_SEND_ERROR]", res.status, body);
-      return { sent: false, reason: `Brevo API error ${res.status}` };
-    }
+    const info = await transporter.sendMail({
+      from: `"${senderName}" <${user}>`, // sender address
+      to: params.to.name ? `"${params.to.name}" <${params.to.email}>` : params.to.email,
+      subject: params.subject,
+      html: params.htmlContent,
+    });
 
+    console.log("[SMTP_SEND_SUCCESS]", info.messageId);
     return { sent: true };
-  } catch (error) {
-    console.error("[BREVO_SEND_ERROR]", error);
-    return { sent: false, reason: "Network error calling Brevo" };
+  } catch (error: any) {
+    console.error("[SMTP_SEND_ERROR]", error);
+    return { sent: false, reason: `SMTP Error: ${error.message}` };
   }
 }
 
@@ -209,6 +208,47 @@ ${params.portalLink ? ctaButton(primary, params.portalLink, "View My Booking") :
     subject: `Reminder — your appointment is in about an hour`,
     html: emailShell(settings, {
       preheader: `Your appointment at ${escapeHtml(settings.companyName || "the salon")} is coming up soon`,
+      bodyHtml,
+    }),
+  };
+}
+
+export function buildAdminNewBookingEmail(params: {
+  settings: Settings;
+  clientName: string;
+  clientEmail: string;
+  clientPhone: string;
+  serviceNames: string[];
+  startTimeIso: string;
+  totalPrice: number;
+  adminPortalLink: string;
+}): { subject: string; html: string } {
+  const { settings } = params;
+  const currency = settings.currencySymbol || "£";
+  const accent = "#3E1D10"; 
+  const primary = settings.primaryColor || "#E6127E";
+
+  const bodyHtml = `
+<div style="font-family:Georgia,'Times New Roman',serif;font-size:20px;color:${accent};margin-bottom:12px;">New Booking Alert!</div>
+<p style="font-size:14px;color:#555;line-height:1.6;margin:0 0 8px;">A new appointment has just been booked by <strong>${escapeHtml(params.clientName)}</strong>.</p>
+<div style="background-color:#f9f9f9;padding:16px;border-radius:8px;margin-bottom:16px;">
+  <div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#999;margin-bottom:4px;">Contact Info</div>
+  <div style="font-size:14px;color:#333;margin-bottom:4px;"><strong>Email:</strong> ${escapeHtml(params.clientEmail)}</div>
+  <div style="font-size:14px;color:#333;"><strong>Phone:</strong> ${escapeHtml(params.clientPhone)}</div>
+</div>
+${bookingSummaryTable({
+  accent,
+  serviceNames: params.serviceNames,
+  when: formatAppointmentWhen(params.startTimeIso),
+  total: `${currency}${params.totalPrice}`,
+})}
+${ctaButton(primary, params.adminPortalLink, "View in Admin Portal")}
+`;
+
+  return {
+    subject: `New Booking: ${escapeHtml(params.clientName)} on ${formatAppointmentWhen(params.startTimeIso)}`,
+    html: emailShell(settings, {
+      preheader: `New booking received from ${escapeHtml(params.clientName)}`,
       bodyHtml,
     }),
   };

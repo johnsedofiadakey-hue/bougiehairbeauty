@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { createId, readStore, updateStore, findClientByPhone } from '@/lib/data-store';
-import { sendBrevoEmail, buildBookingConfirmationEmail, formatAppointmentWhen } from '@/lib/email';
+import { sendEmail, buildBookingConfirmationEmail, formatAppointmentWhen, buildAdminNewBookingEmail } from '@/lib/email';
 import { generatePortalMagicLink } from '@/lib/magic-link';
 import { notifyAdminsOfNewBooking } from '@/lib/admin-notify';
 
@@ -157,7 +157,7 @@ export async function POST(request: Request) {
           totalPrice: result.totalPrice,
           portalLink,
         });
-        await sendBrevoEmail({ to: { email: cleanEmail, name }, subject, htmlContent: html });
+        await sendEmail({ to: { email: cleanEmail, name }, subject, htmlContent: html });
       } catch (err) {
         console.error("[BOOKING_CONFIRMATION_EMAIL_ERROR]", err);
       }
@@ -167,6 +167,26 @@ export async function POST(request: Request) {
       await notifyAdminsOfNewBooking({ clientName: name, serviceNames, whenLabel });
     } catch (err) {
       console.error("[ADMIN_PUSH_NOTIFY_ERROR]", err);
+    }
+
+    try {
+      const adminEmail = process.env.SMTP_USER;
+      if (adminEmail) {
+        const adminPortalLink = `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/admin/appointments`;
+        const { subject: adminSubject, html: adminHtml } = buildAdminNewBookingEmail({
+          settings,
+          clientName: name,
+          clientEmail: cleanEmail || "Not provided",
+          clientPhone: phone || "Not provided",
+          serviceNames,
+          startTimeIso: result.startTime,
+          totalPrice: result.totalPrice,
+          adminPortalLink,
+        });
+        await sendEmail({ to: { email: adminEmail }, subject: adminSubject, htmlContent: adminHtml });
+      }
+    } catch (err) {
+      console.error("[ADMIN_BOOKING_EMAIL_ERROR]", err);
     }
 
     return NextResponse.json(result);
