@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 export const dynamic = 'force-dynamic';
 import { readStore } from "@/lib/data-store";
+import { getBaseUrl } from "@/lib/email";
 import { Providers } from "@/components/Providers";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -10,9 +11,20 @@ export async function generateMetadata(): Promise<Metadata> {
     settings = (await readStore()).settings;
   } catch (e) {}
 
+  const title = settings?.companyName || "Bougie Hair & Beauty | Hair, Wigs, Lash, Spa & Nails";
+  const description = settings?.heroSubtitle || "Braiding, wigs, lash extensions, a Japanese head spa & a full nail bar — book online in minutes.";
+  // The link-preview image (WhatsApp/iMessage/Facebook/etc.) is deliberately
+  // separate from the logo/favicon — a small round logo makes a poor share
+  // card. Falls back to the hero photo, then the logo, if no dedicated
+  // share image has been uploaded. Needs an absolute URL per the OG spec.
+  const shareImagePath = settings?.ogImage || settings?.heroImage || settings?.logoUrl;
+  const shareImageUrl = shareImagePath
+    ? (shareImagePath.startsWith("http") ? shareImagePath : `${getBaseUrl()}${shareImagePath}`)
+    : undefined;
+
   return {
-    title: settings?.companyName || "Bougie Hair & Beauty | Hair, Wigs, Lash, Spa & Nails",
-    description: settings?.heroSubtitle || "Braiding, wigs, lash extensions, a Japanese head spa & a full nail bar — book online in minutes.",
+    title,
+    description,
     manifest: "/manifest.json",
     ...(settings?.logoUrl && {
       icons: {
@@ -26,6 +38,21 @@ export async function generateMetadata(): Promise<Metadata> {
       title: settings?.companyName || "Bougie Hair & Beauty",
       statusBarStyle: "black-translucent",
     },
+    ...(shareImageUrl && {
+      openGraph: {
+        title,
+        description,
+        siteName: settings?.companyName || "Bougie Hair & Beauty",
+        images: [{ url: shareImageUrl, width: 1200, height: 1200, alt: title }],
+        type: "website",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description,
+        images: [shareImageUrl],
+      },
+    }),
   };
 }
 

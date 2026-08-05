@@ -10,6 +10,7 @@ import { readStore, updateStore } from '@/lib/data-store';
 const EDITABLE_SETTINGS_FIELDS = [
   "companyName",
   "logoUrl",
+  "ogImage",
   "primaryColor",
   "secondaryColor",
   "accentColor",

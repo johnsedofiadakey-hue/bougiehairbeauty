@@ -14,6 +14,11 @@ export const defaultSettings = {
   id: 1,
   companyName: "Bougie Hair & Beauty",
   logoUrl: "/logo.png",
+  // Shown as the preview image when a link to the site is shared on social
+  // media / messaging apps (WhatsApp, iMessage, Facebook, etc.) — distinct
+  // from the logo/favicon, since a small round logo makes a poor share-card
+  // image. Falls back to the hero photo, then the logo, if unset.
+  ogImage: "",
   primaryColor: "#E6127E",
   secondaryColor: "#FAF3E7",
   accentColor: "#D4AF37",

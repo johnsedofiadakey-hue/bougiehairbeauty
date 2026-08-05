@@ -29,6 +29,7 @@ export default function SettingsPage() {
     stylistBio: "",
     stylistImage: "",
     logoUrl: "",
+    ogImage: "",
     aboutHeading: "Our Story",
     aboutImage: "/service_hair.png",
     aboutIntro: "",
@@ -297,13 +298,26 @@ export default function SettingsPage() {
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-zinc-700">Company Logo</label>
                       <div className="flex flex-col gap-2">
-                        <input 
-                          type="file" 
+                        <input
+                          type="file"
                           accept="image/*"
                           onChange={(e) => uploadFile(e, 'logoUrl')}
                           className="text-xs text-bougie-espresso/60 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-bougie-espresso/10 file:text-bougie-espresso hover:file:bg-bougie-espresso/20 cursor-pointer"
                         />
                         <p className="text-[10px] text-bougie-espresso/50 truncate">Current Logo: {settings.logoUrl || "None"}</p>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-zinc-700">Social Share Image</label>
+                      <p className="text-[10px] text-bougie-espresso/50">Shown as the preview photo when your site link is shared on WhatsApp, iMessage, Facebook, etc. — separate from the logo. Falls back to the Hero image if left empty.</p>
+                      <div className="flex flex-col gap-2">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => uploadFile(e, 'ogImage')}
+                          className="text-xs text-bougie-espresso/60 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-bougie-espresso/10 file:text-bougie-espresso hover:file:bg-bougie-espresso/20 cursor-pointer"
+                        />
+                        <p className="text-[10px] text-bougie-espresso/50 truncate">Current: {settings.ogImage || "None (using Hero image)"}</p>
                       </div>
                     </div>
                   </div>
