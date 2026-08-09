@@ -11,7 +11,7 @@ env:
   # store is unavailable (the in-admin toggle needs the store; this does not).
   # Flip to "true" and redeploy to lock; back to "false" to go live.
   - variable: SITE_LOCKDOWN
-    value: "false"
+    value: "true"
     availability:
       - RUNTIME
   - variable: NEXTAUTH_SECRET
