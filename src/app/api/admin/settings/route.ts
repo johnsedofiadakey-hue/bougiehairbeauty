@@ -56,6 +56,10 @@ const EDITABLE_SETTINGS_FIELDS = [
   "bankDetails",
   "bankAccountName",
   "bookingPolicy",
+  "lockdownEnabled",
+  "lockdownEyebrow",
+  "lockdownTitle",
+  "lockdownMessage",
 ] as const;
 
 function pickEditableSettings(body: Record<string, unknown>) {

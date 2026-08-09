@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
-import { Palette, Layout, Type, Image as ImageIcon, CheckCircle, Package, Lock } from "lucide-react";
+import { Palette, Layout, Type, Image as ImageIcon, CheckCircle, Package, Lock, Power, AlertTriangle } from "lucide-react";
 
 export default function SettingsPage() {
   const [settings, setSettings] = useState({
@@ -53,6 +53,11 @@ export default function SettingsPage() {
     bankDetails: "",
     bankAccountName: "",
     bookingPolicy: "",
+    lockdownEnabled: false,
+    lockdownEyebrow: "A moment, please",
+    lockdownTitle: "We're taking a short break",
+    lockdownMessage:
+      "Our website is having a little pampering of its own. We'll be back and booking beautiful appointments very soon.\n\nIn the meantime, we'd still love to hear from you — reach us directly using the details below.",
   });
 
   const [loading, setLoading] = useState(true);
@@ -673,6 +678,76 @@ export default function SettingsPage() {
                 {saveStatus === "saving" ? "Saving..." : saveStatus === "saved" ? <span className="flex items-center gap-2"><CheckCircle className="w-4 h-4" /> Saved</span> : "Apply Brand Changes"}
               </Button>
             </div>
+          </div>
+        </div>
+
+        {/* Site Lockdown / Maintenance Mode */}
+        <div className={`bg-white rounded-3xl p-8 shadow-sm border transition-colors ${settings.lockdownEnabled ? "border-bougie-pink/40 ring-1 ring-bougie-pink/20" : ""}`}>
+          <div className="flex items-center gap-3 mb-2">
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${settings.lockdownEnabled ? "bg-bougie-pink/15 text-bougie-pink" : "bg-bougie-espresso/10 text-bougie-espresso"}`}>
+              <Power className="w-5 h-5" />
+            </div>
+            <h3 className="text-2xl font-serif">Site Lockdown</h3>
+          </div>
+          <p className="text-sm text-bougie-espresso/60 mb-6">
+            Take the public website offline and show visitors a branded message instead. Your admin panel and login stay open, so you can turn it back on at any time.
+          </p>
+
+          <div className={`flex items-center justify-between p-4 rounded-2xl border ${settings.lockdownEnabled ? "bg-bougie-pink/5 border-bougie-pink/30" : "bg-bougie-cream border-dashed border-bougie-espresso/15"}`}>
+            <div className="flex items-start gap-3">
+              {settings.lockdownEnabled && <AlertTriangle className="w-5 h-5 text-bougie-pink mt-0.5 flex-shrink-0" />}
+              <div>
+                <p className="text-sm font-bold">{settings.lockdownEnabled ? "Site is LOCKED — visitors see your message" : "Site is live"}</p>
+                <p className="text-xs text-bougie-espresso/60">{settings.lockdownEnabled ? "The public site is hidden. Remember to Save, then turn this off to go live again." : "Toggle on to replace the public site with the message below."}</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setSettings({ ...settings, lockdownEnabled: !settings.lockdownEnabled })}
+              className={`w-12 h-6 rounded-full transition-colors relative flex-shrink-0 ${settings.lockdownEnabled ? "bg-bougie-pink" : "bg-zinc-300"}`}
+              aria-pressed={settings.lockdownEnabled}
+            >
+              <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${settings.lockdownEnabled ? "right-1" : "left-1"}`} />
+            </button>
+          </div>
+
+          <div className="space-y-4 mt-6">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-zinc-700">Small heading (eyebrow)</label>
+              <input
+                type="text"
+                value={settings.lockdownEyebrow || ""}
+                onChange={(e) => setSettings({ ...settings, lockdownEyebrow: e.target.value })}
+                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none"
+                placeholder="A moment, please"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-zinc-700">Title</label>
+              <input
+                type="text"
+                value={settings.lockdownTitle || ""}
+                onChange={(e) => setSettings({ ...settings, lockdownTitle: e.target.value })}
+                className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-bougie-espresso outline-none font-serif text-lg"
+                placeholder="We're taking a short break"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-zinc-700">Message (blank line = new paragraph)</label>
+              <textarea
+                value={settings.lockdownMessage || ""}
+                onChange={(e) => setSettings({ ...settings, lockdownMessage: e.target.value })}
+                className="w-full px-4 py-3 rounded-xl border h-32 focus:ring-2 focus:ring-bougie-espresso outline-none"
+                placeholder="Tell visitors when you'll be back and how to reach you..."
+              />
+              <p className="text-[11px] text-bougie-espresso/50">Your contact details (phone, email, WhatsApp, Instagram) and address are pulled in automatically from the settings above.</p>
+            </div>
+          </div>
+
+          <div className="pt-6 mt-2 border-t flex justify-end">
+            <Button size="lg" onClick={handleSave} disabled={saveStatus === "saving"}>
+              {saveStatus === "saving" ? "Saving..." : saveStatus === "saved" ? <span className="flex items-center gap-2"><CheckCircle className="w-4 h-4" /> Saved</span> : settings.lockdownEnabled ? "Save & Lock Site" : "Save Lockdown Settings"}
+            </Button>
           </div>
         </div>
 

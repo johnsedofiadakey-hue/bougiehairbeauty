@@ -85,6 +85,17 @@ export const defaultSettings = {
   // path (see src/lib/auth.ts). Independent toggle from enableOTP since a
   // salon may want one, both, or neither.
   enableEmailLink: true,
+  // Site lockdown / maintenance mode. When lockdownEnabled is true, the whole
+  // public site is replaced by a branded "we're taking a break" screen (see
+  // components/landing/Lockdown.tsx); the admin panel and login stay open.
+  // Copy is editable in Admin → Settings → Site Lockdown. (A SITE_LOCKDOWN env
+  // var provides the same lock independently of this stored flag, for when the
+  // store itself is unavailable.)
+  lockdownEnabled: false,
+  lockdownEyebrow: "A moment, please",
+  lockdownTitle: "We're taking a short break",
+  lockdownMessage:
+    "Our website is having a little pampering of its own. We'll be back and booking beautiful appointments very soon.\n\nIn the meantime, we'd still love to hear from you — reach us directly using the details below.",
   updatedAt: new Date(0).toISOString(),
 };
 

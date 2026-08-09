@@ -1,9 +1,24 @@
 import type { Metadata } from "next";
 import "./globals.css";
 export const dynamic = 'force-dynamic';
+import { headers } from "next/headers";
 import { readStore } from "@/lib/data-store";
 import { getBaseUrl } from "@/lib/email";
 import { Providers } from "@/components/Providers";
+import { Lockdown } from "@/components/landing/Lockdown";
+
+// Paths that must stay reachable even when the site is locked down, so the
+// owner can still log in and lift the lockdown, and so the admin panel + APIs
+// keep working. Everything else (the whole public site) gets the lockdown screen.
+function isPublicPath(pathname: string): boolean {
+  if (!pathname) return true;
+  return !(
+    pathname.startsWith("/admin") ||
+    pathname.startsWith("/login") ||
+    pathname.startsWith("/api") ||
+    pathname.startsWith("/_next")
+  );
+}
 
 export async function generateMetadata(): Promise<Metadata> {
   let settings;
@@ -82,6 +97,18 @@ export default async function RootLayout({
     settings = (await readStore()).settings;
   } catch (e) {}
 
+  // Site lockdown gate. Two independent switches, so it works whether or not
+  // the data store is reachable:
+  //   1. SITE_LOCKDOWN env var — a hard override that works even if the store
+  //      is down (e.g. billing outage), togglable via deploy.
+  //   2. settings.lockdownEnabled — the admin toggle, editable with a custom
+  //      message once the store is healthy.
+  // Admin/login/api stay open so the owner can always get back in.
+  const pathname = (await headers()).get("x-pathname") || "";
+  const lockdownOn =
+    process.env.SITE_LOCKDOWN === "true" || settings?.lockdownEnabled === true;
+  const showLockdown = lockdownOn && isPublicPath(pathname);
+
   const themeSettings = settings || {
     primaryColor: '#4A3B32', // Mocha
     secondaryColor: '#E6127E', // Pink
@@ -114,9 +141,13 @@ export default async function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
       <body className="font-[family-name:var(--font-body)] bg-luxe-blush text-[var(--color-text-primary)] antialiased">
-        <Providers>
-          {children}
-        </Providers>
+        {showLockdown ? (
+          <Lockdown settings={settings} />
+        ) : (
+          <Providers>
+            {children}
+          </Providers>
+        )}
       </body>
     </html>
   );

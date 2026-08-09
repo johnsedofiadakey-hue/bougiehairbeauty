@@ -6,6 +6,14 @@ version: "v1"
 
 # Environment variables and secrets
 env:
+  # Site-wide lockdown master switch. Set to "true" to replace the entire
+  # public site with the branded maintenance screen — works even when the data
+  # store is unavailable (the in-admin toggle needs the store; this does not).
+  # Flip to "true" and redeploy to lock; back to "false" to go live.
+  - variable: SITE_LOCKDOWN
+    value: "false"
+    availability:
+      - RUNTIME
   - variable: NEXTAUTH_SECRET
     secret: NEXTAUTH_SECRET
     availability:
