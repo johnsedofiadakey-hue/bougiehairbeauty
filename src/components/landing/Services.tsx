@@ -21,7 +21,7 @@ export function Services({ settings, hideCta = false }: { settings?: any; hideCt
   const currency = settings?.currencySymbol || "£";
 
   useEffect(() => {
-    fetch("/api/services")
+    fetch("/api/services", { cache: "no-store" })
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) setServices(data);

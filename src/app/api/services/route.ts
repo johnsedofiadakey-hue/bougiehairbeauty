@@ -3,9 +3,18 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { createId, readStore, updateStore } from '@/lib/data-store';
 
+// Never let the Firebase App Hosting CDN (or the browser) serve a cached copy
+// of the service menu: admins edit prices/durations and expect them live on the
+// public site immediately. Mirrors the fix already applied to the calendar
+// availability route.
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET() {
   const services = (await readStore()).services;
-  return NextResponse.json(services);
+  return NextResponse.json(services, {
+    headers: { 'Cache-Control': 'no-store, max-age=0, must-revalidate' },
+  });
 }
 
 export async function POST(request: Request) {
