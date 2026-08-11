@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { startOfDay, endOfDay, parseISO, addMinutes, format, isWithinInterval } from 'date-fns';
-import { readStore } from '@/lib/data-store';
+import { readStore, occupiesSlot } from '@/lib/data-store';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,6 +17,7 @@ export async function GET(request: Request) {
     const dayEnd = endOfDay(targetDate);
 
     const store = await readStore();
+    const nowForHolds = new Date();
     const resolvedStaffId = staffId && staffId !== "solo-staff-id"
       ? staffId
       : store.staff.find((member) => member.isActive)?.id;
@@ -26,7 +27,8 @@ export async function GET(request: Request) {
       return (
         start >= dayStart &&
         start <= dayEnd &&
-        apt.status !== 'CANCELLED' &&
+        // Cancelled bookings and abandoned unpaid card holds don't occupy slots.
+        occupiesSlot(apt, nowForHolds) &&
         (!resolvedStaffId || apt.staffId === resolvedStaffId)
       );
     });

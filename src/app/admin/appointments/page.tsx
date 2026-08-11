@@ -62,6 +62,11 @@ export default function AdminAppointments() {
     setOpenMenuId(null);
   };
 
+  // Card bookings mid-checkout (AWAITING_PAYMENT) aren't real appointments yet —
+  // they either become CONFIRMED once the deposit clears or are auto-released.
+  // Keep them out of the book so only genuine bookings show.
+  const visibleAppointments = appointments.filter((a) => a.status !== "AWAITING_PAYMENT");
+
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center">
@@ -98,7 +103,7 @@ export default function AdminAppointments() {
             </tr>
           </thead>
           <tbody className="divide-y">
-            {appointments.length > 0 ? appointments.map((apt) => (
+            {visibleAppointments.length > 0 ? visibleAppointments.map((apt) => (
               <tr key={apt.id} className="hover:bg-bougie-cream transition-colors">
                 <td className="px-8 py-6">
                   <div className="flex items-center gap-3">
@@ -108,6 +113,16 @@ export default function AdminAppointments() {
                     <div>
                       <p className="font-bold">{apt.client?.user?.name || 'Walk-in Client'}</p>
                       <p className="text-xs text-bougie-espresso">{apt.services?.map((s: any) => s.name).join(', ') || 'No services'}</p>
+                      <div className="flex items-center gap-2 mt-1 flex-wrap">
+                        {apt.client?.phone && <span className="text-[11px] text-bougie-espresso/60">{apt.client.phone}</span>}
+                        <span className={`text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
+                          apt.isPaid ? 'bg-emerald-100 text-emerald-700' :
+                          apt.paymentMethod === 'cash' ? 'bg-amber-100 text-amber-700' :
+                          'bg-zinc-100 text-zinc-500'
+                        }`}>
+                          {apt.isPaid ? 'Deposit paid' : apt.paymentMethod === 'cash' ? 'Cash on arrival' : 'Unpaid'}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </td>
@@ -122,7 +137,9 @@ export default function AdminAppointments() {
                 <td className="px-8 py-6">
                   <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                     apt.status === 'COMPLETED' ? 'bg-emerald-100 text-emerald-700' :
+                    apt.status === 'CONFIRMED' ? 'bg-sky-100 text-sky-700' :
                     apt.status === 'PENDING' ? 'bg-amber-100 text-amber-700' :
+                    apt.status === 'CANCELLED' ? 'bg-rose-100 text-rose-600' :
                     'bg-bougie-cream drop-shadow-sm text-zinc-700'
                   }`}>
                     {apt.status}
@@ -132,19 +149,30 @@ export default function AdminAppointments() {
                   <div className="flex justify-end gap-2">
                     {apt.status === 'PENDING' && (
                       <>
-                        <button 
-                          onClick={() => updateStatus(apt.id, 'COMPLETED')}
-                          className="p-2 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100"
+                        <button
+                          onClick={() => updateStatus(apt.id, 'CONFIRMED')}
+                          title="Accept booking"
+                          className="px-3 py-2 text-[10px] font-bold uppercase bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100 flex items-center gap-1"
                         >
-                          <CheckCircle className="w-5 h-5" />
+                          <CheckCircle className="w-4 h-4" /> Accept
                         </button>
-                        <button 
+                        <button
                           onClick={() => updateStatus(apt.id, 'CANCELLED')}
+                          title="Decline booking"
                           className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100"
                         >
                           <XCircle className="w-5 h-5" />
                         </button>
                       </>
+                    )}
+                    {apt.status === 'CONFIRMED' && (
+                      <button
+                        onClick={() => updateStatus(apt.id, 'COMPLETED')}
+                        title="Mark completed"
+                        className="px-3 py-2 text-[10px] font-bold uppercase bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100 flex items-center gap-1"
+                      >
+                        <CheckCircle className="w-4 h-4" /> Complete
+                      </button>
                     )}
                     <button 
                       onClick={() => setActiveInvoice(apt)}
@@ -197,8 +225,8 @@ export default function AdminAppointments() {
       </div>
       ) : (
         <CalendarGrid
-          appointments={appointments} 
-          onSelect={(apt) => setActiveInvoice(apt)} 
+          appointments={visibleAppointments}
+          onSelect={(apt) => setActiveInvoice(apt)}
         />
       )}
 

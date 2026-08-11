@@ -3,7 +3,7 @@ import { addMinutes, differenceInMinutes } from 'date-fns';
 import bcrypt from 'bcryptjs';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
-import { createId, readStore, updateStore, findClientByPhone } from '@/lib/data-store';
+import { createId, readStore, updateStore, findClientByPhone, occupiesSlot, isAbandonedHold } from '@/lib/data-store';
 import { sendEmail, buildBookingConfirmationEmail, formatAppointmentWhen, buildAdminNewBookingEmail } from '@/lib/email';
 import { generatePortalMagicLink } from '@/lib/magic-link';
 import { notifyAdminsOfNewBooking } from '@/lib/admin-notify';
@@ -40,13 +40,22 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { name, phone, email, staffId, serviceIds, startTime } = await request.json();
+    const { name, phone, email, staffId, serviceIds, startTime, paymentMethod } = await request.json();
     if (!name || !phone || !Array.isArray(serviceIds) || !startTime) {
       return NextResponse.json({ error: 'Missing required booking fields' }, { status: 400 });
     }
     const cleanEmail = typeof email === "string" ? email.trim() : "";
+    // "cash" = pay in person on arrival (no online payment). Anything else is
+    // treated as a card booking that must clear a Stripe deposit before it
+    // counts as a real, confirmed appointment.
+    const isCash = paymentMethod === "cash";
 
     const result = await updateStore((store) => {
+      const now = new Date();
+      // Opportunistically drop abandoned card holds (unpaid past the hold
+      // window) so they neither block slots nor accumulate in the store.
+      store.appointments = store.appointments.filter((apt) => !isAbandonedHold(apt, now));
+
       const selectedServices = store.services.filter((service) => serviceIds.includes(service.id));
       if (selectedServices.length === 0) return { error: 'No valid services found', status: 404 };
 
@@ -63,7 +72,7 @@ export async function POST(request: Request) {
       const start = new Date(startTime);
       const end = addMinutes(start, totalDuration);
       const conflict = store.appointments.find((apt) => {
-        if (apt.staffId !== resolvedStaffId || !['PENDING', 'CONFIRMED'].includes(apt.status)) return false;
+        if (apt.staffId !== resolvedStaffId || !occupiesSlot(apt, now)) return false;
         return new Date(apt.startTime) < end && new Date(apt.endTime) > start;
       });
 
@@ -107,7 +116,6 @@ export async function POST(request: Request) {
       }
       if (cleanEmail && !user.email) user.email = cleanEmail;
 
-      const now = new Date();
       const appointment = {
         id: createId("apt"),
         clientId: client.id,
@@ -116,7 +124,11 @@ export async function POST(request: Request) {
         startTime: start.toISOString(),
         endTime: end.toISOString(),
         totalPrice,
-        status: 'PENDING',
+        // Cash bookings arrive as PENDING for the salon to accept; card
+        // bookings sit as an unpaid hold until Stripe confirms the deposit,
+        // at which point they flip to CONFIRMED (see the payment verify route).
+        status: isCash ? 'PENDING' : 'AWAITING_PAYMENT',
+        paymentMethod: isCash ? 'cash' : 'card',
         isPaid: false,
         paymentRef: null,
         reminderSent: false,
@@ -142,6 +154,12 @@ export async function POST(request: Request) {
     // sent, so work kicked off after `return` isn't guaranteed to finish.
     // Each is isolated in its own try/catch so a failed email or push never
     // fails a booking that already succeeded.
+    // Card bookings send their confirmation + admin alerts only after the
+    // deposit is verified (see /api/payments/stripe/verify) — otherwise an
+    // abandoned checkout would wrongly email "you're booked in" and ping the
+    // salon. Cash bookings are real pending appointments the moment they're
+    // created, so notify straight away.
+    if (isCash) {
     const settings = (await readStore()).settings;
     const serviceNames = result.services.map((s: any) => s.name);
     const whenLabel = formatAppointmentWhen(result.startTime);
@@ -187,6 +205,7 @@ export async function POST(request: Request) {
       }
     } catch (err) {
       console.error("[ADMIN_BOOKING_EMAIL_ERROR]", err);
+    }
     }
 
     return NextResponse.json(result);

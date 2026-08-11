@@ -299,6 +299,9 @@ export default function ClientPortalAuth() {
               <p className="text-sm text-white/60">
                 Check your inbox at <span className="font-bold text-white">{email}</span> — tap the link we sent to finish signing in.
               </p>
+              <p className="text-xs text-white/40">
+                📩 Don't see it? Check your <span className="font-semibold text-white/70">spam or junk folder</span> — it can take a minute to arrive.
+              </p>
               <button
                 type="button"
                 onClick={() => { if (!loading) { setError(""); setStep("email"); } }}

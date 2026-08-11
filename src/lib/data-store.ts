@@ -1,5 +1,37 @@
+import { differenceInMinutes } from "date-fns";
 import { bucket } from "@/lib/firebase-admin";
 import { defaultStore } from "@/lib/default-data";
+
+// A card booking is created as AWAITING_PAYMENT before the customer is sent to
+// Stripe. It reserves the slot while they're on the checkout page, but an
+// abandoned checkout must NOT leave a ghost booking on the calendar — that's
+// what makes "no payment = no booking" true. So an unpaid card hold only
+// occupies its slot for this many minutes; after that the slot frees up again.
+export const PAYMENT_HOLD_MINUTES = 20;
+
+// Single source of truth for "does this appointment take up its time slot?",
+// shared by the availability endpoint and the booking-conflict check so they
+// can never drift apart. Cancelled appointments never block; expired unpaid
+// card holds never block; everything else (PENDING cash bookings, CONFIRMED,
+// COMPLETED) does.
+export function occupiesSlot(apt: any, now: Date = new Date()): boolean {
+  if (apt.status === "CANCELLED") return false;
+  if (apt.status === "AWAITING_PAYMENT") {
+    if (apt.isPaid) return true;
+    return differenceInMinutes(now, new Date(apt.createdAt)) < PAYMENT_HOLD_MINUTES;
+  }
+  return true;
+}
+
+// True once a card hold has been abandoned (unpaid past the hold window) — used
+// to opportunistically purge these so the store doesn't accumulate dead holds.
+export function isAbandonedHold(apt: any, now: Date = new Date()): boolean {
+  return (
+    apt.status === "AWAITING_PAYMENT" &&
+    !apt.isPaid &&
+    differenceInMinutes(now, new Date(apt.createdAt)) >= PAYMENT_HOLD_MINUTES
+  );
+}
 
 export type Store = {
   settings: typeof defaultStore.settings;

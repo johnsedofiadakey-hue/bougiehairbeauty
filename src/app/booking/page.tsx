@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { format, addDays, startOfToday, isSameDay } from "date-fns";
-import { ChevronRight, ChevronLeft, ChevronDown, Check, Clock, Phone, Banknote, ShieldCheck, Calendar } from "lucide-react";
+import { ChevronRight, ChevronLeft, ChevronDown, Check, Clock, Phone, Banknote, ShieldCheck, Calendar, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import confetti from "canvas-confetti";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -65,8 +65,11 @@ export default function BookingPage() {
   const [bankAccountName, setBankAccountName] = useState("");
   const [bookingPolicy, setBookingPolicy] = useState("");
   const [agreedToPolicy, setAgreedToPolicy] = useState(false);
+  // "I'll pay cash when I arrive" — the deposit bypass. When true, the booking
+  // is created without online payment and shown to the salon as a pending
+  // request to accept; when false, a Stripe deposit must clear to confirm it.
+  const [payInPerson, setPayInPerson] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [confirmedAppointmentId, setConfirmedAppointmentId] = useState<string | null>(null);
   // Set when the Hero's "Book Your Slot" widget hands off a date + time —
   // lets her land straight on service selection and skip re-picking a slot
   // she already chose. Cleared automatically if that slot turns out not to
@@ -141,8 +144,11 @@ export default function BookingPage() {
     }
   }, [selectedDate]);
 
-  const needsPolicyStep = requireDeposit && !isAdmin;
-  const baseSteps: Step[] = needsPolicyStep ? ["service", "datetime", "details", "policy"] : ["service", "datetime", "details"];
+  // Every public booking ends on the payment step, where the customer either
+  // pays the deposit by card or opts to pay cash on arrival. Admins booking on
+  // behalf of a walk-in skip payment entirely.
+  const needsPaymentStep = !isAdmin;
+  const baseSteps: Step[] = needsPaymentStep ? ["service", "datetime", "details", "policy"] : ["service", "datetime", "details"];
   const steps: Step[] = dateTimePrefilled ? baseSteps.filter((s) => s !== "datetime") : baseSteps;
   const stepIndex = steps.indexOf(currentStep);
 
@@ -175,41 +181,38 @@ export default function BookingPage() {
     if (currentStep === "service") setCurrentStep(dateTimePrefilled ? "details" : "datetime");
     else if (currentStep === "datetime") setCurrentStep("details");
     else if (currentStep === "details") {
-      if (needsPolicyStep) {
+      if (needsPaymentStep) {
         setCurrentStep("policy");
       } else {
-        await finalizeBooking();
+        // Admin booking on behalf of a client — no online payment.
+        await finalizeBooking("cash");
       }
     }
     else if (currentStep === "policy") {
-      await finalizeBooking();
+      await finalizeBooking(payInPerson ? "cash" : "card");
     }
   };
 
-  const handleStripeCheckout = async () => {
-    if (!confirmedAppointmentId) return;
-    setIsSubmitting(true);
-    try {
-      // Use exact same logic for minimum deposit
-      const depositAmount = Math.round(totalPrice * 0.2);
-      const res = await fetch('/api/payments/stripe/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ appointmentId: confirmedAppointmentId, amount: depositAmount })
-      });
-      const data = await res.json();
-      if (data.checkout_url) {
-        window.location.href = data.checkout_url;
-      } else {
-        alert(data.error || "Failed to initiate payment");
-      }
-    } catch (e) {
-      alert("Error initiating payment");
+  // Sends the customer to Stripe to pay the 20% deposit. The booking already
+  // exists as an unpaid hold; only a cleared payment (verified server-side on
+  // return) turns it into a confirmed appointment.
+  const startStripeCheckout = async (appointmentId: string) => {
+    const depositAmount = Math.max(1, Math.round(totalPrice * 0.2));
+    const res = await fetch('/api/payments/stripe/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ appointmentId, amount: depositAmount })
+    });
+    const data = await res.json();
+    if (data.checkout_url) {
+      window.location.href = data.checkout_url;
+      return true;
     }
-    setIsSubmitting(false);
+    alert(data.error || "Couldn't start payment. Please try again.");
+    return false;
   };
 
-  const finalizeBooking = async () => {
+  const finalizeBooking = async (method: "cash" | "card") => {
     setIsSubmitting(true);
     const normalizedPhone = normalizeUKPhone(clientData.phone);
     const res = await fetch("/api/bookings", {
@@ -221,19 +224,29 @@ export default function BookingPage() {
         name: clientData.name,
         phone: normalizedPhone,
         email: clientData.email.trim(),
-        staffId: "solo-staff-id"
+        staffId: "solo-staff-id",
+        paymentMethod: method,
       })
     });
 
     if (res.ok) {
       const data = await res.json();
-      if (data.id) setConfirmedAppointmentId(data.id);
-      
+
       // Save phone to localStorage so they can auto-fill it when logging in
       if (typeof window !== "undefined") {
         localStorage.setItem("client_phone", normalizedPhone);
       }
 
+      if (method === "card") {
+        // Hand straight off to Stripe. The booking is only a hold until the
+        // deposit clears, so we don't show the success screen here — the
+        // /booking/success page does, after verifying the payment.
+        const redirected = await startStripeCheckout(data.id);
+        if (!redirected) setIsSubmitting(false);
+        return;
+      }
+
+      // Cash on arrival — this is a real pending appointment now.
       setIsSuccess(true);
       confetti({
         particleCount: 150,
@@ -327,59 +340,33 @@ export default function BookingPage() {
                <div className="w-24 h-24 rounded-full bg-emerald-100 flex items-center justify-center mb-6 animate-in zoom-in-50 duration-500 delay-200 flex-shrink-0">
                   <Check className="w-12 h-12 text-emerald-600" />
                </div>
-               <h2 className="text-3xl sm:text-4xl font-serif text-bougie-espresso mb-4">Confirmed!</h2>
-               <p className="text-lg text-bougie-espresso/80 mb-8 max-w-md">Your appointment for {selectedServices.length} service{selectedServices.length === 1 ? "" : "s"} has been secured. We'll see you soon!</p>
-               
-               {needsPolicyStep ? (
-                 <div className="w-full max-w-md space-y-4">
-                   <div className="p-5 bg-bougie-pink/20 rounded-2xl border border-bougie-champagne/30 mb-6">
-                     <p className="font-serif text-xl text-bougie-espresso mb-2">Deposit Required</p>
-                     <p className="text-sm text-bougie-espresso/80 mb-4">Please pay your {depositEstimate()} deposit to finalize this booking.</p>
-                     
-                     <button
-                       onClick={handleStripeCheckout}
-                       disabled={isSubmitting}
-                       className="w-full px-8 py-4 bg-bougie-espresso text-bougie-cream rounded-xl font-bold hover:scale-[1.02] transition-transform shadow-xl shadow-bougie-espresso/20 flex items-center justify-center gap-2"
-                     >
-                       {isSubmitting ? "Loading..." : "Pay Deposit via Card (Secure)"}
-                     </button>
-                     
-                     <div className="mt-4 pt-4 border-t border-bougie-champagne/20">
-                       <p className="text-xs font-bold uppercase tracking-widest text-bougie-champagne mb-2">Or Pay via Bank Transfer</p>
-                       {bankDetails ? (
-                         <>
-                           <p className="text-sm font-bold">{bankDetails}</p>
-                           {bankAccountName && <p className="text-xs text-bougie-espresso/80 mt-1">Account name: {bankAccountName}</p>}
-                         </>
-                       ) : (
-                         <p className="text-xs text-bougie-espresso/80">We'll share bank transfer details with you directly.</p>
-                       )}
-                     </div>
-                   </div>
-                   
-                   <Link
-                     href="/portal"
-                     className="block w-full px-8 py-4 bg-bougie-espresso/5 text-bougie-espresso/80 rounded-xl font-bold hover:bg-bougie-espresso/10 transition-colors"
-                   >
-                     Access Your Portal
-                   </Link>
-                 </div>
-               ) : (
-                 <div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm">
-                   <Link
-                     href="/portal"
-                     className="flex-1 px-8 py-4 bg-bougie-espresso text-bougie-cream rounded-2xl font-bold hover:scale-105 transition-transform shadow-xl shadow-bougie-espresso/20"
-                   >
-                     Access Your Portal
-                   </Link>
-                   <Link
-                     href="/"
-                     className="flex-1 px-8 py-4 bg-bougie-espresso/5 text-bougie-espresso/80 rounded-2xl font-bold hover:bg-bougie-espresso/10 transition-colors"
-                   >
-                     Back to Home
-                   </Link>
+               <h2 className="text-3xl sm:text-4xl font-serif text-bougie-espresso mb-4">Booking Requested!</h2>
+               <p className="text-lg text-bougie-espresso/80 mb-6 max-w-md">
+                 Your {selectedServices.length} service{selectedServices.length === 1 ? "" : "s"} appointment is in — you've chosen to <strong>pay cash on arrival</strong>. The salon will confirm your slot shortly.
+               </p>
+
+               {clientData.email.trim() && (
+                 <div className="w-full max-w-md p-4 bg-bougie-pink/20 rounded-2xl border border-bougie-champagne/30 mb-6 text-left">
+                   <p className="text-sm text-bougie-espresso/80">
+                     📩 We've emailed your booking details. <strong>Don't see it? Check your spam or junk folder</strong> and mark us as "not spam" so you also get your reminder.
+                   </p>
                  </div>
                )}
+
+               <div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm">
+                 <Link
+                   href="/portal"
+                   className="flex-1 px-8 py-4 bg-bougie-espresso text-bougie-cream rounded-2xl font-bold hover:scale-105 transition-transform shadow-xl shadow-bougie-espresso/20"
+                 >
+                   Access Your Portal
+                 </Link>
+                 <Link
+                   href="/"
+                   className="flex-1 px-8 py-4 bg-bougie-espresso/5 text-bougie-espresso/80 rounded-2xl font-bold hover:bg-bougie-espresso/10 transition-colors"
+                 >
+                   Back to Home
+                 </Link>
+               </div>
             </div>
           )}
 
@@ -632,7 +619,7 @@ export default function BookingPage() {
             <div className="space-y-6">
               <div className="text-center">
                 <h2 className="text-2xl sm:text-3xl font-serif text-bougie-espresso mb-2">Secure Your Slot</h2>
-                <p className="text-sm sm:text-base text-bougie-taupe">A deposit secures your appointment — please review our policy below.</p>
+                <p className="text-sm sm:text-base text-bougie-taupe">Pay a deposit by card to confirm instantly — or choose to pay cash on arrival.</p>
               </div>
 
               <div className="bg-bougie-cream rounded-2xl p-5 sm:p-6 border border-dashed border-bougie-espresso/30">
@@ -661,17 +648,32 @@ export default function BookingPage() {
                 </div>
               </div>
 
-              <div className="p-5 sm:p-6 bg-bougie-pink/20 rounded-2xl border border-bougie-champagne/20 space-y-2">
-                <p className="text-xs font-bold uppercase tracking-widest text-bougie-champagne">Send Your Deposit via Bank Transfer</p>
-                {bankDetails ? (
-                  <>
-                    <p className="text-lg font-bold">{bankDetails}</p>
-                    {bankAccountName && <p className="text-sm text-bougie-espresso/80">Account name: {bankAccountName}</p>}
-                  </>
-                ) : (
-                  <p className="text-sm text-bougie-espresso/80">We'll share bank transfer details with you directly to confirm your deposit.</p>
-                )}
-                <p className="text-xs text-bougie-taupe pt-2">After booking, please send your deposit and keep your reference — our team will confirm it against your appointment.</p>
+              {/* How you'll pay — card deposit (default) or cash on arrival */}
+              <div className="space-y-3">
+                <p className="text-xs font-bold uppercase tracking-widest text-bougie-champagne">How you'll pay</p>
+
+                <div className={`p-4 rounded-2xl border-2 transition-colors ${payInPerson ? "border-bougie-espresso/10 bg-bougie-cream/40 opacity-60" : "border-bougie-champagne/50 bg-bougie-pink/10"}`}>
+                  <div className="flex items-center gap-3">
+                    <CreditCard className="w-5 h-5 text-bougie-champagne flex-shrink-0" />
+                    <div>
+                      <p className="font-bold text-sm">Pay {depositEstimate()} deposit by card now</p>
+                      <p className="text-xs text-bougie-taupe">Confirms your slot instantly. Balance paid on the day.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <label className={`flex items-start gap-3 p-4 rounded-2xl border-2 cursor-pointer transition-colors ${payInPerson ? "border-bougie-champagne/50 bg-bougie-pink/10" : "border-bougie-espresso/10"}`}>
+                  <input
+                    type="checkbox"
+                    checked={payInPerson}
+                    onChange={(e) => setPayInPerson(e.target.checked)}
+                    className="w-5 h-5 mt-0.5 rounded accent-bougie-champagne flex-shrink-0"
+                  />
+                  <span className="text-sm">
+                    <span className="font-bold flex items-center gap-2"><Banknote className="w-4 h-4 text-bougie-champagne flex-shrink-0" /> I'll pay in cash when I arrive</span>
+                    <span className="block text-xs text-bougie-taupe mt-1">Book now without paying online. Your slot is held and the salon will confirm it.</span>
+                  </span>
+                </label>
               </div>
 
               <div className="max-h-40 overflow-y-auto p-4 rounded-xl border bg-white text-xs text-bougie-taupe leading-relaxed whitespace-pre-line">
@@ -735,13 +737,13 @@ export default function BookingPage() {
               {isSubmitting
                 ? "Confirming..."
                 : currentStep === "policy"
-                ? "Confirm Booking"
-                : currentStep === "details" && !needsPolicyStep
+                ? (payInPerson ? "Confirm Booking" : `Pay ${depositEstimate()} Deposit`)
+                : currentStep === "details" && !needsPaymentStep
                 ? "Confirm Booking"
                 : currentStep === "service" && selectedServices.length > 0
                 ? `Continue • ${totalLabel}`
                 : "Continue"}
-              {!isSubmitting && !(currentStep === "policy" || (currentStep === "details" && !needsPolicyStep)) && <ChevronRight className="w-5 h-5 ml-2 flex-shrink-0" />}
+              {!isSubmitting && !(currentStep === "policy" || (currentStep === "details" && !needsPaymentStep)) && <ChevronRight className="w-5 h-5 ml-2 flex-shrink-0" />}
             </Button>
           </div>
         </div>
