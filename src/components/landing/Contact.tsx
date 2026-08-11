@@ -23,15 +23,17 @@ export function Contact({ settings }: { settings?: any }) {
             </p>
 
             <div className="space-y-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-luxe-dark/5 flex items-center justify-center">
-                  <MapPin className="w-6 h-6 text-luxe-plum" />
+              {settings?.address && (
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-luxe-dark/5 flex items-center justify-center">
+                    <MapPin className="w-6 h-6 text-luxe-plum" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium">Visit Us</h4>
+                    <p className="text-luxe-dark/70">{settings.address}</p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-medium">Visit Us</h4>
-                  <p className="text-luxe-dark/70">{settings?.address || '123 Beauty Lane, Luxury District'}</p>
-                </div>
-              </div>
+              )}
 
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-luxe-dark/5 flex items-center justify-center">
@@ -58,26 +60,32 @@ export function Contact({ settings }: { settings?: any }) {
           <div className="bg-luxe-dark/5 backdrop-blur-2xl border border-luxe-dark/10 rounded-3xl p-8 md:p-12 shadow-2xl">
             <h3 className="text-3xl font-serif mb-8 text-luxe-dark">Quick Contact</h3>
             <div className="space-y-6">
-              <a href={`https://wa.me/${settings?.whatsappNumber || '447700900000'}`} target="_blank" rel="noopener noreferrer">
-                <Button size="lg" className="w-full bg-[#25D366] text-white border-none hover:bg-[#20bd5c]">
-                  <MessageCircle className="w-5 h-5 mr-2" />
-                  Chat on WhatsApp
-                </Button>
-              </a>
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-luxe-dark/10"></div>
+              {settings?.whatsappNumber && (
+                <a href={`https://wa.me/${settings.whatsappNumber}`} target="_blank" rel="noopener noreferrer">
+                  <Button size="lg" className="w-full bg-[#25D366] text-white border-none hover:bg-[#20bd5c]">
+                    <MessageCircle className="w-5 h-5 mr-2" />
+                    Chat on WhatsApp
+                  </Button>
+                </a>
+              )}
+              {settings?.whatsappNumber && (settings?.contactPhone || settings?.whatsappNumber) && (
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-luxe-dark/10"></div>
+                  </div>
+                  <div className="relative flex justify-center text-sm uppercase">
+                    <span className="bg-transparent px-2 text-luxe-dark/70 backdrop-blur-xl">Or Call Us</span>
+                  </div>
                 </div>
-                <div className="relative flex justify-center text-sm uppercase">
-                  <span className="bg-transparent px-2 text-luxe-dark/70 backdrop-blur-xl">Or Call Us</span>
-                </div>
-              </div>
-              <a href={`tel:${settings?.contactPhone || settings?.whatsappNumber || '+447700900000'}`}>
-                <Button variant="outline" size="lg" className="w-full bg-transparent border-luxe-dark/20 text-luxe-dark hover:bg-luxe-dark/5 hover:text-luxe-dark">
-                  <Phone className="w-5 h-5 mr-2" />
-                  {settings?.contactPhone || (settings?.whatsappNumber ? `+${settings.whatsappNumber}` : '07770 375859')}
-                </Button>
-              </a>
+              )}
+              {(settings?.contactPhone || settings?.whatsappNumber) && (
+                <a href={`tel:${settings?.contactPhone || `+${settings?.whatsappNumber}`}`}>
+                  <Button variant="outline" size="lg" className="w-full bg-transparent border-luxe-dark/20 text-luxe-dark hover:bg-luxe-dark/5 hover:text-luxe-dark">
+                    <Phone className="w-5 h-5 mr-2" />
+                    {settings?.contactPhone || `+${settings?.whatsappNumber}`}
+                  </Button>
+                </a>
+              )}
             </div>
           </div>
         </div>

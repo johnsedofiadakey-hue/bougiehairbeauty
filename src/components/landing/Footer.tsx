@@ -9,7 +9,7 @@ export function Footer({ settings }: { settings?: any }) {
   
   const studioName = settings?.companyName || "Bougie Hair & Beauty";
   const contactEmail = settings?.contactEmail || "bougiehairuk@gmail.com";
-  const contactPhone = settings?.contactPhone || "+44 7700 900000";
+  const contactPhone = settings?.contactPhone;
   const contactAddress = settings?.address || "41 Crouch Street, Colchester";
 
   return (
@@ -82,10 +82,12 @@ export function Footer({ settings }: { settings?: any }) {
                 <MapPin className="w-4 h-4 text-luxe-plum" />
                 <span>{contactAddress}</span>
               </div>
-              <div className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-luxe-plum" />
-                <span>{contactPhone}</span>
-              </div>
+              {contactPhone && (
+                <div className="flex items-center gap-3">
+                  <Phone className="w-4 h-4 text-luxe-plum" />
+                  <span>{contactPhone}</span>
+                </div>
+              )}
               <div className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-luxe-plum" />
                 <span>{contactEmail}</span>

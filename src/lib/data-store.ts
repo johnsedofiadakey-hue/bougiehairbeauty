@@ -45,15 +45,22 @@ function mergeWithDefaults(data: Partial<Store> | null | undefined): Store {
   const base = cloneDefaultStore();
   if (!data) return base;
 
+  // Respect a persisted array exactly as saved — including an empty one. Only
+  // fall back to seed defaults when the key is genuinely absent (a corrupt or
+  // partial store), never merely because the admin emptied the collection.
+  // In production the store is the single source of truth: deleting every
+  // service must leave the public menu empty, not resurrect the seed catalog,
+  // and an emptied `users` list must never re-materialise the built-in
+  // admin123 account committed in default-data.ts.
   return {
     ...base,
     ...data,
     settings: { ...base.settings, ...(data.settings || {}) },
-    services: Array.isArray(data.services) && data.services.length ? data.services : base.services,
-    inventory: Array.isArray(data.inventory) && data.inventory.length ? data.inventory : base.inventory,
-    users: Array.isArray(data.users) && data.users.length ? data.users : base.users,
-    clients: Array.isArray(data.clients) && data.clients.length ? data.clients : base.clients,
-    staff: Array.isArray(data.staff) && data.staff.length ? data.staff : base.staff,
+    services: Array.isArray(data.services) ? data.services : base.services,
+    inventory: Array.isArray(data.inventory) ? data.inventory : base.inventory,
+    users: Array.isArray(data.users) ? data.users : base.users,
+    clients: Array.isArray(data.clients) ? data.clients : base.clients,
+    staff: Array.isArray(data.staff) ? data.staff : base.staff,
     appointments: Array.isArray(data.appointments) ? data.appointments : base.appointments,
     formulations: Array.isArray(data.formulations) ? data.formulations : base.formulations,
     portfolio: Array.isArray(data.portfolio) ? data.portfolio : base.portfolio,

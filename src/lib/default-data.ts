@@ -1,5 +1,3 @@
-import bcrypt from "bcryptjs";
-
 // Bougie Hair & Beauty placeholder palette, read off the client's two
 // price-list flyers (see docs/bougie-hair-beauty-project-brief.md §2) — no
 // logo file or official hex codes were supplied yet, so this is a starting
@@ -243,36 +241,16 @@ export const defaultServices = [
 // quantities; the admin can add inventory items via the Admin > Inventory UI.
 export const defaultInventory: any[] = [];
 
-// Seed-only plaintext passwords, hashed below before ever landing in the
-// store. Change these via the admin UI after first login in a real deployment.
-export const defaultUsers = [
-  {
-    id: "solo-owner-id",
-    email: "bougiehairuk@gmail.com",
-    password: bcrypt.hashSync("admin123", 10),
-    name: "Salon Owner",
-    role: "STAFF",
-    createdAt: new Date(0).toISOString(),
-  },
-  {
-    id: "default-client-user-id",
-    email: "jane@doe.com",
-    password: bcrypt.hashSync("password123", 10),
-    name: "Jane Doe",
-    role: "CLIENT",
-    createdAt: new Date(0).toISOString(),
-  },
-];
+// No seeded accounts. This is a live production deployment: the real owner
+// account already lives in the store, and fabricating a login here — the
+// old `admin123` admin was committed in plaintext-equivalent form, a genuine
+// security hole — must never happen. If the store is ever wiped, accounts are
+// (re)created through the admin UI, not resurrected from source.
+export const defaultUsers: any[] = [];
 
-export const defaultClients = [
-  {
-    id: "default-client-id",
-    userId: "default-client-user-id",
-    phone: "+44 7700 900000",
-    email: "",
-    notes: "",
-  },
-];
+// No fabricated clients. Real clients are created when they book / verify via
+// Firebase; the store is the single source of truth.
+export const defaultClients: any[] = [];
 
 export const defaultStore = {
   settings: defaultSettings,

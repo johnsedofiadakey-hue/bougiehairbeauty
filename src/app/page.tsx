@@ -32,7 +32,6 @@ export default async function Home() {
     heroSubtitle: "Professional cosmetology services tailored to you.",
     heroImage: "/beauty_hero_bg.png",
     heroMediaType: "image",
-    whatsappNumber: "447700900000"
   };
 
   const currentSettings = serializedSettings || defaultSettings;
@@ -40,7 +39,7 @@ export default async function Home() {
   return (
     <main className="min-h-screen pb-20 lg:pb-0">
       <MobileNav />
-      <WhatsAppFloat />
+      <WhatsAppFloat number={serializedSettings?.whatsappNumber} />
       {/* Floating glass header — sits over the hero, not in normal flow, so
           the pink/photo behind the navbar visibly blurs through it. */}
       <header className="fixed top-0 inset-x-0 z-50">
