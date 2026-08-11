@@ -69,6 +69,10 @@ export default function BookingPage() {
   // is created without online payment and shown to the salon as a pending
   // request to accept; when false, a Stripe deposit must clear to confirm it.
   const [payInPerson, setPayInPerson] = useState(false);
+  // Booking policy is collapsed by default so the final step stays short and
+  // the "agree" checkbox + confirm button are reachable without wading through
+  // a wall of text in a cramped inner scroll box.
+  const [showPolicy, setShowPolicy] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   // Set when the Hero's "Book Your Slot" widget hands off a date + time —
   // lets her land straight on service selection and skip re-picking a slot
@@ -283,7 +287,7 @@ export default function BookingPage() {
   };
 
   return (
-    <div className="min-h-screen pt-28 sm:pt-32 pb-28 px-4 sm:px-6 relative overflow-hidden bg-bougie-cream">
+    <div className="min-h-screen pt-28 sm:pt-32 pb-36 md:pb-28 px-4 sm:px-6 relative overflow-hidden bg-bougie-cream">
       {/* Animated abstract mesh gradient background */}
       <div className="absolute inset-0 z-0 opacity-60 pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-bougie-champagne/40 blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
@@ -616,82 +620,100 @@ export default function BookingPage() {
 
           {/* Step 4: Deposit & Policy */}
           {currentStep === "policy" && (
-            <div className="space-y-6">
+            <div className="space-y-5 pb-40 md:pb-2">
               <div className="text-center">
-                <h2 className="text-2xl sm:text-3xl font-serif text-bougie-espresso mb-2">Secure Your Slot</h2>
-                <p className="text-sm sm:text-base text-bougie-taupe">Pay a deposit by card to confirm instantly — or choose to pay cash on arrival.</p>
+                <h2 className="text-2xl sm:text-3xl font-serif text-bougie-espresso mb-2">Almost done!</h2>
+                <p className="text-sm sm:text-base text-bougie-taupe">Choose how you'd like to pay to secure your slot.</p>
               </div>
 
-              <div className="bg-bougie-cream rounded-2xl p-5 sm:p-6 border border-dashed border-bougie-espresso/30">
-                <div className="space-y-3">
-                  <div className="pb-3 border-b border-bougie-espresso/20">
-                    <span className="text-xs uppercase tracking-widest text-bougie-taupe/70 font-bold">Selected Services</span>
+              {/* Summary */}
+              <div className="bg-bougie-cream rounded-2xl p-5 border border-dashed border-bougie-espresso/30 space-y-3">
+                {selectedServices.map(s => (
+                  <div key={s.id} className="flex justify-between text-sm gap-4">
+                    <span className="text-bougie-taupe">{s.name}</span>
+                    <span className="font-medium whitespace-nowrap">{formatServicePrice(s, currency)}</span>
                   </div>
-                  {selectedServices.map(s => (
-                    <div key={s.id} className="flex justify-between text-sm gap-4">
-                      <span className="text-bougie-taupe">{s.name}</span>
-                      <span className="font-medium whitespace-nowrap">{formatServicePrice(s, currency)}</span>
-                    </div>
-                  ))}
-                  <div className="flex justify-between pt-3 border-t">
-                    <span className="text-bougie-taupe">Date & Time</span>
-                    <span className="font-medium">{format(selectedDate, "MMMM do")} at {selectedTime && formatSlotLabel(selectedTime)}</span>
-                  </div>
-                  <div className="flex justify-between pt-3 border-t">
-                    <span className="font-bold">Estimated Total</span>
-                    <span className="font-bold">{totalLabel}</span>
-                  </div>
-                  <div className="flex justify-between text-bougie-champagne">
-                    <span className="font-bold">Deposit Due (20%)</span>
-                    <span className="font-bold">{depositEstimate()}</span>
-                  </div>
+                ))}
+                <div className="flex justify-between pt-3 border-t">
+                  <span className="text-bougie-taupe">Date & Time</span>
+                  <span className="font-medium text-right">{format(selectedDate, "MMMM do")} at {selectedTime && formatSlotLabel(selectedTime)}</span>
+                </div>
+                <div className="flex justify-between pt-3 border-t">
+                  <span className="font-bold">Total</span>
+                  <span className="font-bold">{totalLabel}</span>
+                </div>
+                <div className="flex justify-between text-bougie-champagne">
+                  <span className="font-bold">{payInPerson ? "Due now" : "Deposit due now (20%)"}</span>
+                  <span className="font-bold">{payInPerson ? "£0 — pay on arrival" : depositEstimate()}</span>
                 </div>
               </div>
 
-              {/* How you'll pay — card deposit (default) or cash on arrival */}
+              {/* Choose how to pay — two clear, tappable options */}
               <div className="space-y-3">
-                <p className="text-xs font-bold uppercase tracking-widest text-bougie-champagne">How you'll pay</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-bougie-champagne">Choose how to pay</p>
 
-                <div className={`p-4 rounded-2xl border-2 transition-colors ${payInPerson ? "border-bougie-espresso/10 bg-bougie-cream/40 opacity-60" : "border-bougie-champagne/50 bg-bougie-pink/10"}`}>
-                  <div className="flex items-center gap-3">
-                    <CreditCard className="w-5 h-5 text-bougie-champagne flex-shrink-0" />
-                    <div>
-                      <p className="font-bold text-sm">Pay {depositEstimate()} deposit by card now</p>
-                      <p className="text-xs text-bougie-taupe">Confirms your slot instantly. Balance paid on the day.</p>
-                    </div>
-                  </div>
-                </div>
-
-                <label className={`flex items-start gap-3 p-4 rounded-2xl border-2 cursor-pointer transition-colors ${payInPerson ? "border-bougie-champagne/50 bg-bougie-pink/10" : "border-bougie-espresso/10"}`}>
-                  <input
-                    type="checkbox"
-                    checked={payInPerson}
-                    onChange={(e) => setPayInPerson(e.target.checked)}
-                    className="w-5 h-5 mt-0.5 rounded accent-bougie-champagne flex-shrink-0"
-                  />
-                  <span className="text-sm">
-                    <span className="font-bold flex items-center gap-2"><Banknote className="w-4 h-4 text-bougie-champagne flex-shrink-0" /> I'll pay in cash when I arrive</span>
-                    <span className="block text-xs text-bougie-taupe mt-1">Book now without paying online. Your slot is held and the salon will confirm it.</span>
+                <button
+                  type="button"
+                  onClick={() => setPayInPerson(false)}
+                  className={`w-full text-left flex items-center gap-3 p-4 rounded-2xl border-2 transition-colors ${!payInPerson ? "border-bougie-champagne bg-bougie-pink/10" : "border-bougie-espresso/10 bg-white"}`}
+                >
+                  <span className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${!payInPerson ? "border-bougie-champagne" : "border-bougie-espresso/30"}`}>
+                    {!payInPerson && <span className="w-2.5 h-2.5 rounded-full bg-bougie-champagne" />}
                   </span>
-                </label>
+                  <CreditCard className="w-5 h-5 text-bougie-champagne flex-shrink-0" />
+                  <span className="flex-1">
+                    <span className="block font-bold text-sm">Pay {depositEstimate()} deposit by card now</span>
+                    <span className="block text-xs text-bougie-taupe">Confirms your slot instantly. Balance paid on the day.</span>
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setPayInPerson(true)}
+                  className={`w-full text-left flex items-center gap-3 p-4 rounded-2xl border-2 transition-colors ${payInPerson ? "border-bougie-champagne bg-bougie-pink/10" : "border-bougie-espresso/10 bg-white"}`}
+                >
+                  <span className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${payInPerson ? "border-bougie-champagne" : "border-bougie-espresso/30"}`}>
+                    {payInPerson && <span className="w-2.5 h-2.5 rounded-full bg-bougie-champagne" />}
+                  </span>
+                  <Banknote className="w-5 h-5 text-bougie-champagne flex-shrink-0" />
+                  <span className="flex-1">
+                    <span className="block font-bold text-sm">Pay cash when I arrive</span>
+                    <span className="block text-xs text-bougie-taupe">Book now, pay in person. The salon will confirm your slot.</span>
+                  </span>
+                </button>
               </div>
 
-              <div className="max-h-40 overflow-y-auto p-4 rounded-xl border bg-white text-xs text-bougie-taupe leading-relaxed whitespace-pre-line">
-                {bookingPolicy}
+              {/* Collapsible booking policy — no cramped inner scroll box */}
+              <div className="rounded-2xl border border-bougie-espresso/10 overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setShowPolicy(v => !v)}
+                  className="w-full flex items-center justify-between gap-2 p-4 text-left"
+                >
+                  <span className="text-sm font-medium flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-bougie-champagne flex-shrink-0" /> Read our booking policy</span>
+                  <ChevronDown className={`w-5 h-5 text-bougie-taupe/70 flex-shrink-0 transition-transform ${showPolicy ? "rotate-180" : ""}`} />
+                </button>
+                {showPolicy && (
+                  <div className="px-4 pb-4 pt-3 border-t border-bougie-espresso/10 text-xs text-bougie-taupe leading-relaxed whitespace-pre-line">
+                    {bookingPolicy}
+                  </div>
+                )}
               </div>
 
-              <label className="flex items-start gap-3 p-4 rounded-xl border-2 border-bougie-espresso/10 cursor-pointer">
+              {/* Agree — prominent and always the last thing before the button */}
+              <label className={`flex items-center gap-3 p-4 rounded-2xl border-2 cursor-pointer transition-colors ${agreedToPolicy ? "border-bougie-champagne bg-bougie-pink/10" : "border-bougie-espresso/15"}`}>
                 <input
                   type="checkbox"
                   checked={agreedToPolicy}
                   onChange={(e) => setAgreedToPolicy(e.target.checked)}
-                  className="w-5 h-5 mt-0.5 rounded accent-bougie-champagne flex-shrink-0"
+                  className="w-5 h-5 rounded accent-bougie-champagne flex-shrink-0"
                 />
-                <span className="text-sm flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-bougie-champagne flex-shrink-0" />
-                  I have read and agree to the booking policy above.
-                </span>
+                <span className="text-sm font-medium">I agree to the booking policy.</span>
               </label>
+
+              {!agreedToPolicy && (
+                <p className="text-center text-xs text-bougie-taupe/70">✓ Tick the box above to continue.</p>
+              )}
             </div>
           )}
 
