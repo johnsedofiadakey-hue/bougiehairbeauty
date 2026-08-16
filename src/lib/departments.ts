@@ -8,7 +8,13 @@ export type Department = { name: string; match: RegExp };
 
 export const DEPARTMENTS: Department[] = [
   { name: "Hair & Braids", match: /braid|twist|corn\s*row|hair extension/i },
-  { name: "Wigs & Frontals", match: /wig|frontal/i },
+  // Chemical Services / Wash & Treatments / Styling Add-ons aren't wig-specific
+  // by name, but the client asked for them to sit under the Wigs & Frontals
+  // tab alongside Wig & Extension Services rather than falling into the
+  // generic Extras catch-all — matched by exact category name so this can't
+  // accidentally swallow an unrelated future category that merely contains
+  // "wash" or "styling" as a substring.
+  { name: "Wigs & Frontals", match: /wig|frontal|^chemical services$|^wash & treatments$|^styling add-ons$/i },
   { name: "Lash Extensions", match: /lash/i },
   { name: "Spa", match: /spa/i },
   { name: "Nails", match: /nail/i },

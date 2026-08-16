@@ -61,9 +61,22 @@ export async function PATCH(request: Request) {
       if (!item) return null;
 
       if (data.name !== undefined) item.name = data.name;
-      if (data.price !== undefined) item.price = Number(data.price);
+      // The edit form always resends price/duration (it's a full-form save,
+      // not per-field), so clearing "unconfirmed" flags just because the
+      // field was present would clear them on an unrelated edit (e.g. fixing
+      // only the name) without the admin ever having touched the real value.
+      // Only clear when the number actually changes from what's stored.
+      if (data.price !== undefined) {
+        const nextPrice = Number(data.price);
+        if (item.priceUnconfirmed && nextPrice !== item.price) item.priceUnconfirmed = false;
+        item.price = nextPrice;
+      }
       if (data.priceMax !== undefined) item.priceMax = data.priceMax === "" ? undefined : Number(data.priceMax);
-      if (data.duration !== undefined) item.duration = Number(data.duration);
+      if (data.duration !== undefined) {
+        const nextDuration = Number(data.duration);
+        if (item.durationUnconfirmed && nextDuration !== item.duration) item.durationUnconfirmed = false;
+        item.duration = nextDuration;
+      }
       if (data.category !== undefined) item.category = data.category;
       if (data.description !== undefined) item.description = data.description;
       if (data.imageUrl !== undefined || data.image !== undefined) item.image = data.imageUrl ?? data.image;

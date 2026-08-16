@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, AlertTriangle } from "lucide-react";
 import { formatServicePrice } from "@/lib/utils";
 import { ServiceCategoryIcon } from "@/components/landing/ServiceCategoryIcon";
 
@@ -23,6 +23,10 @@ export default function AdminServices() {
   }, []);
 
   const categories = Array.from(new Set(services.map((s) => s.category || "Other")));
+  // Services created with a missing price/duration (e.g. bulk-imported from a
+  // client's price list where a number wasn't given) are flagged rather than
+  // silently guessed — this surfaces them until someone confirms a real value.
+  const needsAttention = services.filter((s) => s.priceUnconfirmed || s.durationUnconfirmed);
 
   const openAdd = () => {
     setEditingId(null);
@@ -118,6 +122,20 @@ export default function AdminServices() {
           <Plus className="w-4 h-4" /> Add Service
         </Button>
       </div>
+
+      {needsAttention.length > 0 && (
+        <div className="bg-amber-50 border-2 border-amber-200 rounded-3xl p-6 flex items-start gap-4">
+          <AlertTriangle className="w-6 h-6 text-amber-600 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="font-bold text-amber-900">
+              {needsAttention.length} service{needsAttention.length === 1 ? "" : "s"} need{needsAttention.length === 1 ? "s" : ""} your input
+            </p>
+            <p className="text-sm text-amber-800/80 mt-1">
+              {needsAttention.map((s) => s.name).join(", ")} — tap Edit on each and fill in the missing price/duration. This banner disappears once fixed.
+            </p>
+          </div>
+        </div>
+      )}
 
       {isOpen && (
         <div className="bg-white p-8 rounded-3xl border shadow-lg animate-in fade-in slide-in-from-top-4">
@@ -215,8 +233,10 @@ export default function AdminServices() {
             <h4 className="text-lg font-bold text-bougie-espresso">{category}</h4>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.filter((s) => (s.category || "Other") === category).map((service) => (
-              <div key={service.id} className="bg-white p-6 rounded-3xl border hover:shadow-md transition-all group relative">
+            {services.filter((s) => (s.category || "Other") === category).map((service) => {
+              const flagged = service.priceUnconfirmed || service.durationUnconfirmed;
+              return (
+              <div key={service.id} className={`bg-white p-6 rounded-3xl border hover:shadow-md transition-all group relative ${flagged ? "border-amber-300 ring-1 ring-amber-200" : ""}`}>
                 <div className="flex justify-between items-start mb-4">
                   <div className="w-12 h-12 rounded-2xl bg-bougie-cream/50 flex items-center justify-center text-bougie-espresso">
                     <ServiceCategoryIcon category={service.category} className="w-6 h-6" />
@@ -240,10 +260,17 @@ export default function AdminServices() {
                 <p className="text-bougie-espresso/60 text-sm mb-6">{service.duration} mins</p>
                 <div className="flex justify-between items-center pt-4 border-t border-zinc-50">
                   <span className="text-xl font-bold text-bougie-espresso">{formatServicePrice(service, currency)}</span>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-bougie-espresso/50">Active</span>
+                  {flagged ? (
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-amber-700 bg-amber-100 px-2 py-1 rounded-full flex items-center gap-1">
+                      <AlertTriangle className="w-3 h-3" /> {service.priceUnconfirmed ? "Set price" : "Set duration"}
+                    </span>
+                  ) : (
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-bougie-espresso/50">Active</span>
+                  )}
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       ))}
